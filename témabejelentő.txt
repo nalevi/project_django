@@ -1,0 +1,14 @@
+  A dolgozat keretein belül elkészülő program egy projektmenedzsment segítő eszköz, 
+mely a manapság egyre több helyen alkalmazott agilis módszertan szerint működő szoftverfejlesztő csapatok munkáját hivatott megkönnyíteni.
+  Az alkalmazás képes lesz felhasználók kezelésére: fejlesztők, tesztelők, scrummasterek, projektmenedzserek. Az egyes felhasználók
+- munkakörüktől függően - különböző jogosultságokkal rendelkeznek (például csak a projektmenedzserek és scrummasterek látják mindenkinek a 
+lekönyvelt munkaidejét, a többiek csak a sajátjukét). Létre lehet hozni projekteket, amelyekhez fel lehet tölteni dokumentumokat (például: 
+specifikációk). Az egyes projekteket lehetőség lesz feladatokra(epic, issue) bontani, amiket hozzáköthetünk majd az egyes felhasználókhoz, 
+továbbá a feladatok rendelkeznek státuszokkal, így lehet majd végig követni a napi stand-upokon, hogyan halad a csapat. Ez utóbbi 
+kimutatásához lehetőség lesz diagramokat, avagy grafikonokat készíteni, melyek vizuálisan is segítenek bemutatni az egyes sprintek 
+feladatainak haladását (hány százalék van lefejlesztve, letesztelve, illetve hogyan oszlanak el egy-egy időszakban mennyiségileg) . 
+A felhasználók az egyes feladatokra tudják könyvelni munkaidejüket is és megbecsülni a hátralevő időt, amennyit még rá kell fordítani,
+illetve kommenteket is fűzhetnek hozzájuk. Az oldalon rákereshetünk egyes felhasználókra is, ahol megtekinthetőek lesznek a személyes 
+"statisztikáik" (munkaidő, hozzászólások, folyamatban levő feladataik). 
+  Az alkalmazás webes alapokon fog működni, így az ehhez használatos eszközökkel valósul meg a frontend(pl.: HTML, CSS, JavaScript), 
+alacsonyabb szintű megvalósítása pedig pythonban. Az egészet a python nyílt forráskódú webes keretrendszere, a Django fogja össze. 
