@@ -3,3 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 ScrumHelper/ScrumHelper/__pycache__/__init__.cpython-37.pyc
+
+#Visual Studio Code settings
+ScrumHelper/.vscode/settings.json
