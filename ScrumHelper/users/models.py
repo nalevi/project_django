@@ -10,3 +10,9 @@ class User(models.Model):
         )
     full_name = models.CharField("full name", max_length=256, blank=True)
     email = models.EmailField("email address", max_length=255, blank=True, unique=True)
+
+    def getFullName(self):
+        return self.full_name
+
+    def __str__(self):
+        return self.username

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Scrum Helper</title>
+    </head>
+    <body>
+        <p>Ez itt a login pédzs</p>
+
+        {% if users_list %}
+            <ul>
+                {% for user in users_list %}
+                    <li><a href="/users/{{ user.uuid }}/">{{ user.getFullName }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No full name found.</p>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,5 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+ScrumHelper/ScrumHelper/__pycache__/__init__.cpython-37.pyc
