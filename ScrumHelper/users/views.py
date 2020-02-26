@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.http import HttpResponse
 
-from .models import User
+from .models import Profile, User
 
 def index(request):
     users_list = User.objects.all()
@@ -12,5 +12,5 @@ def index(request):
     return render(request, 'users/index.html', context)
 
 def detail(request, user_id):
-    user_full_name = User.objects.get(uuid=user_id).getFullName()
+    user_full_name = Profile.objects.get(user_id=user_id).getFullName()
     return HttpResponse("Hello user %s. " % user_full_name)

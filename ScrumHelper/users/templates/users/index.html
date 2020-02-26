@@ -4,16 +4,11 @@
         <title>Scrum Helper</title>
     </head>
     <body>
-        <p>Ez itt a login pédzs</p>
-
-        {% if users_list %}
-            <ul>
-                {% for user in users_list %}
-                    <li><a href="/users/{{ user.uuid }}/">{{ user.getFullName }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No full name found.</p>
-        {% endif %}
+        <tr>
+            <td> Projects</a></td>
+            <td>Kanban boards</a></td>
+            <td><a href="{% url 'users:detail'  user.id %}">Profile</a></td>
+            <td>My open issues</a></td>
+        </tr>
     </body>
 </html>
