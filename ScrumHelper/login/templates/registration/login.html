@@ -1,5 +1,60 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta name="viewport" content="width=40%, initial-scale=1">
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                display: block;
+                text-align: center;
+            }
+
+            form {
+                border: 3px solid #f1f1f1;
+                width: 30%;
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: left;
+            }
+
+            input[type=text], input[type=password] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                }
+
+            button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                }
+
+            button:hover {
+                opacity: 0.8;
+                }
+
+            img.avatar {
+                width: 40%;
+                border-radius: 50%;
+                }
+
+            .container {
+                padding: 16px;
+            }
+
+            span.psw {
+                float: right;
+            }
+        </style>
+    </head>
     {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -13,23 +68,26 @@
         {% endif %}
     {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-    <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-    </tr>
-    </table>
+    <form method="post" action="{% url 'login' %}" class="login-form">
+        {% csrf_token %}
 
-    <input type="submit" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
+        <div class="container">
+            <label for="uname"><b>{{ form.username.label_tag }}</b></label>
+            <b>{{ form.username }}</b>
+            
+        
+            <label for="psw"><b>{{ form.password.label_tag }}</b></label>
+            <b>{{ form.password }}</b>
+            
+                
+            <button type="submit">Login</button>
+            <input type="hidden" name="next" value="{{ next }}">
+            <!--
+            <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+            -->
+        </div>
+        <span class="psw"><a href="{% url 'password_reset' %}">Lost password?</a></span>
     </form>
-
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 </html>

@@ -9,6 +9,7 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=30, blank=True)
+    #avatar = models.ImageField(upload_to='avatars')
 
     def __str__(self):
         return self.user.username
