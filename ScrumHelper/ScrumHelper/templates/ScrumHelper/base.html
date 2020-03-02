@@ -23,7 +23,7 @@
         {% block head_css %}
             {% block head_css_site %}
             {% load static %}
-                <link href="{% static '/css/bootstrap.min.css' %}"
+                <link href="{% static '/css/materialize.css' %}"
                       rel="stylesheet" media="screen">
             {% endblock head_css_site %}
             {% block head_css_section %}{% endblock head_css_section %}
@@ -33,29 +33,15 @@
 
     <body>
         {# Navigation Menu #}
-        <header>
-              <div class="navbar navbar-expand-md fixed-top bg-dark
-              {% block nav-style %}navbar-dark{% endblock %}">
-                  <div class="container p-none">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                      <div class="navbar-header">
-                          <a class="navbar-brand" href="/users/">ScrumHelper</a>
-                      </div>
-                      <div class="collapse navbar-collapse show">
-                          <ul class="nav navbar-nav mr-auto">
-                                <li class="nav-item active"><a href="/login/" method="POST" action="{% url 'logout' %}">Logout</a></li>
-                                <li class="nav-item"><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
-                          </ul>
-                          <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-        </header>
+        <nav>
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo center">ScrumHelper</a>
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
+                <li><a href="/login/" method="POST" action="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </div>
+        </nav>
         {# The Document Body #}
         <div id="site-wrapper">
             {% block content %}
