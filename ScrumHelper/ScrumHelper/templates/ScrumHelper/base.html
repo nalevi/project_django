@@ -32,13 +32,21 @@
     </head>
 
     <body>
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content">
+            <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
+            <li><a href="#!">Timesheet</a></li>
+            <li class="divider"></li>
+            <li><a href="#!">My open issues</a></li>
+        </ul>
         {# Navigation Menu #}
         <nav>
             <div class="nav-wrapper">
-              <a href="#" class="brand-logo center">ScrumHelper</a>
-              <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
-                <li><a href="/login/" method="POST" action="{% url 'logout' %}">Logout</a></li>
+              <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="btn center " role="button"> Create </a></li>  
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">ˇ</i></a></li>
+                <li><a href="{% url 'login' %}" method="POST" action="{% url 'logout' %}">Logout</a></li>
               </ul>
             </div>
         </nav>
@@ -63,9 +71,9 @@
 
     {% block footer_javascript %}
         {% block footer_javascript_site %}
-            <!--<script src="{% static '/js/jquery.min.js' %}"></script>-->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <!--<script src="{% static '/js/app.js' %}"></script>-->
+            <script src="{% static '/js/materialize.js' %}"></script>
+            <script src="{% static '/js/materialize.min.js' %}"></script>
+            <script src="{% static '/js/dropdown.js' %}"></script>
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}
