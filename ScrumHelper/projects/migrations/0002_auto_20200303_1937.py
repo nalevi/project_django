@@ -23,12 +23,12 @@ class Migration(migrations.Migration):
             name='modified_date',
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='project',
             name='created_date',
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='project',
             name='project_owner',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='users.Profile'),

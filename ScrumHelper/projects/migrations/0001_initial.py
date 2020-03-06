@@ -19,9 +19,7 @@ class Migration(migrations.Migration):
                 ('project_id', models.IntegerField(db_index=True, primary_key=True, serialize=False, unique=True, verbose_name='project_id')),
                 ('name', models.CharField(max_length=50, unique=True)),
                 ('code', models.CharField(max_length=6, unique=True)),
-                ('created_date', models.DateField()),
                 ('documents', models.FileField(upload_to='')),
-                ('project_owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.Profile')),
             ],
         ),
     ]
