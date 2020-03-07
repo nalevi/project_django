@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from users.models import Profile
+from projects.epics.models import Epic
 
 class UserStory(models.Model):
     '''
@@ -17,4 +18,5 @@ class UserStory(models.Model):
     description = models.CharField(max_length=250, default="Description")
     importance = models.CharField(max_length=8, default="Low")
     state = models.CharField(default="OPEN", max_length=15)
+    epic = models.ForeignKey("epics.Epic", on_delete=models.CASCADE, related_name="userstory_epic", default=0)
     #work_log

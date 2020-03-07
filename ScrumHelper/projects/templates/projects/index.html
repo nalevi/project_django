@@ -2,3 +2,15 @@
 {% load static %}
 
 {% block title %} Projects {% endblock %}
+
+{% block content %}
+    {% if project_list %}
+        <ul>
+        {% for proj in project_list %}
+            <li>{{ proj.name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no available projects.</p>
+    {% endif %}
+{% endblock %}
