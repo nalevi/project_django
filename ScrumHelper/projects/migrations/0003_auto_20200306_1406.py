@@ -18,19 +18,4 @@ class Migration(migrations.Migration):
             name='project_owner',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='project_owner', to='users.Profile'),
         ),
-        migrations.CreateModel(
-            name='MetaStory',
-            fields=[
-                ('id', models.IntegerField(db_index=True, primary_key=True, serialize=False, unique=True)),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('created_date', models.DateTimeField(default=django.utils.timezone.now)),
-                ('modified_date', models.DateTimeField(default=django.utils.timezone.now)),
-                ('description', models.CharField(max_length=250)),
-                ('importance', models.CharField(default='Low', max_length=8)),
-                ('state', models.CharField(default='OPEN', max_length=15)),
-                ('assignee', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assignee', to='users.Profile')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='users.Profile')),
-                ('project_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='project_code', to='projects.Project', to_field='code')),
-            ],
-        ),
     ]

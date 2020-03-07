@@ -3759,7 +3759,7 @@ small {
 
 .btn, .btn-large, .btn-small {
   text-decoration: none;
-  color: #fff;
+  color: rgb(0, 0, 0);
   background-color: #d1dd21;
   text-align: center;
   letter-spacing: .5px;
