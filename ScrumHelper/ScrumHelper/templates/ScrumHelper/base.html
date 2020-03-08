@@ -44,12 +44,16 @@
             <div class="nav-wrapper">
               <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="btn center " role="button"> Create </a></li>  
+                {% block navbar_create %}{% endblock %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">ˇ</i></a></li>
                 <li><a href="{% url 'login' %}" method="POST" action="{% url 'logout' %}">Logout</a></li>
               </ul>
             </div>
         </nav>
+
+        {% block modal %}
+        {% endblock %}
+
         {# The Document Body #}
         <div id="site-wrapper">
             {% block content %}
@@ -73,6 +77,8 @@
         {% block footer_javascript_site %}
             <script src="{% static '/js/materialize.js' %}"></script>
             <script src="{% static '/js/materialize.min.js' %}"></script>
+            <script src="{% static '/js/dropdown.js' %}"></script>
+            <script src="{% static '/js/modal.js' %}"></script>
             <script src="{% static '/js/dropdown.js' %}"></script>
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}

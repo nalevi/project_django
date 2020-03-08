@@ -1,10 +1,8 @@
 {% extends 'ScrumHelper/base.html' %}
 {% load static %}
 
-{% block title %} Projects {% endblock %}
-
 {% block navbar_create %}
-<li><button class="btn center modal-trigger" data-target="modalCreate" >Create project</button></li>
+<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>
 {% endblock %}
 
 {% block modal %}
@@ -18,17 +16,15 @@
                 <div class="row modal-form-row">
                     <div class="input-field col s12">
                         <input type="text" class="validate" id="objectName">
-                        <label for="objectName">Project name</label>
+                        <label for="objectName">Name</label>
                     </div>
                 </div>
                 <div class="row modal-form-row">
                     <label>Select type</label>
                     <select class="browser-default">
-                        <option value="project">Project</option>
                         <option value="story">Story</option>
                         <option value="task">Task</option>
                         <option value="epic">Epic</option>
-                        <option value="issue">Issue</option>
                     </select>
                 </div>
                 <div class="row modal-form-row">
@@ -45,22 +41,14 @@
                         <label for="description">Description</label>
                     </div>
                 </div>
-
+                <div class="row modal-form-row">
+                    <div class="input-field col s12">
+                        <input type="text" class="validate" id="assignee">
+                        <label for="assignee">Assignee</label>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
-{% endblock %}
-
-
-{% block content %}
-    {% if project_list %}
-        <ul>
-        {% for proj in project_list %}
-            <li>{{ proj.name }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no available projects.</p>
-    {% endif %}
 {% endblock %}
