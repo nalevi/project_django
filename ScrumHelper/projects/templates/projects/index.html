@@ -4,7 +4,7 @@
 {% block title %} Projects {% endblock %}
 
 {% block navbar_create %}
-<li><button class="btn center modal-trigger" data-target="modalCreate" >Create project</button></li>
+<li><a href="{% url 'projects:project_new' %}" class="btn">Create project</a></li>
 {% endblock %}
 
 {% block modal %}
@@ -14,39 +14,14 @@
         <h4>Create</h4>
 
         <div class="row">
-            <form class="col s12">
-                <div class="row modal-form-row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="objectName">
-                        <label for="objectName">Project name</label>
-                    </div>
-                </div>
-                <div class="row modal-form-row">
-                    <label>Select type</label>
-                    <select class="browser-default">
-                        <option value="project">Project</option>
-                        <option value="story">Story</option>
-                        <option value="task">Task</option>
-                        <option value="epic">Epic</option>
-                        <option value="issue">Issue</option>
-                    </select>
-                </div>
-                <div class="row modal-form-row">
-                    <label>Select severty</label>
-                    <select class="browser-default">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="row modal-form-row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="description">
-                        <label for="description">Description</label>
-                    </div>
-                </div>
-
+            <form class="col s12" method="POST" action=>
+                {% csrf_token %}
+                {{ form.as_p }}
+                
             </form>
+            <div class="modal-footer">
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            </div>
         </div>
     </div>
 </div>

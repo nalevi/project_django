@@ -1,0 +1,54 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block navbar_create %}
+<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>
+{% endblock %}
+
+{% block modal %}
+{# Modal Structure #}
+<div id="modalCreate" class="modal">
+    <div class="modal-content">
+        <h4>Create</h4>
+
+        <div class="row">
+            <form class="col s12">
+                <div class="row modal-form-row">
+                    <div class="input-field col s12">
+                        <input type="text" class="validate" id="objectName">
+                        <label for="objectName">Name</label>
+                    </div>
+                </div>
+                <div class="row modal-form-row">
+                    <label>Select type</label>
+                    <select class="browser-default">
+                        <option value="story">Story</option>
+                        <option value="task">Task</option>
+                        <option value="epic">Epic</option>
+                    </select>
+                </div>
+                <div class="row modal-form-row">
+                    <label>Select severty</label>
+                    <select class="browser-default">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="row modal-form-row">
+                    <div class="input-field col s12">
+                        <input type="text" class="validate" id="description">
+                        <label for="description">Description</label>
+                    </div>
+                </div>
+                <div class="row modal-form-row">
+                    <div class="input-field col s12">
+                        <input type="text" class="validate" id="assignee">
+                        <label for="assignee">Assignee</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

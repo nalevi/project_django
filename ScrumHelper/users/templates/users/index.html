@@ -13,7 +13,7 @@
                 
                 <h2>My open stories</h2>
                 <p>List of stories/tasks/epics/issues assigned to you</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View »</a></p>
+                <p><a class="btn btn-secondary" href="{% url 'users:detail' user.id %}" role="button">View »</a></p>
 
                 <h2>My timesheet</h2>
                 <p>Your personal work logs.</p>
