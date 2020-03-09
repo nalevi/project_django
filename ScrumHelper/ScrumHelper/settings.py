@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = "users:index"
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
