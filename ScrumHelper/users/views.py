@@ -12,4 +12,5 @@ def index(request):
     return render(request, 'users/index.html', context)
 
 def detail(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
     return render(request, 'users/open.html')
