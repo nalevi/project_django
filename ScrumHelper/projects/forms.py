@@ -1,4 +1,6 @@
 from django.forms import ModelForm
+from django import forms
+from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
 
 from .models import Project
@@ -18,6 +20,8 @@ class CreateProjectForm(ModelForm):
         
 
 class CreateStoryForm(ModelForm):
+
+    project_code = forms.ChoiceField(widget=forms.Select,choices=[(proj.id,proj.code) for proj in Project.objects.all()])
     class Meta:
         model = UserStory
         fields = ['name', 'project_code',
@@ -25,3 +29,4 @@ class CreateStoryForm(ModelForm):
         labels = {
             'project_code': _('Project\'s code'),
         }
+        

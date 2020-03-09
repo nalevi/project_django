@@ -9,9 +9,9 @@
     <form method="POST" class="col s12">
         {% csrf_token %}
         <ul>
-            {{ form.as_ul }}
+            {{ form.as_p }}
         </ul>
-        <button type="submit" class="save btn btn-default btn-flat">Submit</button>
+        <button type="submit" class="save btn">Submit</button>
     </form>
 
 {% endblock %}

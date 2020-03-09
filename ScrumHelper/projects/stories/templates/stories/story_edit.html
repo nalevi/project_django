@@ -8,9 +8,9 @@
     <h3>New Story</h3>
     <form method="POST" class="col s12">
         {% csrf_token %}
-        <ul>
-            {{ form.as_ul }}
-        </ul>
+        <table>
+            {{ form.as_table }}
+        </table>
         <button type="submit" class="save btn btn-default btn-flat">Submit</button>
     </form>
 
