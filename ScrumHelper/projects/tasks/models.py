@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from users.models import Profile
 
+from projects.contants import STATE_CHOICES, IMPORTANCE_CHOICES
 
 class Task(models.Model):
     '''
@@ -16,8 +17,8 @@ class Task(models.Model):
     owner = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="task_owner")
     assignee = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="task_assignee", default="Unkown")
     description = models.CharField(max_length=250, default="Description")
-    importance = models.CharField(max_length=8, default="Low")
-    state = models.CharField(default="OPEN", max_length=15)
+    importance = models.CharField(max_length=8, default="low", choices=IMPORTANCE_CHOICES)
+    state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)
 
 
     

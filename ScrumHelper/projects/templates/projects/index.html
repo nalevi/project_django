@@ -7,27 +7,6 @@
 <li><a href="{% url 'projects:project_new' %}" class="btn">Create project</a></li>
 {% endblock %}
 
-{% block modal %}
-{# Modal Structure #}
-<div id="modalCreate" class="modal">
-    <div class="modal-content">
-        <h4>Create</h4>
-
-        <div class="row">
-            <form class="col s12" method="POST" action=>
-                {% csrf_token %}
-                {{ form.as_p }}
-                
-            </form>
-            <div class="modal-footer">
-                <a class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-
 {% block content %}
     {% if project_list %}
         <ul>

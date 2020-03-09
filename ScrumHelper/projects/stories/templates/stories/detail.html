@@ -5,50 +5,21 @@
 <li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>
 {% endblock %}
 
-{% block modal %}
-{# Modal Structure #}
-<div id="modalCreate" class="modal">
-    <div class="modal-content">
-        <h4>Create</h4>
+{% block content %}
 
-        <div class="row">
-            <form class="col s12">
-                <div class="row modal-form-row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="objectName">
-                        <label for="objectName">Name</label>
-                    </div>
-                </div>
-                <div class="row modal-form-row">
-                    <label>Select type</label>
-                    <select class="browser-default">
-                        <option value="story">Story</option>
-                        <option value="task">Task</option>
-                        <option value="epic">Epic</option>
-                    </select>
-                </div>
-                <div class="row modal-form-row">
-                    <label>Select severty</label>
-                    <select class="browser-default">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="row modal-form-row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="description">
-                        <label for="description">Description</label>
-                    </div>
-                </div>
-                <div class="row modal-form-row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="assignee">
-                        <label for="assignee">Assignee</label>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="section">
+    <h4>Name:</h4>
+    <p>story.name</p>
 </div>
+<div class="divider"></div>
+<div class="section">
+    <h5>Project:</h5>
+    <p><a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <h5>Owner:</h5>
+    <p><a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.getFullName() }}</a></p>
+</div>
+
 {% endblock %}
