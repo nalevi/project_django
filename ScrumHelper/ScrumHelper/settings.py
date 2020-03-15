@@ -33,12 +33,18 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'users.apps.UsersConfig',
+    'projects.apps.ProjectsConfig',
+    'projects.stories.apps.StoriesConfig',
+    'projects.tasks.apps.TasksConfig',
+    'projects.epics.apps.EpicsConfig',
+    'projects.issues.apps.IssuesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +139,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = "users:index"
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}

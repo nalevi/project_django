@@ -23,7 +23,7 @@
         {% block head_css %}
             {% block head_css_site %}
             {% load static %}
-                <link href="{% static '/css/bootstrap.min.css' %}"
+                <link href="{% static '/css/materialize.css' %}"
                       rel="stylesheet" media="screen">
             {% endblock head_css_site %}
             {% block head_css_section %}{% endblock head_css_section %}
@@ -32,30 +32,28 @@
     </head>
 
     <body>
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content">
+            <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
+            <li><a href="#!">Timesheet</a></li>
+            <li class="divider"></li>
+            <li><a href="#!">My open issues</a></li>
+        </ul>
         {# Navigation Menu #}
-        <header>
-              <div class="navbar navbar-expand-md fixed-top bg-dark
-              {% block nav-style %}navbar-dark{% endblock %}">
-                  <div class="container p-none">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                      <div class="navbar-header">
-                          <a class="navbar-brand" href="/users/">ScrumHelper</a>
-                      </div>
-                      <div class="collapse navbar-collapse show">
-                          <ul class="nav navbar-nav mr-auto">
-                                <li class="nav-item active"><a href="/login/" method="POST" action="{% url 'logout' %}">Logout</a></li>
-                                <li class="nav-item"><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
-                          </ul>
-                          <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-        </header>
+        <nav>
+            <div class="nav-wrapper">
+              <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {% block navbar_create %}{% endblock %}
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">ˇ</i></a></li>
+                <li><a href="{% url 'login' %}" method="POST" action="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </div>
+        </nav>
+
+        {% block modal %}
+        {% endblock %}
+
         {# The Document Body #}
         <div id="site-wrapper">
             {% block content %}
@@ -63,19 +61,24 @@
             {% endblock content %}
         </div>
         {# The Footer #}
-        <div class="footer">
+        <footer>
             <div class="container">
-                <p>ScrumHelper 2020</p>
+                
             </div>
-        </div>
+            <div class="footer-copyright">
+                <div class="container">
+                © 2020 ScrumHelper
+                </div>
+              </div>
+        </footer>
     </body>
 
     {% block footer_javascript %}
         {% block footer_javascript_site %}
-            <!--<script src="{% static '/js/jquery.min.js' %}"></script>-->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="{% static '/js/bootstrap.min.js' %}"></script>
-            <!--<script src="{% static '/js/app.js' %}"></script>-->
+            <script src="{% static '/js/materialize.js' %}"></script>
+            <script src="{% static '/js/materialize.min.js' %}"></script>
+            <script src="{% static '/js/dropdown.js' %}"></script>
+            <script src="{% static '/js/modal.js' %}"></script>
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}

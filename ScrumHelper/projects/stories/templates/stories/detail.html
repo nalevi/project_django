@@ -1,0 +1,25 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block navbar_create %}
+<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="section">
+    <h4>Name:</h4>
+    <p>story.name</p>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <h5>Project:</h5>
+    <p><a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <h5>Owner:</h5>
+    <p><a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.getFullName() }}</a></p>
+</div>
+
+{% endblock %}

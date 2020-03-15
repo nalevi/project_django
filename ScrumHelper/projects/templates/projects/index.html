@@ -1,0 +1,20 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Projects {% endblock %}
+
+{% block navbar_create %}
+<li><a href="{% url 'projects:project_new' %}" class="btn">Create project</a></li>
+{% endblock %}
+
+{% block content %}
+    {% if project_list %}
+        <ul>
+        {% for proj in project_list %}
+            <li>{{ proj.name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no available projects.</p>
+    {% endif %}
+{% endblock %}
