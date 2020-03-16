@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(default='Description', max_length=250)),
                 ('importance', models.CharField(default='Low', max_length=8)),
                 ('state', models.CharField(default='OPEN', max_length=15)),
-                ('assignee', models.ForeignKey(default='Unkown', on_delete=django.db.models.deletion.CASCADE, related_name='userstory_assignee', to='users.Profile')),
+                ('assignee', models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='userstory_assignee', to='users.Profile')),
                 ('epic', models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='userstory_epic', to='epics.Epic')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='userstory_owner', to='users.Profile')),
                 ('project_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='userstory_project_code', to='projects.Project', to_field='code')),

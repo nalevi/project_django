@@ -33,33 +33,44 @@
 
     <body>
         <!-- Dropdown Structure -->
+        {% if user.is_authenticated %}
         <ul id="dropdown1" class="dropdown-content">
             <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none">Profile</a></li>
             <li><a href="#!">Timesheet</a></li>
             <li class="divider"></li>
             <li><a href="#!">My open issues</a></li>
         </ul>
+        {% endif %}
         {# Navigation Menu #}
+        {% if user.is_authenticated %}
         <nav>
             <div class="nav-wrapper">
               <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% block navbar_create %}{% endblock %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">ˇ</i></a></li>
-                <li><a href="{% url 'login' %}" method="POST" action="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'login:logout' %}" method="POST" action="{% url 'login:logout' %}">Logout</a></li>
               </ul>
             </div>
         </nav>
+        {% endif %}
+
 
         {% block modal %}
         {% endblock %}
 
         {# The Document Body #}
+        {% if user.is_authenticated %}
         <div id="site-wrapper">
             {% block content %}
                 Hiba hiba hátán!
             {% endblock content %}
         </div>
+        {% else %}
+        <div id="site-wrapper">
+            <p> You are not logged in! </p>
+        </div> 
+        {% endif %}
         {# The Footer #}
         <footer>
             <div class="container">

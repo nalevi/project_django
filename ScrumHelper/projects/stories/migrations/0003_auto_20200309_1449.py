@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='userstory',
             name='assignee',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='userstory_assignee', to=settings.AUTH_USER_MODEL),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='userstory',
             name='owner',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='userstory_owner', to=settings.AUTH_USER_MODEL),

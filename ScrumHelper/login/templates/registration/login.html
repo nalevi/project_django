@@ -68,7 +68,7 @@
         {% endif %}
     {% endif %}
 
-    <form method="post" action="{% url 'login' %}" class="login-form">
+    <form method="post" action="{% url 'login:login' %}" class="login-form">
         {% csrf_token %}
 
         <div class="container">
@@ -88,6 +88,6 @@
             </label>
             -->
         </div>
-        <span class="psw"><a href="{% url 'password_reset' %}">Lost password?</a></span>
+        <span class="psw"><a href="{% url 'login:password_reset' %}">Lost password?</a></span>
     </form>
 </html>

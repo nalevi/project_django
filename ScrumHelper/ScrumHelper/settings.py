@@ -140,6 +140,8 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "users:index"
 
+LOGOUT_REDIRECT_URL="login:login"
+
 GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
