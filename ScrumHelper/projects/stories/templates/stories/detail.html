@@ -7,20 +7,24 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="right">
+        <a class="btn btn-flat right-align" href="{% url 'projects:stories:story_edit' story.id %}"><i class="material-icons">create</i></a>
+    </div>
 
-<div class="section">
-    <h4>Name:</h4>
-    <p>{{ story.name  }}</p>
+    <div class="section">
+        <p>Name: {{ story.name  }}</p>
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+        <p>Project: <a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+        <p>Owner: <a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.user.username }}</a></p>
+    </div>
+    <div class="section">
+        <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.id %}">{{ assignee.user }}</a> {% endif %} </p>
+    </div>
 </div>
-<div class="divider"></div>
-<div class="section">
-    <h5>Project:</h5>
-    <p><a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
-</div>
-<div class="divider"></div>
-<div class="section">
-    <h5>Owner:</h5>
-    <p><a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.user.username }}</a></p>
-</div>
-
 {% endblock %}

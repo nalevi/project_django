@@ -20,5 +20,6 @@ class UserStory(models.Model):
     importance = models.CharField(max_length=8, default="low", choices=IMPORTANCE_CHOICES)
     state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)
     epic = models.ForeignKey("epics.Epic", on_delete=models.CASCADE, related_name="userstory_epic", null=True)
+    acceptance = models.CharField(max_length=50, null=True)
     #work_log =
     #sprint =
