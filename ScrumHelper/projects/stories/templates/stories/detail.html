@@ -2,14 +2,15 @@
 {% load static %}
 
 {% block navbar_create %}
-<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>
+<!--<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>-->
+<li><a href="{% url 'projects:stories:story_new' %}" class="btn center">Create story</a></li>
 {% endblock %}
 
 {% block content %}
 
 <div class="section">
     <h4>Name:</h4>
-    <p>story.name</p>
+    <p>{{ story.name  }}</p>
 </div>
 <div class="divider"></div>
 <div class="section">
@@ -19,7 +20,7 @@
 <div class="divider"></div>
 <div class="section">
     <h5>Owner:</h5>
-    <p><a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.getFullName() }}</a></p>
+    <p><a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.user.username }}</a></p>
 </div>
 
 {% endblock %}

@@ -21,11 +21,11 @@ class CreateProjectForm(ModelForm):
 
 class CreateStoryForm(ModelForm):
 
-    project_code = forms.ChoiceField(widget=forms.Select,choices=[(proj.id,proj.code) for proj in Project.objects.all()])
+    project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
     class Meta:
         model = UserStory
         fields = ['name', 'project_code',
-                  'assignee', 'description', 'importance', 'epic']
+                  'assignee', 'description', 'importance']
         labels = {
             'project_code': _('Project\'s code'),
         }

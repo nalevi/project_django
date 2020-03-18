@@ -15,3 +15,6 @@ class Project(models.Model):
     members = models.ManyToManyField("users.Profile", related_name="members")
     #documents = models.FileField()
 
+    def __str__(self):
+        return self.code
+
