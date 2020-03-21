@@ -49,6 +49,8 @@
               <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% block navbar_create %}{% endblock %}
+                <li><a href="#!">Kanban board</a></li>
+                <li><a href="{% url 'projects:index' %}">Projects</a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="{% url 'login:logout' %}" method="POST" action="{% url 'login:logout' %}">Logout</a></li>
               </ul>
