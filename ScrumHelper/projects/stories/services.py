@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from projects.models import Project
 from users.models import Profile
 from projects.epics.models import Epic
+from projects.comments.models import Comment
 
 from .models import UserStory
 
@@ -26,6 +27,7 @@ def get_story_details(story_id):
              - owner_profile
              - assignee (optional)
              - epic (optional)
+             - comments
     '''
     story = get_object_or_404(UserStory, pk=story_id)
     proj = get_object_or_404(Project, code=story.project_code.code)
@@ -40,14 +42,16 @@ def get_story_details(story_id):
         assignee_profile = get_object_or_404(Profile, pk=story.assignee.id)
         context['assignee'] = assignee_profile
     except Exception:
-        return context
+        pass
 
     try:
         epic_link = get_object_or_404(Epic, pk=story.epic.id)
         context['epic'] = epic_link
     except Exception:
-        return context
+        pass
     
+    comments = story.comment.all()
+    context['comments'] = comments
 
     return context
 

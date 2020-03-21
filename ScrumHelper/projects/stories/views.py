@@ -44,7 +44,7 @@ def create_comment(request, story_id):
     if request.method == "POST":
         comment_text = request.POST.get('comment_txt', None)
         try:
-            comment = Comment(text=comment_text, owner=request.user)
+            comment = Comment(text=comment_text, owner=request.user, owner_usr=request.user.username)
             comment.save()
 
             story = UserStory.objects.get(pk=story_id)
