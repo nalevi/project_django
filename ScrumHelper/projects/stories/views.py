@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .models import UserStory
 from .services import get_story_details, get_story_object
 
-from projects.forms import CreateStoryForm
+from projects.forms import CreateStoryForm, CommentForm
 from projects.models import Project
+from projects.comments.models import Comment
 
 from users.models import Profile
 
@@ -37,3 +38,26 @@ def story_edit(request, story_id):
     else:
         form = CreateStoryForm(instance=story)
     return render(request, 'stories/story_edit.html', {'form': form})
+
+
+def create_comment(request, story_id):
+    if request.method == "POST":
+        comment_text = request.POST.get('comment_txt', None)
+        try:
+            comment = Comment(text=comment_text, owner=request.user)
+            comment.save()
+
+            story = UserStory.objects.get(pk=story_id)
+            story.comment.add(comment)
+            story.save()
+            return redirect('projects:stories:detail', story_id=story.id )
+        except Exception:
+            return redirect('projects:stories:detail', story_id=story.id )
+    else:
+        return render(request, 'stories/story_edit.html', {'form': form})
+
+def get_story_comments(request, story_id):
+    return
+
+def delete_comment(request):
+    return

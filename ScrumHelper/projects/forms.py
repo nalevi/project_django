@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Project
 from projects.stories.models import UserStory
+from projects.comments.models import Comment
 
 class CreateProjectForm(ModelForm):
     class Meta:
@@ -30,3 +31,8 @@ class CreateStoryForm(ModelForm):
             'project_code': _('Project\'s code'),
         }
         
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']

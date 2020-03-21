@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'projects.tasks.apps.TasksConfig',
     'projects.epics.apps.EpicsConfig',
     'projects.issues.apps.IssuesConfig',
+    'projects.comments.apps.CommentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,8 +135,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "../static")
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "../users/static")
+    os.path.join(BASE_DIR, "static")
 ]
 
 LOGIN_REDIRECT_URL = "users:index"
