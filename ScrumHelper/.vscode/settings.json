@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Dr. Nagy László\\envs\\scrumhelper\\Scripts\\python.exe",
+    "python.pythonPath": "/home/levi/anaconda3/bin/python",
 
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django"

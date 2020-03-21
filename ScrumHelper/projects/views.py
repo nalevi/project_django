@@ -1,12 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 from .models import Project
 from .forms import CreateProjectForm
 
 def index(request):
     projects_list = Project.objects.all()
+    paginator = Paginator(projects_list, 5)
+
+    page_number = request.GET.get('page',1)
+    projects = paginator.get_page(page_number)
+
     context = {
         'project_list': projects_list,
+        'projects': projects,
     }
     return render(request, 'projects/index.html', context)
 

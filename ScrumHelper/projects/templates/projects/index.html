@@ -8,13 +8,40 @@
 {% endblock %}
 
 {% block content %}
-    {% if project_list %}
-        <ul>
-        {% for proj in project_list %}
-            <li>{{ proj.name }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no available projects.</p>
-    {% endif %}
+    <div class="container">
+        {% if projects %}
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Projects</h4></li>
+            {% for proj in projects %}
+                <li class="collection-item">{{ proj.name }}<a href="{% url 'projects:detail' proj.id %}" class="secondary-content"><i class="material-icons">send</i></a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no available projects.</p>
+        {% endif %}
+
+        {% if projects.has_other_pages %}
+            <ul class="pagination">
+                {% if projects.has_previous %}
+                    <li class="waves-effect"><a href="?page={{ projects.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+                {% else %}
+                    <li class="disabled"><i class="material-icons">chevron_left</i></a></li>
+                {% endif %}
+
+                {% for i in projects.paginator.page_range %}
+                    {% if projects.number == i %}
+                        <li class="active">{{ i }}</a></li>
+                    {% else %}
+                        <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if projects.has_next %}
+                    <li class="waves-effect"><a href="?page={{ projects.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+                {% else %}
+                    <li class="disabled"><span><i class="material-icons">chevron_right</i></span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
 {% endblock %}
