@@ -39,7 +39,7 @@
             <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none"><i class="material-icons left">account_circle</i>Profile</a></li>
             <li><a href="#!">Timesheet</a></li>
             <li class="divider"></li>
-            <li><a href="#!">My open issues</a></li>
+            <li><a href="{% url 'users:detail' user.id %}">My open issues</a></li>
         </ul>
         {% endif %}
         {# Navigation Menu #}
