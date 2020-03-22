@@ -79,3 +79,8 @@ def get_stories_for_user(user_id):
     
     
     return context
+
+
+def delete_story(story_id):
+    get_object_or_404(UserStory, pk=story_id).delete()
+    return True

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .models import UserStory
-from .services import get_story_details, get_story_object
+from .services import get_story_details, get_story_object, delete_story
 
 from projects.forms import CreateStoryForm, CommentForm
 from projects.models import Project
@@ -43,21 +43,32 @@ def story_edit(request, story_id):
 def create_comment(request, story_id):
     if request.method == "POST":
         comment_text = request.POST.get('comment_txt', None)
+        story = UserStory.objects.get(pk=story_id)
+
         try:
-            comment = Comment(text=comment_text, owner=request.user, owner_usr=request.user.username)
+            comment = Comment(text=comment_text, owner=request.user)
             comment.save()
 
-            story = UserStory.objects.get(pk=story_id)
             story.comment.add(comment)
             story.save()
             return redirect('projects:stories:detail', story_id=story.id )
         except Exception:
-            return redirect('projects:stories:detail', story_id=story.id )
+            raise Http404
     else:
         return render(request, 'stories/story_edit.html', {'form': form})
 
-def get_story_comments(request, story_id):
-    return
 
-def delete_comment(request):
-    return
+def delete_comment(request, story_id,comment_id):    
+    story = get_story_object(story_id)
+    try:
+        Comment.objects.get(pk=comment_id).delete()
+    except Exception:
+        raise Http404
+
+    return redirect('projects:stories:detail', story_id=story_id )
+
+def delete(request, story_id):
+    success = delete_story(story_id=story_id)
+
+    if success:
+        return redirect('users:detail', user_id=request.user.id)

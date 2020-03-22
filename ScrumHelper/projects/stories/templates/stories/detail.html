@@ -1,6 +1,8 @@
 {% extends 'ScrumHelper/base.html' %}
 {% load static %}
 
+{% block title %} Stories {% endblock %}
+
 {% block navbar_create %}
 <!--<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>-->
 <li><a href="{% url 'projects:stories:story_new' %}" class="btn center">Create story</a></li>
@@ -16,7 +18,7 @@
         <ul>
           <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:stories:story_edit' story.id %}" data-position="top" data-tooltip="Edit story">
             <i class="material-icons">create</i></a></li>
-          <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Delete story"><i class="material-icons">cancel</i></a></li>
+          <li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story"><i class="material-icons">cancel</i></a></li>
           <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
         </ul>
       </div>
@@ -69,6 +71,9 @@
             <tr>
               <td>
                 {{ comment.text }}
+              </td>
+              <td>
+                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}" class="btn-floating red" method="POST"><i class="material-icons">cancel</i></a>
               </td>
             </tr>
           {% endfor %}
