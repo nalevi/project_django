@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Project
 from projects.stories.models import UserStory
 from projects.comments.models import Comment
+from projects.epics.models import Epic
 
 class CreateProjectForm(ModelForm):
     class Meta:
@@ -36,3 +37,16 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['text']
+
+
+
+class CreateEpicForm(ModelForm):
+
+    project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
+    class Meta:
+        model = Epic
+        fields = ['name', 'project_code',
+                  'description']
+        labels = {
+            'project_code': _('Project\'s code'),
+        }

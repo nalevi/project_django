@@ -12,7 +12,6 @@ class Epic(models.Model):
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     modified_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     owner = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="epic_owner")
-    assignee = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="epic_assignee", default="Unkown")
     description = models.CharField(max_length=250, default="Description")
 
 

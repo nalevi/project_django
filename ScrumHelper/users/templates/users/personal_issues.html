@@ -35,7 +35,26 @@
             </div>
         {% endif %}
 
-        
+        {% if epic_owner %}
+            <div class="section">
+                <h5>My epics</h5>
+            </div>
+            <div class="divider"></div>
+
+            <div class="section">
+                <ul class="collection">                   
+                    {% for e in epic_owner %}
+                        <li class="collection-item avatar">
+                            <i class="material-icons circle purple">crop_din</i>
+                            <span class="title">{{ e.name }}</span>
+                            <p>{{ e.project_code }}</p>
+                            <a href="{% url 'projects:epics:detail' e.id %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+                        </li>
+                    {% endfor %}
+                    
+                </ul>
+            </div>
+        {% endif %}
 
     </div>
 {% endblock %}

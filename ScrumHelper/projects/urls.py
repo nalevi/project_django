@@ -9,4 +9,5 @@ urlpatterns = [
     path('new/',views.project_new, name='project_new'),
     path('<int:project_id>/', views.detail, name='detail'), 
     path('stories/', include('projects.stories.urls', namespace='stories')),
+    path('epics/',include('projects.epics.urls', namespace='epics')),
 ]

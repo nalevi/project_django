@@ -24,7 +24,7 @@
       </div>
 
     <div class="section">
-        <p>{{ story.name }}</p>
+        <h4>{{ story.name }}</h4>
     </div>
     <div class="divider"></div>
     <div class="section">
@@ -36,6 +36,9 @@
     </div>
     <div class="section">
         <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.id %}">{{ assignee.user }}</a> {% endif %} </p>
+    </div><div class="divider"></div>
+    <div class="section">
+        <p>Epic link: {% if epic %}<a href="{% url 'projects:epics:detail' epic.id %}">{{ epic.name }}</a> {% endif %} </p>
     </div>
     <div class="divider"></div>
     <div class="section">
@@ -64,11 +67,9 @@
           <tbody>
           {% for comment in comments %}
             <tr>
-              <td><a href="{% url 'users:detail' comment.owner.id %}">{{ comment.owner.username }}</a> (
+              <td><a href="{% url 'users:detail' comment.owner.id %}">{{ comment.owner.username }}</a> <br>(
                 {{ comment.created_date }}):
               </td>
-            </tr>
-            <tr>
               <td>
                 {{ comment.text }}
               </td>
