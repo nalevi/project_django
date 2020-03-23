@@ -13,7 +13,7 @@ def detail(request, epic_id):
     context = get_epic_details(epic_id)
     return render(request, 'stories/detail.html', context)
 
-def story_new(request):
+def epic_new(request):
     if request.method == "POST":
         form = CreateEpicForm(request.POST)
         if form.is_valid():
@@ -26,7 +26,7 @@ def story_new(request):
     return render(request, 'epics/epic_edit.html', {'form': form})
 
 
-def story_edit(request, epic_id):
+def epic_edit(request, epic_id):
     epic = get_epic_object(epic_id)
     if request.method == "POST":
         form = CreateEpicForm(request.POST, instance=epic)

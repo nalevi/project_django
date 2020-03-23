@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator
 
 from .models import Project
 from .forms import CreateProjectForm
+from .services import get_issues_for_project, delete_project
 
 def index(request):
     projects_list = Project.objects.all()
@@ -18,8 +19,12 @@ def index(request):
     return render(request, 'projects/index.html', context)
 
 def detail(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    return render(request, 'projects/details.html', {'project': project})
+    try:
+        context = get_issues_for_project(project_id)
+    except Http404:
+        return render(request, 'projects/details.html')
+
+    return render(request, 'projects/details.html', context)
 
 
 def project_new(request):
@@ -33,4 +38,23 @@ def project_new(request):
     else:
         form = CreateProjectForm()
     return render(request, 'projects/project_edit.html', {'form': form})
+
+def project_edit(request, project_id):
+    proj = get_object_or_404(Project, pk=project_id)
+    if request.method == "POST":
+        form = CreateProjectForm(request.POST, instance=proj)
+        if form.is_valid():
+            proj = form.save(commit=False)
+            proj.save()
+            return redirect('projects:detail', project_id=proj.id )
+    else:
+        form = CreateProjectForm(instance=proj)
+    return render(request, 'projects/project_edit.html', {'form': form})
+
+def delete(request, project_id):
+    success = delete_project(project_id=project_id)
+
+    if success:
+        return redirect('projects:index')
+
 

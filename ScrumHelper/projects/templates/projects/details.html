@@ -3,3 +3,104 @@
 
 {% block title %} Projects {% endblock %}
 
+{% block head_css_section %}
+    <link href="{% static '/css/scrollable_table.css' %}"
+    rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block navbar_create %}
+    <li><a href="{% url 'projects:project_new' %}" class="btn">Create project</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large green">
+        <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:project_edit' project.id %}" data-position="top" data-tooltip="Edit project">
+                <i class="material-icons">create</i></a>
+            </li>
+            <li><a class="btn-floating red tooltipped" href="{% url 'projects:delete' project.id %}" data-position="top" data-tooltip="Delete project"><i class="material-icons">cancel</i></a></li>
+            <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
+            <li><a class="btn-floating purple tooltipped" data-position="top" data-tooltip="Create epic" href="{% url 'projects:epics:epic_new' %}"><i class="material-icons">crop_din</i></a></li>
+            <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Create issue" href="#!"><i class="material-icons">priority_high</i></a></li>
+            <li><a class="btn-floating orange tooltipped" data-position="top" data-tooltip="Attach documentation" href="#!"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <table class="striped">
+            <thead>
+                <th>
+                    <tr>
+                        <td>
+                            <h4>Project details</h4>
+                        </td>
+                    </tr>
+                </th>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <h6>Name:</h6> {{ project.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Code:</h6> {{ project.code }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Owner:</h6> <a href="{% url 'users:detail' project.project_owner.id %}">{{ project.project_owner.username }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Created date:</h6> {{ project.created_date }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Release:</h6> {{ project.release }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Documentation:</h6> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+        <table class="bordered scrollable">
+            <thead  class="scrollable">
+                <th>
+                    <tr>
+                        <td>
+                            <h4>Issues, epics, stories, tasks</h4>
+                        </td>
+                    </tr>
+                </th>
+            </thead>
+            <tbody  class="scrollable">
+                {% for s in story_list %}
+                <tr>
+                    <td>                
+                        <a class="avatar">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ s.name }} ({{ s.project_code }})</span>
+                            <a href="{% url 'projects:stories:detail' s.id %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+                        </a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

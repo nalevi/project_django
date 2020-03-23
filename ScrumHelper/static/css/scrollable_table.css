@@ -1,0 +1,16 @@
+tbody.scrollable {
+    display:block;
+    height:450px;
+    overflow:auto;
+    }
+thead.scrollable, tbody.scrollable tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+    }
+thead.scrollable{
+    width: calc( 100% - 1em )
+    }
+table.scrollable{
+    width:100%;
+    }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=40%, initial-scale=1">
@@ -55,6 +55,13 @@
             }
         </style>
     </head>
+-->
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Login {% endblock %}
+
+{% block login_form %}
     {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -67,7 +74,6 @@
         <p>Please login to see this page.</p>
         {% endif %}
     {% endif %}
-
     <form method="post" action="{% url 'login:login' %}" class="login-form">
         {% csrf_token %}
 
@@ -80,14 +86,15 @@
             <b>{{ form.password }}</b>
             
                 
-            <button type="submit">Login</button>
+            <button type="submit" class="btn">Login</button>
             <input type="hidden" name="next" value="{{ next }}">
             <!--
             <label>
             <input type="checkbox" checked="checked" name="remember"> Remember me
             </label>
             -->
+        
+            <span><a href="#!">Don't have an account? Register one!</a></span>
         </div>
-        <span class="psw"><a href="{% url 'login:password_reset' %}">Lost password?</a></span>
     </form>
-</html>
+{% endblock %}

@@ -43,20 +43,27 @@
         </ul>
         {% endif %}
         {# Navigation Menu #}
-        {% if user.is_authenticated %}
+        
         <nav>
             <div class="nav-wrapper">
-              <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
-              <ul id="nav-mobile" class="right hide-on-med-and-down">
-                {% block navbar_create %}{% endblock %}
-                <li><a href="#!">Kanban board</a></li>
-                <li><a href="{% url 'projects:index' %}">Projects</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="{% url 'login:logout' %}" method="POST" action="{% url 'login:logout' %}">Logout</a></li>
-              </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'users:index' %}" class="brand-logo left">ScrumHelper</a>
+                    
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        {% block navbar_create %}{% endblock %}
+                        <li><a href="#!">Kanban board</a></li>
+                        <li><a href="{% url 'projects:index' %}">Projects</a></li>
+                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account <i class="material-icons right">arrow_drop_down</i></a></li>
+                        <li><a href="{% url 'login:logout' %}" method="POST" action="{% url 'login:logout' %}">Logout</a></li>
+                    </ul>
+                {% else %}
+                    <a href="#!" class="brand-logo left">ScrumHelper</a>
+                {% endif %}
             </div>
         </nav>
-        {% endif %}
+        
+        {% block login_form %}
+        {% endblock %}
 
 
         {% block modal %}
@@ -64,16 +71,17 @@
 
         {# The Document Body #}
         {% if user.is_authenticated %}
-        <div id="site-wrapper">
-            {% block content %}
-                Hiba hiba hátán!
-            {% endblock content %}
-        </div>
+            <div id="site-wrapper">
+                {% block content %}
+                    Hiba hiba hátán!
+                {% endblock content %}
+            </div>
         {% else %}
-        <div id="site-wrapper">
-            <p> You are not logged in! </p>
-        </div> 
+            <div class="container">
+                <p> Please login to use ScrumHelper! </p>
+            </div> 
         {% endif %}
+
         {# The Footer #}
         <footer>
             <div class="container">

@@ -20,6 +20,7 @@
             <i class="material-icons">create</i></a></li>
           <li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story"><i class="material-icons">cancel</i></a></li>
           <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
+          <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
         </ul>
       </div>
 
@@ -74,7 +75,7 @@
                 {{ comment.text }}
               </td>
               <td>
-                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}" class="btn-floating red" method="POST"><i class="material-icons">cancel</i></a>
+                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}" class="btn-floating red" method="POST"><i class="material-icons">close</i></a>
               </td>
             </tr>
           {% endfor %}

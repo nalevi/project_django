@@ -22,6 +22,6 @@ class UserStory(models.Model):
     state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)
     epic = models.ForeignKey("epics.Epic", on_delete=models.CASCADE, related_name="userstory_epic", null=True)
     acceptance = models.CharField(max_length=50, null=True)
-    comment = models.ManyToManyField("comments.Comment", null=True, related_name="userstory_comment")
+    comment = models.ManyToManyField("comments.Comment", related_name="userstory_comment")
     #work_log =
     #sprint =

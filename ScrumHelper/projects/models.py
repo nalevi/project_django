@@ -12,7 +12,7 @@ class Project(models.Model):
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     modified_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     project_owner = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="project_owner")
-    members = models.ManyToManyField("users.Profile", related_name="members")
+    release = models.CharField(max_length=10, null=True)
     #documents = models.FileField()
 
     def __str__(self):
