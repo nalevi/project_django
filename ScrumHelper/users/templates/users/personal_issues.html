@@ -10,28 +10,30 @@
             <div class="divider"></div>
 
             <div class="section">
-                <ul class="collection">
+                <div class="collection">
                     
                     {% for s in assigned_to %}
-                        <li class="collection-item avatar">
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' s.id %}" >
                             <i class="material-icons circle green">assessment</i>
                             <span class="title">{{ s.name }}</span>
                             <p>{{ s.project_code }}</p>
-                            <a href="{% url 'projects:stories:detail' s.id %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
-                        </li>
+                            <span class="new badge red" data-badge-caption="">{{ s.state }}</span>
+                            <a class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+                        </a>
                     {% endfor %}
                     
                     
                     {% for s in owner_of %}
-                        <li class="collection-item avatar">
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' s.id %}">
                             <i class="material-icons circle green">assessment</i>
                             <span class="title">{{ s.name }}</span>
                             <p>{{ s.project_code }}</p>
-                            <a href="{% url 'projects:stories:detail' s.id %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
-                        </li>
+                            <span class="new badge red" data-badge-caption="">{{ s.state }}</span>
+                            <a class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+                        </a>
                     {% endfor %}
                     
-                </ul>
+                    </div>
             </div>
         {% endif %}
 

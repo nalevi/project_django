@@ -146,3 +146,7 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'

@@ -18,13 +18,14 @@ def get_issues_for_project(project_id):
     #task_list = get_list_or_404(Task, project_code=project.code)
     #epic_list = get_list_or_404(Epic, project_code=project.code)
     #issue_list = get_list_or_404(Issue, project_code=project.code)
-
+    documents_list = project.documents.all()
     context = {
         'project': project,
         'story_list': story_list,
         #'task_list': task_list,
         #'epic_list': epic_list,
         #'issue_list': issue_list
+        'documents_list': documents_list,
     }
 
 

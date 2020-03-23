@@ -1,0 +1,4 @@
+f1, max, inputok: 10 2 4
+f2, sum, inputok: 2 4 5
+f3, prod, inputok: 6 5
+
