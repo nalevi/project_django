@@ -78,7 +78,7 @@
             </div>
         {% else %}
             <div class="container">
-                <p> Please login to use ScrumHelper! </p>
+                <p> Please <a href="{% url 'login:login' %}">login</a> to use ScrumHelper! </p>
             </div> 
         {% endif %}
 
