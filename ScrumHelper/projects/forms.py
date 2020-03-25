@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 from .models import Project
 from projects.stories.models import UserStory
@@ -24,10 +25,12 @@ class CreateProjectForm(ModelForm):
 class CreateStoryForm(ModelForm):
 
     project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
+    epic = forms.ModelChoiceField(widget=forms.Select, queryset=Epic.objects.all(), required=False)
+    assignee = forms.ModelChoiceField(widget=forms.Select, queryset=User.objects.all(), required=False)
     class Meta:
         model = UserStory
         fields = ['name', 'project_code',
-                  'assignee', 'description', 'importance']
+                  'assignee', 'description', 'importance', 'epic']
         labels = {
             'project_code': _('Project\'s code'),
         }
