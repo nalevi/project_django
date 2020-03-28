@@ -8,6 +8,7 @@ from users.models import Profile
 from projects.epics.models import Epic
 from projects.comments.models import Comment
 
+
 from .models import UserStory
 
 def get_story_object(story_id):
@@ -69,18 +70,35 @@ def get_stories_for_user(user_id):
         assigned_user_stories = UserStory.objects.filter(assignee=user_id)
         context['assigned_to'] = assigned_user_stories
     except Exception:
-        pass
+        pass    
+    
+    context['profile'] = Profile.objects.get(pk=user_id)
 
-    try:
-        owned_user_stories =  UserStory.objects.filter(owner=user_id).exclude(assignee=user_id)
-        context['owner_of'] = owned_user_stories
-    except Exception:
-        pass
-    
-    
     return context
 
 
 def delete_story(story_id):
     get_object_or_404(UserStory, pk=story_id).delete()
     return True
+
+def change_story_state(story_id):
+    story = get_object_or_404(UserStory, pk=story_id)
+
+    if story.state == 'OPEN':
+        story.state = 'IN PROGRESS'
+    elif story.state == 'IN PROGRESS':
+        story.state = 'TESTING'
+    elif story.state == 'TESTING':
+        story.state = 'DONE'
+    elif story.state == 'DONE':
+        story.state = 'CLOSED'
+    elif story.state == 'CLOSED':
+        story.state = 'OPEN'
+
+    try:
+        story.save()
+        return True
+    except Exception:
+        return False
+    
+    return False

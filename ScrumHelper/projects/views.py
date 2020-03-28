@@ -20,10 +20,9 @@ def index(request):
     return render(request, 'projects/index.html', context)
 
 def detail(request, project_id):
-    try:
-        context = get_issues_for_project(project_id)
-    except Http404:
-        return render(request, 'projects/details.html')
+   
+    context = get_issues_for_project(project_id)
+    
 
     return render(request, 'projects/details.html', context)
 

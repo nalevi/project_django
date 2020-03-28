@@ -3,9 +3,9 @@
 
 {% block content %}
     <div class="container">
-        {% if assigned_to or owner_of %}
+        {% if assigned_to %}
             <div class="section">
-                <h5>My stories</h5>
+                <h5>{{ profile }}'s stories</h5>
             </div>
             <div class="divider"></div>
 
@@ -21,39 +21,27 @@
                         </a>
                     {% endfor %}
                     
-                    
-                    {% for s in owner_of %}
-                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' s.id %}">
-                            <i class="material-icons circle green">assessment</i>
-                            <span class="title">{{ s.name }}</span>
-                            <p>{{ s.project_code }}</p>
-                            <span class="new badge red" data-badge-caption="">{{ s.state }}</span>
-                            <a class="secondary-content"><i class="material-icons">arrow_forward</i></a>
-                        </a>
-                    {% endfor %}
-                    
                     </div>
             </div>
         {% endif %}
 
         {% if epic_owner %}
             <div class="section">
-                <h5>My epics</h5>
+                <h5>{{ profile }}'s epics</h5>
             </div>
             <div class="divider"></div>
 
             <div class="section">
-                <ul class="collection">                   
+                <div class="collection">                   
                     {% for e in epic_owner %}
-                        <li class="collection-item avatar">
+                        <a class="collection-item avatar" href="{% url 'projects:epics:detail' e.id %}">
                             <i class="material-icons circle purple">crop_din</i>
                             <span class="title">{{ e.name }}</span>
                             <p>{{ e.project_code }}</p>
-                            <a href="{% url 'projects:epics:detail' e.id %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
-                        </li>
+                        </a>
                     {% endfor %}
                     
-                </ul>
+                </div>
             </div>
         {% endif %}
 

@@ -14,7 +14,7 @@ class Project(models.Model):
     code = models.CharField(max_length=6, unique=True)
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     modified_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
-    project_owner = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="project_owner")
+    project_owner = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="project_owner",null=True)
     release = models.CharField(max_length=10, null=True)
     documents = models.ManyToManyField("projects.Documents")
 

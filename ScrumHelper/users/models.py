@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from worklogs.models import Worklog
+
 class Profile(models.Model):
     """
         A users profile. This extends the built-in User object.
@@ -10,6 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=30, blank=True)
     #avatar = models.ImageField(upload_to='avatars')
+    work_log = models.ManyToManyField("worklogs.Worklog")
 
     def __str__(self):
         return self.user.username

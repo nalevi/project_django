@@ -11,7 +11,7 @@ from users.models import Profile
 
 def detail(request, epic_id):
     context = get_epic_details(epic_id)
-    return render(request, 'stories/detail.html', context)
+    return render(request, 'epics/detail.html', context)
 
 def epic_new(request):
     if request.method == "POST":

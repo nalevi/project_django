@@ -25,7 +25,7 @@ SECRET_KEY = 'rj0pow_u2=ai1-^d945+5eznmkh4s)r1_5mf^jx*(y#w!d3h7x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost', 'testserver']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'projects.epics.apps.EpicsConfig',
     'projects.issues.apps.IssuesConfig',
     'projects.comments.apps.CommentsConfig',
+    'worklogs.apps.WorklogsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

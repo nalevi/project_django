@@ -18,40 +18,53 @@
         <ul>
           <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:stories:story_edit' story.id %}" data-position="top" data-tooltip="Edit story">
             <i class="material-icons">create</i></a></li>
-          <li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story"><i class="material-icons">cancel</i></a></li>
+          <li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story" onclick="M.toast({html: 'Story deleted'})"><i class="material-icons">cancel</i></a></li>
           <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
           <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
         </ul>
       </div>
 
-    <div class="section">
-        <h4>{{ story.name }}</h4>
+    <div class="row">
+      <h4>{{ story.name }}</h4>
+      <a class="btn-small red right" href="{% url 'projects:stories:change_state' story.id %}">
+        {% if story.state == 'OPEN' %}
+          IN PROGRESS
+        {% elif story.state == 'IN PROGRESS' %}
+          TESTING
+        {% elif story.state == 'TESTING' %}
+          DONE
+        {% elif story.state == 'DONE' %}
+          CLOSE
+        {% elif story.state == 'CLOSED' %}
+          REOPEN
+        {% endif %}
+      </a>
     </div>
-    <div class="divider"></div>
-    <div class="section">
+
+    <div class="row">
         <p>Project: <a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
     </div>
     <div class="divider"></div>
-    <div class="section">
+    <div class="row">
         <p>Owner: <a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.user.username }}</a></p>
     </div>
-    <div class="section">
+    <div class="row">
         <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.id %}">{{ assignee.user }}</a> {% endif %} </p>
     </div><div class="divider"></div>
-    <div class="section">
+    <div class="row">
         <p>Epic link: {% if epic %}<a href="{% url 'projects:epics:detail' epic.id %}">{{ epic.name }}</a> {% endif %} </p>
     </div>
     <div class="divider"></div>
-    <div class="section">
+    <div class="row">
       <p>Acceptance criteria: {{ story.acceptance }}</p>
     </div>
     <div class="divider"></div>
-    <div class="section">
+    <div class="row">
       <p>Descripton: {{ story.description }}</p>
     </div>
 
     <div class="divider"></div>
-    <div class="section">
+    <div class="row">
       <h4>Comments</h4>
 
       <label>Submit a comment:</label>

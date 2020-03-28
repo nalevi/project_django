@@ -32,7 +32,7 @@ def get_epic_details(epic_id):
     stories = UserStory.objects.filter(epic=epic)
     tasks = Task.objects.filter(epic=epic)
     proj = get_object_or_404(Project, code=epic.project_code.code)
-    owner_profile = get_object_or_404(Profile, pk=story.owner.id)
+    owner_profile = get_object_or_404(Profile, pk=epic.owner.id)
     context = {
         'epic': epic,
         'stories': stories,

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .models import UserStory
-from .services import get_story_details, get_story_object, delete_story
+from .services import get_story_details, get_story_object, delete_story, change_story_state
 
 from projects.forms import CreateStoryForm, CommentForm
 from projects.models import Project
@@ -71,4 +71,10 @@ def delete(request, story_id):
     success = delete_story(story_id=story_id)
 
     if success:
-        return redirect('users:detail', user_id=request.user.id)
+        return redirect('users:index')
+
+def change_state(request, story_id):
+    succes = change_story_state(story_id)
+
+    return redirect('projects:stories:detail', story_id=story_id)
+    

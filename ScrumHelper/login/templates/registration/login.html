@@ -74,6 +74,7 @@
         <p>Please login to see this page.</p>
         {% endif %}
     {% endif %}
+
     <form method="post" action="{% url 'login:login' %}" class="login-form">
         {% csrf_token %}
 
@@ -97,4 +98,7 @@
             <span><a href="#!">Don't have an account? Register one!</a></span>
         </div>
     </form>
+
+    {% block login_warn %}
+    {% endblock %}
 {% endblock %}

@@ -5,6 +5,7 @@ from users.models import Profile
 from projects.epics.models import Epic
 from projects.contants import IMPORTANCE_CHOICES, STATE_CHOICES 
 from projects.comments.models import Comment
+from worklogs.models import Worklog
 
 class UserStory(models.Model):
     '''
@@ -23,5 +24,7 @@ class UserStory(models.Model):
     epic = models.ForeignKey("epics.Epic", on_delete=models.CASCADE, related_name="userstory_epic", null=True)
     acceptance = models.CharField(max_length=50, null=True)
     comment = models.ManyToManyField("comments.Comment", related_name="userstory_comment")
-    #work_log =
-    #sprint =
+    work_log = models.ManyToManyField("worklogs.Worklog")
+
+    def __str__(self):
+        return self.name
