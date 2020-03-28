@@ -27,13 +27,6 @@ class CreateStoryForm(ModelForm):
     project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
     epic = forms.ModelChoiceField(widget=forms.Select, queryset=Epic.objects.all(), required=False)
     assignee = forms.ModelChoiceField(widget=forms.Select, queryset=User.objects.all(), required=False)
-
-    '''
-    def __init__(self, project_code=None, epic=None,assignee=None, *args, **kwargs):
-        super(CreateStoryForm, self).__init__(*args, **kwargs)
-        if project_code is not None:
-            self.fields["project_code"] = forms.ChoiceField(choices=project_code, widget=forms.Select)
-    '''
     
 
     class Meta:
