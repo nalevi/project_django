@@ -26,6 +26,8 @@
                 <link href="{% static '/css/materialize.css' %}"
                       rel="stylesheet" media="screen">
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <link rel="stylesheet" type="text/css" 
+                    href="{% static 'admin/css/widgets.css' %}"/>
             {% endblock head_css_site %}
             {% block head_css_section %}{% endblock head_css_section %}
             {% block head_css_page %}{% endblock head_css_page %}
@@ -36,10 +38,10 @@
         <!-- Dropdown Structure -->
         {% if user.is_authenticated %}
         <ul id="dropdown1" class="dropdown-content">
-            <li><a href="{% url 'users:detail'  user.id %}" class="p-r-none"><i class="material-icons left">account_circle</i>Profile</a></li>
-            <li><a href="#!">Timesheet</a></li>
+            <li><a href="{% url 'users:detail'  user.username %}" class="p-r-none"><i class="material-icons left">account_circle</i>Profile</a></li>
+            <li><a href="{% url 'users:get_users_worklogs' user.username %}">Timesheet</a></li>
             <li class="divider"></li>
-            <li><a href="{% url 'users:detail' user.id %}">My open issues</a></li>
+            <li><a href="{% url 'users:detail' user.username %}">My open issues</a></li>
         </ul>
         {% endif %}
         {# Navigation Menu #}
@@ -105,6 +107,22 @@
             <script src="{% static '/js/dropdown.js' %}"></script>
             <script src="{% static '/js/modal.js' %}"></script>
             <script src="{% static '/js/actionbutton.js' %}"></script>
+            <script type="text/javascript" 
+                src="/admin/jsi18n/"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/core.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/jquery.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/jquery.init.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/actions.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/calendar.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}

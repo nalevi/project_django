@@ -3,11 +3,15 @@ from django import forms
 from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.contrib.admin import widgets                                       
 
 from .models import Project
 from projects.stories.models import UserStory
 from projects.comments.models import Comment
 from projects.epics.models import Epic
+
+from worklogs.models import Worklog
+
 
 class CreateProjectForm(ModelForm):
     class Meta:
@@ -57,3 +61,14 @@ class CreateEpicForm(ModelForm):
         labels = {
             'project_code': _('Project\'s code'),
         }
+
+
+class CreateWorklogform(ModelForm):
+
+    class Meta:
+        model = Worklog
+        fields = ['log_date', 'logged_hour']
+
+    def __init__(self, *args, **kwargs):
+        super(CreateWorklogform, self).__init__(*args, **kwargs)
+        self.fields['log_date'].widget = widgets.AdminDateWidget()

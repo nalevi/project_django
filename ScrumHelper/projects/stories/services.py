@@ -29,6 +29,7 @@ def get_story_details(story_id):
              - assignee (optional)
              - epic (optional)
              - comments
+             - work_logs
     '''
     story = get_object_or_404(UserStory, pk=story_id)
     proj = get_object_or_404(Project, code=story.project_code.code)
@@ -52,7 +53,12 @@ def get_story_details(story_id):
         pass
     
     comments = story.comment.all()
-    context['comments'] = comments
+    if comments:
+        context['comments'] = comments
+
+    logs = story.work_log.all()
+    if logs:
+        context['worklogs'] = logs
 
     return context
 

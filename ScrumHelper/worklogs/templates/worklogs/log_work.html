@@ -1,0 +1,31 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Log work {% endblock %}
+
+{%block content%}
+<div class="container">
+    <h3>Add worklog</h3>
+    <div class="col s12 m10 offset-m1 l6 offset-l3">
+        <form method="POST" class="col s12 m8 offset-m2 l6 offset-l3">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="row">
+                {{ form.log_date.errors }}
+                <label for="{{ form.log_date.id_for_label }}">Worked date:</label>
+                {{ form.log_date }}
+            </div>
+            <div class="row">
+                {{ form.logged_hour.errors }}
+                <label for="{{ form.logged_hour.id_for_label }}">Work hour:</label>
+                {{ form.logged_hour }}
+            </div>
+            <button type="submit" class="save btn">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer_javascript_page %}
+    <script src="{% static '/js/datepicker.js' %}"></script>
+{% endblock footer_javascript_page %}

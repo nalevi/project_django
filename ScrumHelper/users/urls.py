@@ -6,5 +6,7 @@ app_name = "users"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<int:user_id>/', views.detail, name='detail')
+    path('<username>/', views.detail, name='detail'),
+    path('<username>/worklogs/', views.get_users_worklogs, name='get_users_worklogs'),
+    path('delete_worklog/<int:log_id>', views.delete_worklog, name='delete_worklog'),
 ]

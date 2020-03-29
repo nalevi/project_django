@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
+from django.contrib.auth.decorators import permission_required
 
 from .models import UserStory
 from .services import get_story_details, get_story_object, delete_story, change_story_state
 
-from projects.forms import CreateStoryForm, CommentForm
+from projects.forms import CreateStoryForm, CommentForm, CreateWorklogform
 from projects.models import Project
 from projects.comments.models import Comment
 
@@ -67,6 +68,7 @@ def delete_comment(request, story_id,comment_id):
 
     return redirect('projects:stories:detail', story_id=story_id )
 
+
 def delete(request, story_id):
     success = delete_story(story_id=story_id)
 
@@ -78,3 +80,26 @@ def change_state(request, story_id):
 
     return redirect('projects:stories:detail', story_id=story_id)
     
+
+def add_worklog(request, story_id):
+    if request.method == "POST":
+        form = CreateWorklogform(request.POST)
+        story = UserStory.objects.get(pk=story_id)
+
+        print(form.fields['log_date'])
+        if form.is_valid():
+            worklog = form.save(commit=False)
+            prof = get_object_or_404(Profile, user_id=request.user.id)
+            worklog.log_user = prof
+
+            
+
+            worklog.save()
+
+            story.work_log.add(worklog)
+            story.save()
+            return redirect('projects:stories:detail', story_id=story.id )
+
+    else:
+        form = CreateWorklogform()
+        return render(request, 'worklogs/log_work.html', {'form': form})

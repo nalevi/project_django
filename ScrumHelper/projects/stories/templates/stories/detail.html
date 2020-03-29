@@ -18,8 +18,8 @@
         <ul>
           <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:stories:story_edit' story.id %}" data-position="top" data-tooltip="Edit story">
             <i class="material-icons">create</i></a></li>
-          <li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story" onclick="M.toast({html: 'Story deleted'})"><i class="material-icons">cancel</i></a></li>
-          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
+          {% if perms.delete_userstory %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story" onclick="M.toast({html: 'Story deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
+          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog" href="{% url 'projects:stories:add_worklog' story.id %}"><i class="material-icons">work</i></a></li>
           <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
         </ul>
       </div>
@@ -46,10 +46,10 @@
     </div>
     <div class="divider"></div>
     <div class="row">
-        <p>Owner: <a href="{% url 'users:detail' owner_profile.id %}">{{ owner_profile.user.username }}</a></p>
+        <p>Owner: <a href="{% url 'users:detail' owner_profile.user.username %}">{{ owner_profile.user.username }}</a></p>
     </div>
     <div class="row">
-        <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.id %}">{{ assignee.user }}</a> {% endif %} </p>
+        <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.user.username %}">{{ assignee.user }}</a> {% endif %} </p>
     </div><div class="divider"></div>
     <div class="row">
         <p>Epic link: {% if epic %}<a href="{% url 'projects:epics:detail' epic.id %}">{{ epic.name }}</a> {% endif %} </p>
@@ -64,6 +64,7 @@
     </div>
 
     <div class="divider"></div>
+    <br><br><br>
     <div class="row">
       <h4>Comments</h4>
 
@@ -75,20 +76,46 @@
         <input type="submit" value="submit" class="btn"/>
       </form>
 
-      <div class="space"></div>
+      
       {% if comments %}
         <table>
           <tbody>
           {% for comment in comments %}
             <tr>
-              <td><a href="{% url 'users:detail' comment.owner.id %}">{{ comment.owner.username }}</a> <br>(
+              <td><a href="{% url 'users:detail' comment.owner.username %}">{{ comment.owner.username }}</a> <br>(
                 {{ comment.created_date }}):
               </td>
               <td>
                 {{ comment.text }}
               </td>
               <td>
-                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}" class="btn-floating red" method="POST"><i class="material-icons">close</i></a>
+                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}"
+                 class="btn-floating red" method="POST">
+                  <i class="material-icons">close</i>
+                 </a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+
+    <br><br><br>
+    <div class="row">
+      <h4>Work logs</h4>
+
+      <div class="space"></div>
+      {% if worklogs %}
+        <table>
+          <tbody>
+          {% for w in worklogs %}
+            <tr>
+              <td><a href="{% url 'users:detail' w.log_user.user.username %}">{{ w.log_user.user.first_name }} {{ w.log_user.user.last_name }} ({{ w.log_user }})</a> <br>(
+                {{ w.log_date|date:'Y-m-d' }}):
+              </td>
+              <td>
+                {{ w.logged_hour }} hours
               </td>
             </tr>
           {% endfor %}
