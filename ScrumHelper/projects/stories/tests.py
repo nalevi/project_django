@@ -60,7 +60,25 @@ class StoryEditFormTest(BaseTest):
 
         story = UserStory.objects.create(name="name",project_code=Project.objects.all()[0],owner=self.user)
 
-        print(Project.objects.all())
+        form_data = {
+            'name':'New',
+            'project_code':Project.objects.all()[0].pk,
+            'assignee': '',
+            'description': 'Description',
+            'importance':'low',
+            'epic': '',
+        }
+        response = self.client.post(reverse('projects:stories:story_edit',  kwargs={'story_id':story.id}), form_data, follow=True)
+        
+        self.assertRedirects(response,reverse('projects:stories:detail', kwargs={'story_id':story.id}), status_code=302, target_status_code=200)
+
+
+    def test_edit_form_invalid_redirect(self):
+        '''
+        Checks if the editing form is invalid
+        '''
+
+        story = UserStory.objects.create(name="name",project_code=Project.objects.all()[0],owner=self.user)
 
         form_data = {
             'name':'New',
@@ -71,4 +89,4 @@ class StoryEditFormTest(BaseTest):
             'epic': '',
         }
         response = self.client.post(reverse('projects:stories:story_edit',  kwargs={'story_id':story.id}), form_data, follow=True)
-        self.assertRedirects(response,reverse('projects:stories:detail', kwargs={'story_id':story.id}), status_code=302, target_status_code=200)
+        self.assertEqual(response.status_code, 200)
