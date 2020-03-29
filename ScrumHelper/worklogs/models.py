@@ -18,7 +18,5 @@ class Worklog(models.Model):
         verbose_name = _("worklog")
         verbose_name_plural = _("worklogs")
 
-    def __str__(self):
-        return self.name
 
 
