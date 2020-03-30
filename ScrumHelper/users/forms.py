@@ -19,6 +19,8 @@ class SelectMontForm(forms.Form):
         'month': _('Display logs this month')
     }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,month=None, *args, **kwargs):
         super(SelectMontForm, self).__init__(*args, **kwargs)
         self.fields['month'].widget = widgets.AdminDateWidget()
+        if month is not None:
+            self.month = month

@@ -1,0 +1,21 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Timesheets {% endblock %}
+
+{%block content%}
+
+<div class="container">
+    <div class="row">
+        <form method="POST" action="{% url 'users:team_worklogs' %}" class="col s6">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="save btn">  
+        </form>
+
+        <a href="{% url 'users:get_users_worklogs' user.username %}" class="btn right">Personal work logs</a>
+    </div>
+
+    <br>
+</div>
+{% endblock %}

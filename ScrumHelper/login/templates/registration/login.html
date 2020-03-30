@@ -79,23 +79,27 @@
         {% csrf_token %}
 
         <div class="container">
-            <label for="uname"><b>{{ form.username.label_tag }}</b></label>
-            <b>{{ form.username }}</b>
-            
-        
-            <label for="psw"><b>{{ form.password.label_tag }}</b></label>
-            <b>{{ form.password }}</b>
-            
+            <div class="row">
+                <div class="col s6 offset-s3">
+                    <label for="uname"><b>{{ form.username.label_tag }}</b></label>
+                    <b>{{ form.username }}</b>
+                    
                 
-            <button type="submit" class="btn">Login</button>
-            <input type="hidden" name="next" value="{{ next }}">
-            <!--
-            <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-            </label>
-            -->
-        
-            <span><a href="#!">Don't have an account? Register one!</a></span>
+                    <label for="psw"><b>{{ form.password.label_tag }}</b></label>
+                    <b>{{ form.password }}</b>
+                    
+                        
+                    <button type="submit" class="btn">Login</button>
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <!--
+                    <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                    -->
+                
+                    <!--<span><a href="#!">Don't have an account? Register one!</a></span>-->
+                </div>
+            </div>
         </div>
     </form>
 

@@ -12,12 +12,15 @@
             {{ form.as_p }}
             <input type="submit" class="save btn">  
         </form>
+
+        <a href="{% url 'users:team_worklogs' %}" class="btn right">Team's work logs</a>
     </div>
 
     <br>
     {% if worklogs %}
         <div class="row">
             <ul class="collection">
+            <li class="collection-header"><h5>{{ worklogs.0.log_date|date:'F' }} </h5></li>
             {% for w in worklogs %}    
                 <li class="collection-item avatar">
                     <span class="title"><i class="material-icons">work</i></span>
