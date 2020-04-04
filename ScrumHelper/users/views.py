@@ -19,6 +19,7 @@ def index(request):
     context = {}
     return render(request, 'users/index.html', context)
 
+
 def detail(request, username):
     user = User.objects.get(username=username)
     profile = Profile.objects.get(user_id=user.id)

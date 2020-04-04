@@ -11,7 +11,7 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     team = models.CharField(max_length=30, blank=True)
-    #avatar = models.ImageField(upload_to='avatars')
+    avatar = models.ImageField(upload_to='avatars', blank=True)
     work_log = models.ManyToManyField("worklogs.Worklog")
 
     def __str__(self):

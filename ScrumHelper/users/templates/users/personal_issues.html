@@ -3,6 +3,34 @@
 
 {% block content %}
     <div class="container">
+        <div class="row">
+        <div class="col s6">
+            <h3> {{ profile.user }}</h3>
+        </div>
+        <div class="col">
+            <img src="{{ user.proflie.avatar.url }}" width="240">
+        </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <label for="first-name">First Name: </label>
+                <p id="first-name">{{ profile.user.first_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <label for="last-name">First Name: </label>
+                <p id="last-name">{{ profile.user.last_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <label for="email">First Name: </label>
+                <p id="email">{{ profile.user.email }}</p>
+            </div>
+        </div>
+        <br><br>
+
         {% if assigned_to %}
             <div class="section">
                 <h5>{{ profile }}'s stories</h5>
