@@ -17,5 +17,31 @@
     </div>
 
     <br>
+    {% if user_workhours %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    User
+                </th>
+                <th>
+                    Work hours
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in user_workhours %}
+                <tr>
+                    <td>
+                        {{ u.0 }}
+                    </td>
+                    <td>
+                        {{ u.1 }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 {% endblock %}

@@ -10,7 +10,7 @@ class Profile(models.Model):
         A users profile. This extends the built-in User object.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=30, blank=True)
+    team = models.CharField(max_length=30, blank=True)
     #avatar = models.ImageField(upload_to='avatars')
     work_log = models.ManyToManyField("worklogs.Worklog")
 
