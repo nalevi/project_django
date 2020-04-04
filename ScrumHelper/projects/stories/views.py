@@ -86,13 +86,10 @@ def add_worklog(request, story_id):
         form = CreateWorklogform(request.POST)
         story = UserStory.objects.get(pk=story_id)
 
-        print(form.fields['log_date'])
         if form.is_valid():
             worklog = form.save(commit=False)
             prof = get_object_or_404(Profile, user_id=request.user.id)
             worklog.log_user = prof
-
-            
 
             worklog.save()
 

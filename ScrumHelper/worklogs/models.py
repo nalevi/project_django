@@ -9,7 +9,7 @@ class Worklog(models.Model):
     '''
     Worklog object's class
     '''
-    log_date = models.DateTimeField(_("log date"), default=timezone.now, auto_now_add=False)
+    log_date = models.DateTimeField(_("log date"), default=timezone.now)
     logged_hour = models.IntegerField(_("logged hours"))
     log_user = models.ForeignKey("users.Profile", verbose_name=_(""), on_delete=models.CASCADE, null=True)
     

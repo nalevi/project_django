@@ -40,8 +40,6 @@ class CreateStoryForm(ModelForm):
         labels = {
             'project_code': _('Project\'s code'),
         }
-        
-   
 
 
 class CommentForm(ModelForm):

@@ -17,6 +17,21 @@
     </div>
 
     <br>
+    {% if daily_worklogs %}
+         <ul class="collection">
+            <li class="collection-header"><h5>Daily worklogs</h5></li>
+            {% for d in daily_worklogs %}    
+                <li class="collection-item avatar">
+                    <span class="title"><i class="material-icons">work</i></span>
+                    <p>{{ d.log_date|date:'Y-m-d' }}: {{ d.logged_hour }} hour</p>
+                    <a class="btn-floating right secondary-content" href="{% url 'users:delete_worklog' d.id %}" method="POST">
+                        <i class="material-icons">delete</i>
+                    </a>
+                </li>
+            {% endfor %}
+    {% endif %}
+    <div class="divider"></div>
+    <br><br><br>
     {% if worklogs %}
         <div class="row">
             <ul class="collection">

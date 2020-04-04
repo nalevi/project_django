@@ -58,7 +58,15 @@
             <h6>Documentation:</h6> 
             <form method="POST" enctype="multipart/form-data" action="{% url 'projects:upload_doc' project.id %}">
                 {% csrf_token %}
-                <input type="file" name="documentation">
+                <div class="file-field input-field row col s6">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file" name="documentation">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
                 <button class="btn-floating circle orange tooltipped" data-tooltip="Attach documentation"  type="submit"><i class="material-icons">attach_file</i></button>
             </form>
             <div class="col s12">

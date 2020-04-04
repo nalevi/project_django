@@ -3,7 +3,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, date
 from django.contrib.auth.models import User, Group
 
 from projects.stories.services import get_stories_for_user
@@ -47,7 +47,9 @@ def get_users_worklogs(request, username):
 
         try:
             worklogs = Worklog.objects.filter(log_date__month=filter_date.month).filter(log_user=user).order_by('log_date')
+            daily_worklogs = worklogs.filter(log_date__day=filter_date.day)
             if worklogs:
+                context['daily_worklogs'] = daily_worklogs
                 context['worklogs'] = worklogs
             else:
                 raise Http404
@@ -63,9 +65,10 @@ def get_users_worklogs(request, username):
     else:
         now_date = timezone.now()
         worklogs = Worklog.objects.filter(log_date__month=now_date.month).filter(log_user=user).order_by('log_date')
-
+        daily_worklogs = worklogs.filter(log_date__day=now_date.day)
         if worklogs:
-                context['worklogs'] = worklogs
+            context['daily_worklogs'] = daily_worklogs
+            context['worklogs'] = worklogs
 
         dateForm = SelectMontForm(month=now_date.month)
 
