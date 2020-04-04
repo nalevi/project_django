@@ -20,13 +20,16 @@ def index(request):
     return render(request, 'users/index.html', context)
 
 def detail(request, username):
-    user_id = User.objects.get(username=username).pk
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(user_id=user.id)
 
-    context = get_stories_for_user(user_id)
+    context = get_stories_for_user(user.id)
 
-    epics = get_epics_for_user(user_id)
+    epics = get_epics_for_user(user.id)
 
     context.update(epics)
+
+    context['profile'] = profile
 
     return render(request, 'users/personal_issues.html',context)
 
@@ -109,7 +112,7 @@ def team_worklogs(request):
         else:
             for u in users:
                 logged_hours = 0
-                if u == request.user:
+                if str(u) == str(request.user):
                     workhours = Worklog.objects.filter(log_date__month=filter_date.month).filter(log_user=u)
                     for hours in workhours:
                         logged_hours += hours.logged_hour
@@ -139,7 +142,8 @@ def team_worklogs(request):
         else:
             for u in users:
                 logged_hours = 0
-                if u == request.user:
+                if str(u) == str(request.user):
+                    print(u)
                     workhours = Worklog.objects.filter(log_date__month=now_date.month).filter(log_user=u)
                     for hours in workhours:
                         logged_hours += hours.logged_hour

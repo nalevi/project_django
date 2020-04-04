@@ -33,7 +33,7 @@
             {% for u in user_workhours %}
                 <tr>
                     <td>
-                        {{ u.0 }}
+                        <a href="{% url 'users:detail' u.0.user.username %}">{{ u.0 }}</a>
                     </td>
                     <td>
                         {{ u.1 }}
