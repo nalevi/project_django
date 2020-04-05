@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 
+from .stories.models import UserStory
+from .tasks.models import Task
+from .issues.models import Issue
 from .models import Project, Documents
 from .forms import CreateProjectForm
 from .services import get_issues_for_project, delete_project
@@ -68,3 +71,43 @@ def upload_doc(request, project_id):
             project.documents.add(doc)
 
     return redirect('projects:detail', project_id=project_id )
+
+
+def kanban_board(request):
+    stories = UserStory.objects.all()
+    tasks = Task.objects.all()
+    issues = Issue.objects.all()
+    
+    
+    open_stories = stories.filter(state="OPEN")
+    open_tasks = tasks.filter(state="OPEN")
+    open_issues = issues.filter(state="OPEN")
+
+    inprogress_stories = stories.filter(state="IN PROGRESS")
+    inprogress_tasks = tasks.filter(state="IN PROGRESS")
+    inprogress_issues = issues.filter(state="IN PROGRESS")
+
+    testing_stories = stories.filter(state="TESTING")
+    testing_tasks = tasks.filter(state="TESTING")
+    testing_issues = issues.filter(state="TESTING")
+
+    closed_stories = stories.filter(state="CLOSED")
+    closed_tasks = tasks.filter(state="CLOSED")
+    closed_issues = issues.filter(state="CLOSED")
+
+    context = {
+        'open_stories': open_stories,
+        'inprogress_stories': inprogress_stories,
+        'testing_stories': testing_stories,
+        'closed_stories': closed_stories,
+        'open_tasks': open_tasks,
+        'inprogress_tasks': inprogress_tasks,
+        'testing_tasks': testing_tasks,
+        'closed_tasks': closed_tasks,
+        'open_issues': open_issues,
+        'inprogress_issues': inprogress_issues,
+        'testing_issues': testing_issues,
+        'closed_issues': closed_issues,
+    }
+
+    return render(request, 'projects/kanban.html', context)

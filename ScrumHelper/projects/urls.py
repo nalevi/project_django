@@ -13,4 +13,5 @@ urlpatterns = [
     path('stories/', include('projects.stories.urls', namespace='stories')),
     path('epics/',include('projects.epics.urls', namespace='epics')),
     path('delete/<int:project_id>/', views.delete, name='delete'),
+    path('kanban/', views.kanban_board, name='kanban_board'),
 ]
