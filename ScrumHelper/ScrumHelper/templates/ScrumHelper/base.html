@@ -41,7 +41,9 @@
             <li><a href="{% url 'users:detail'  user.username %}" class="p-r-none"><i class="material-icons left">account_circle</i>Profile</a></li>
             <li><a href="{% url 'users:get_users_worklogs' user.username %}">Timesheet</a></li>
             <li class="divider"></li>
-            <li><a href="{% url 'users:detail' user.username %}">My open issues</a></li>
+            {% if perms.add_user %}
+            <li><a href="#!">Create user</a></li>
+            {% endif %}
         </ul>
         {% endif %}
         {# Navigation Menu #}
@@ -112,11 +114,11 @@
             <script type="text/javascript" 
                 src="{% static 'admin/js/core.js' %}"></script>
             <script type="text/javascript" 
-                src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
-            <script type="text/javascript" 
                 src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
             <script type="text/javascript" 
                 src="{% static 'admin/js/jquery.init.js' %}"></script>
+            <script type="text/javascript" 
+                src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
             <script type="text/javascript" 
                 src="{% static 'admin/js/actions.js' %}"></script>
             <script type="text/javascript" 

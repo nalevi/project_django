@@ -21,8 +21,7 @@
             <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:project_edit' project.id %}" data-position="top" data-tooltip="Edit project">
                 <i class="material-icons">create</i></a>
             </li>
-            <li><a class="btn-floating red tooltipped" href="{% url 'projects:delete' project.id %}" data-position="top" data-tooltip="Delete project"><i class="material-icons">cancel</i></a></li>
-            <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog"><i class="material-icons">work</i></a></li>
+            {% if perms.delete_project %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:delete' project.id %}" data-position="top" data-tooltip="Delete project"><i class="material-icons">cancel</i></a></li>{% endif %}
             <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="Create story" href="{% url 'projects:stories:story_new' %}"><i class="material-icons">assessment</i></a></li>
             <li><a class="btn-floating purple tooltipped" data-position="top" data-tooltip="Create epic" href="{% url 'projects:epics:epic_new' %}"><i class="material-icons">crop_din</i></a></li>
             <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Create issue" href="#!"><i class="material-icons">priority_high</i></a></li>

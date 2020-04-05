@@ -1,0 +1,89 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Kanban chart {% endblock %}
+
+{% block head_css_page %}
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.css" rel="stylesheet"/>
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row col right">
+        <a class="btn" href="{% url 'projects:kanban_board' %}"> Board </a>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            
+            <div id="canvas-holder" style="width:80%">
+                <canvas id="kanbanChart" ></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer_javascript %}
+    {% block footer_javascript_site %}
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+        <script>
+            var openData = parseInt("{{ open_all }}")
+            var inpData = parseInt("{{ inprogress_all }}")
+            var testData = parseInt("{{ testing_all }}")
+            var closeData = parseInt("{{ closed_all }}")
+
+            window.chartColors = {
+                red: 'rgb(226, 16, 16)',
+                yellow: 'rgb(255, 205, 86)',
+                green: 'rgb(24, 226, 24)',
+                blue: 'rgb(54, 162, 235)'
+            };
+
+
+            var config = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [
+						openData,
+						inpData,
+						testData,
+						closeData,
+					],
+					backgroundColor: [
+						window.chartColors.green,
+						window.chartColors.yellow,
+						window.chartColors.blue,
+						window.chartColors.red,
+					],
+					label: 'States'
+				}],
+				labels: [
+					'OPEN',
+					'IN PROGRESS',
+					'TESTING',
+					'CLOSED'
+				]
+			},
+			    options: {
+				    responsive: true
+			    }
+		    };
+
+		    window.onload = function() {
+                var ctx = document.getElementById('kanbanChart').getContext('2d');
+                window.myPie = new Chart(ctx, config);
+		    };
+
+        </script>
+        
+
+    {% endblock %}
+{% endblock %}
+

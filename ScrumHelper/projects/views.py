@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 
 from .stories.models import UserStory
 from .tasks.models import Task
@@ -111,3 +112,36 @@ def kanban_board(request):
     }
 
     return render(request, 'projects/kanban.html', context)
+
+
+def get_chart_data(request):
+    stories = UserStory.objects.all()
+    tasks = Task.objects.all()
+    issues = Issue.objects.all()
+    
+    
+    open_stories = stories.filter(state="OPEN").count()
+    open_tasks = tasks.filter(state="OPEN").count()
+    open_issues = issues.filter(state="OPEN").count()
+
+    inprogress_stories = stories.filter(state="IN PROGRESS").count()
+    inprogress_tasks = tasks.filter(state="IN PROGRESS").count()
+    inprogress_issues = issues.filter(state="IN PROGRESS").count()
+
+    testing_stories = stories.filter(state="TESTING").count()
+    testing_tasks = tasks.filter(state="TESTING").count()
+    testing_issues = issues.filter(state="TESTING").count()
+
+    closed_stories = stories.filter(state="CLOSED").count()
+    closed_tasks = tasks.filter(state="CLOSED").count()
+    closed_issues = issues.filter(state="CLOSED").count()
+
+    json = {
+        'open_all': open_stories + open_tasks + open_issues,
+        'inprogress_all': inprogress_stories + inprogress_tasks + inprogress_issues,
+        'testing_all': testing_stories + testing_tasks + testing_issues, 
+        'closed_all': closed_stories + closed_tasks + closed_issues,
+    }
+
+    # JsonResponse(json)
+    return render(request, 'projects/kanban_chart.html', json)

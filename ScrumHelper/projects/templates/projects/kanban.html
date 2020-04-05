@@ -5,6 +5,10 @@
 
 {% block content %}
 <div class="container">
+    <div class="row col right">
+        <a class="btn" href="{% url 'projects:get_chart_data' %}"> Progress graph </a>
+    </div>
+    <br><br><br>
     <div class="row">
         <div class="col s3">
             <h5> OPEN </h5>
@@ -22,123 +26,106 @@
     <div class="divider"></div>
     <div class="row">
         <div class="col s3">
-        {% for open_s in open_stories %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:stories:detail' open_s.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ open_s.name }} ({{ open_s.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ open_s.state }}</span>
-                </a> 
+            <div class="collection">  
+                {% for open_s in open_stories %}     
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' open_s.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ open_s.name }} ({{ open_s.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ open_s.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for open_t in open_tasks %}         
+                        <a class="collection-item avatar" href="{% url 'projects:tasks:detail' open_t.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ open_t.name }} ({{ open_t.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ open_t.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for open_i in open_issues %}          
+                        <a class="collection-item avatar" href="{% url 'projects:issues:detail' open_i.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ open_i.name }} ({{ open_i.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ open_i.state }}</span>
+                        </a> 
+                {% endfor %}
             </div>
-        {% endfor %}
-        {% for open_t in open_tasks %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' open_t.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ open_t.name }} ({{ open_t.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ open_t.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
-        {% for open_i in open_issues %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:issues:detail' open_i.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ open_i.name }} ({{ open_i.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ open_i.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
         </div>
-    
         <div class="col s3">
-        {% for inp_s in inprogress_stories %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:stories:detail' inp_s.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ inp_s.name }} ({{ inp_s.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ inp_s.state }}</span>
-                </a> 
+            <div class="collection">  
+                {% for inp_s in inprogress_stories %}           
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' inp_s.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ inp_s.name }} ({{ inp_s.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ inp_s.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for inp_t in inprogress_tasks %}          
+                        <a class="collection-item avatar" href="{% url 'projects:tasks:detail' inp_t.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ inp_t.name }} ({{ inp_t.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ inp_t.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for inp_i in inprogress_issues %}           
+                        <a class="collection-item avatar" href="{% url 'projects:issues:detail' inp_i.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ inp_i.name }} ({{ inp_i.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ inp_i.state }}</span>
+                        </a> 
+                {% endfor %}
             </div>
-        {% endfor %}
-        {% for inp_t in inprogress_tasks %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' inp_t.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ inp_t.name }} ({{ inp_t.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ inp_t.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
-        {% for inp_i in inprogress_issues %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:issues:detail' inp_i.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ inp_i.name }} ({{ inp_i.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ inp_i.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
         </div>
 
         <div class="col s3">
-        {% for test_s in testing_stories %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:stories:detail' test_s.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ test_s.name }} ({{ test_s.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ test_s.state }}</span>
-                </a> 
+            <div class="collection">  
+                {% for test_s in testing_stories %}           
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' test_s.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ test_s.name }} ({{ test_s.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ test_s.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for test_t in testing_tasks %}        
+                        <a class="collection-item avatar" href="{% url 'projects:tasks:detail' test_t.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ test_t.name }} ({{ test_t.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ test_t.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for test_i in testing_issues %}          
+                        <a class="collection-item avatar" href="{% url 'projects:issues:detail' test_i.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ test_i.name }} ({{ test_i.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ test_i.state }}</span>
+                        </a> 
+                {% endfor %}
             </div>
-        {% endfor %}
-        {% for test_t in testing_tasks %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' test_t.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ test_t.name }} ({{ test_t.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ test_t.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
-        {% for test_i in testing_issues %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:issues:detail' test_i.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ test_i.name }} ({{ test_i.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ test_i.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
         </div>
 
         <div class="col s3">
-        {% for close_s in closed_stories %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:stories:detail' close_s.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ close_s.name }} ({{ close_s.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ close_s.state }}</span>
-                </a> 
+            <div class="collection">
+                {% for close_s in closed_stories %}        
+                        <a class="collection-item avatar" href="{% url 'projects:stories:detail' close_s.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ close_s.name }} ({{ close_s.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ close_s.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for close_t in closed_tasks %}       
+                        <a class="collection-item avatar" href="{% url 'projects:tasks:detail' close_t.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ close_t.name }} ({{ close_t.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ close_t.state }}</span>
+                        </a> 
+                {% endfor %}
+                {% for close_i in closed_issues %}
+                        <a class="collection-item avatar" href="{% url 'projects:issues:detail' close_i.id %}">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">{{ close_i.name }} ({{ close_i.project_code }})</span>
+                            <span class="new badge red right" data-badge-caption="">{{ close_i.state }}</span>
+                        </a> 
+                {% endfor %}
             </div>
-        {% endfor %}
-        {% for close_t in closed_tasks %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' close_t.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ close_t.name }} ({{ close_t.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ close_t.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
-        {% for close_i in closed_issues %}
-            <div class="collection">             
-                <a class="collection-item avatar" href="{% url 'projects:issues:detail' close_i.id %}">
-                    <i class="material-icons circle green">assessment</i>
-                    <span class="title">{{ close_i.name }} ({{ close_i.project_code }})</span>
-                    <span class="new badge red right" data-badge-caption="">{{ close_i.state }}</span>
-                </a> 
-            </div>
-        {% endfor %}
         </div>
     </div>
 
