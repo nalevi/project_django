@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db import IntegrityError
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from datetime import datetime, date
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator
 
 from projects.stories.services import get_stories_for_user
 from projects.epics.services import get_epics_for_user
@@ -12,7 +15,7 @@ from projects.epics.services import get_epics_for_user
 from worklogs.models import Worklog
 
 from .models import Profile
-from .forms import SelectMontForm
+from .forms import SelectMontForm, AddGroupForm
 
 
 def index(request):
@@ -157,3 +160,61 @@ def team_worklogs(request):
 
         context['form'] = dateForm
         return render(request, 'users/team_worklogs.html', context)
+
+def group_list(request):
+    groups_list = Group.objects.all()
+
+    context = {
+        'groups_list': groups_list,
+    }
+    if request.method == "POST":
+        groupName = request.POST.get('group')
+        if groupName is not None:
+            group = Group(name=groupName)
+            
+            try:
+                group.save()
+
+                groups_list = Group.objects.all()
+
+                context['groups_list'] = groups_list
+            except IntegrityError:
+                context['error_msg'] = "Group already exists"
+
+            form = AddGroupForm()
+            context['form'] = form
+            return render(request, 'users/groups.html', context)
+        else:
+            form = AddGroupForm()
+            context['form'] = form
+            return render(request, 'users/groups.html', context)
+
+    else:
+        form = AddGroupForm()
+        context['form'] = form
+        return render(request, 'users/groups.html', context)
+
+def group_detail(request, gr_id):
+    group = get_object_or_404(Group, pk=gr_id)
+    permissions = Permission.objects.all()
+
+    return render(request, 'users/group_detail.html', {'group': group, 'permissions':permissions})
+
+def delete_group(request,gr_id):
+    Group.objects.get(pk=gr_id).delete()
+
+    return group_list(request)
+
+def add_perm_to_group(request, gr_id, p_id):
+    group = get_object_or_404(Group, pk=gr_id)
+    permission = get_object_or_404(Permission, pk=p_id)
+    group.permissions.add(permission)
+
+    return group_detail(request, gr_id)
+
+def delete_perm_from_group(request, gr_id, p_id):
+    group = get_object_or_404(Group, pk=gr_id)
+    permission = get_object_or_404(Permission, pk=p_id)
+    group.permissions.get(name=permission.name).delete()
+
+    return group_detail(request, gr_id)

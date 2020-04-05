@@ -43,6 +43,7 @@
             <li class="divider"></li>
             {% if perms.add_user %}
             <li><a href="#!">Create user</a></li>
+            <li><a href="{% url 'users:group_list' %}">Manage user groups</a></li>
             {% endif %}
         </ul>
         {% endif %}

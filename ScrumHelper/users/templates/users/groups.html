@@ -1,0 +1,40 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Groups {% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <form method="POST" action="{% url 'users:group_list' %}" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="save btn">
+        </form>
+        {% if error_msg %}
+            <p> {{ error_msg }} </p>
+        {% endif %}
+        <br>
+        <div class="divider"></div>
+        {% if groups_list %}
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Groups</h4></li>
+            {% for group in groups_list %}
+                <li class="collection-item">
+                    {{ group.name }}
+                    <a href="{% url 'users:delete_group' group.id %}" class="secondary-content">
+                        <i class="material-icons red">cancel</i>
+                    </a>
+                    <a href="{% url 'users:group_detail' group.id %}" class="secondary-content">
+                        <i class="material-icons">send</i>
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no available groups.</p>
+        {% endif %}
+    </div>
+    
+{% endblock %}

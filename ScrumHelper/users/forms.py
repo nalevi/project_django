@@ -24,3 +24,12 @@ class SelectMontForm(forms.Form):
         self.fields['month'].widget = widgets.AdminDateWidget()
         if month is not None:
             self.month = month
+
+class AddGroupForm(forms.Form):
+    
+    group = forms.CharField()
+
+    fields = ['group']
+    labels = {
+        'group': 'Group\'s name'
+    }
