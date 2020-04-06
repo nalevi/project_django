@@ -17,7 +17,7 @@ class UserStory(models.Model):
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     modified_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     owner = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="userstory_owner")
-    assignee = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="userstory_assignee", null=True)
+    assignee = models.ForeignKey("auth.User", on_delete=models.SET_NULL, related_name="userstory_assignee", null=True)
     description = models.CharField(max_length=250, default="Description")
     importance = models.CharField(max_length=8, default="low", choices=IMPORTANCE_CHOICES)
     state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)

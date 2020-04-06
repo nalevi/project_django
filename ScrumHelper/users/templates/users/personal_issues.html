@@ -6,10 +6,10 @@
         
         <div class="row col right">
             {% if perms.delete_user %}
-                <a class="btn" href="#!">Delete user</a>
+                <a class="btn" href="{% url 'users:delete_user' profile.user.id %}">Delete user</a>
             {% endif %}
             {% if perms.change_user %}
-                <a class="btn" href="#!">Edit user</a>
+                <a class="btn" href="{% url 'login:edit_user' profile.user.username %}}">Edit user</a>
             {% endif %}
         </div>
         <div class="row">

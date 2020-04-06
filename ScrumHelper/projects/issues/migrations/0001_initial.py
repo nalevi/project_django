@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('defect_type', models.CharField(max_length=10)),
                 ('solved', models.BooleanField(default=False)),
                 ('solution', models.CharField(max_length=150)),
-                ('assignee', models.ForeignKey(default='Unkown', on_delete=django.db.models.deletion.CASCADE, related_name='issue_assignee', to='users.Profile')),
+                ('assignee', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='issue_assignee', to='users.Profile')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='issue_owner', to='users.Profile')),
                 ('project_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='issue_project_code', to='projects.Project', to_field='code')),
             ],

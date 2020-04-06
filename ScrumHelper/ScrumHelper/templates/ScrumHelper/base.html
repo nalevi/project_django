@@ -42,7 +42,7 @@
             <li><a href="{% url 'users:get_users_worklogs' user.username %}">Timesheet</a></li>
             <li class="divider"></li>
             {% if perms.add_user %}
-            <li><a href="#!">Create user</a></li>
+            <li><a href="{% url 'login:signup' %}">Create user</a></li>
             <li><a href="{% url 'users:group_list' %}">Manage user groups</a></li>
             {% endif %}
         </ul>

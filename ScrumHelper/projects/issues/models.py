@@ -14,7 +14,7 @@ class Issue(models.Model):
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     modified_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
     owner = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="issue_owner")
-    assignee = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="issue_assignee", default="Unkown")
+    assignee = models.ForeignKey("users.Profile", on_delete=models.SET_NULL, related_name="issue_assignee", null=True)
     description = models.CharField(max_length=250, default="Description")
     importance = models.CharField(max_length=8, default="low", choices=IMPORTANCE_CHOICES)
     state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)

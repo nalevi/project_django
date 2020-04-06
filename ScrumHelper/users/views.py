@@ -14,6 +14,8 @@ from projects.epics.services import get_epics_for_user
 
 from worklogs.models import Worklog
 
+from login.forms import SignUpForm
+
 from .models import Profile
 from .forms import SelectMontForm, AddGroupForm
 
@@ -197,8 +199,11 @@ def group_list(request):
 def group_detail(request, gr_id):
     group = get_object_or_404(Group, pk=gr_id)
     permissions = Permission.objects.all()
+    groups_permission = group.permissions.all()
 
-    return render(request, 'users/group_detail.html', {'group': group, 'permissions':permissions})
+    return render(request, 'users/group_detail.html', {'group': group, 
+                                                       'permissions':permissions,
+                                                       'groups_perm': groups_permission})
 
 def delete_group(request,gr_id):
     Group.objects.get(pk=gr_id).delete()
@@ -218,3 +223,9 @@ def delete_perm_from_group(request, gr_id, p_id):
     group.permissions.get(name=permission.name).delete()
 
     return group_detail(request, gr_id)
+
+def delete_user(request, user_id):
+    User.objects.get(pk=user_id).delete()
+
+    return render(request, 'users/index.html', {})
+

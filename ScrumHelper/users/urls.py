@@ -13,6 +13,7 @@ urlpatterns = [
     path('add_permission/<int:gr_id>/<int:p_id>', views.add_perm_to_group, name='add_perm_to_group'),
     path('delete_permission/<int:gr_id>/<int:p_id>', views.delete_perm_from_group, name='delete_perm_from_group'),
     path('<username>/', views.detail, name='detail'),
+    path('delete_user/<int:user_id>',views.delete_user, name='delete_user'),
     path('<username>/worklogs/', views.get_users_worklogs, name='get_users_worklogs'),
     path('delete_worklog/<int:log_id>', views.delete_worklog, name='delete_worklog'),
 ]

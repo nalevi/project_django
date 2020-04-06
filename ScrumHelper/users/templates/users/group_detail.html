@@ -2,3 +2,71 @@
 {% load static %}
 
 {% block title %} Groups {% endblock %}
+
+{% block head_css_section %}
+    <link href="{% static '/css/scrollable_table.css' %}"
+    rel="stylesheet" media="screen">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h4>{{ group.name }} group</h4>
+        <br>
+        <table class="scrollable">
+            <thead  class="scrollable">
+                <th>
+                    <tr>
+                        <th>
+                            <h4>All permissions</h4>
+                        </th>
+                    </tr>
+                </th>
+            </thead>
+            <tbody  class="scrollable">
+                <tr>
+                    <td>   
+                    <div class="collection">  
+                    {% for p in permissions %}           
+                                <li class="collection-item">
+                                    {{ p.name }}
+                                    <a href="{% url 'users:add_perm_to_group' group.id p.id %}" class="secondary-content">
+                                        <i class="material-icons">add_circle</i>
+                                    </a>
+                                </li> 
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br><br>
+        <table class="scrollable">
+            <thead  class="scrollable">
+                <th>
+                    <tr>
+                        <td>
+                            <h4>Group's permissions</h4>
+                        </td>
+                    </tr>
+                </th>
+            </thead>
+            <tbody  class="scrollable">
+                <tr>
+                    <td>  
+                    <div class="collection"> 
+                    {% for gp in groups_perm %}       
+                                <li class="collection-item">
+                                    {{ gp.name }}
+                                    <a href="{% url 'users:delete_perm_from_group' group.id gp.id %}" class="secondary-content">
+                                        <i class="material-icons">cancel</i>
+                                    </a>
+                                </li> 
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
