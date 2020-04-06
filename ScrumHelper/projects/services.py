@@ -29,7 +29,12 @@ def get_issues_for_project(project_id):
         pass
 
     #task_list = get_list_or_404(Task, project_code=project.code)
-    #epic_list = get_list_or_404(Epic, project_code=project.code)
+
+    epic_list = Epic.objects.filter(project_code=project.code)
+    
+    if epic_list:
+        context['epic_list'] = epic_list
+
     #issue_list = get_list_or_404(Issue, project_code=project.code)
     try:
         documents_list = project.documents.all()

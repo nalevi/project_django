@@ -1,0 +1,81 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Epics {% endblock %}
+
+{% block navbar_create %}
+<!--<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>-->
+<li><a href="{% url 'projects:epics:epic_new' %}" class="btn center">Create epic</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large green">
+          <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+          <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:epics:epic_edit' epic.id %}" data-position="top" data-tooltip="Edit epic">
+            <i class="material-icons">create</i></a></li>
+          {% if perms.delete_epic %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:epics:delete' epic.id %}" data-position="top" data-tooltip="Delete epic" onclick="M.toast({html: 'Epic deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
+          <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
+          <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="Create story" href="{% url 'projects:stories:story_new' %}"><i class="material-icons">assessment</i></a></li>
+        </ul>
+      </div>
+
+    <div class="row">
+        <h4>{{ epic.name }}</h4>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+        <p>Project: <a href="{% url 'projects:detail' project.id %}">{{ project.name }} ({{ project.code }})</a></p>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+        <p>Owner: <a href="{% url 'users:detail' owner_profile.user.username %}">{{ owner_profile.user.username }}</a></p>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+      <p>Created date: {{ epic.created_date }}</p>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+      <p>Descripton: {{ epic.description }}</p>
+    </div>
+
+     <table class="scrollable">
+            <thead  class="scrollable">
+                <th>
+                    <tr>
+                        <td>
+                            <h4> stories, tasks</h4>
+                        </td>
+                    </tr>
+                </th>
+            </thead>
+            <tbody  class="scrollable">
+                <tr>
+                    <td>   
+                    <div class="collection"> 
+                    {% for s in stories %}            
+                                <a class="collection-item avatar" href="{% url 'projects:stories:detail' s.id %}">
+                                    <i class="material-icons circle green">assessment</i>
+                                    <span class="title">{{ s.name }} ({{ s.project_code }})</span>
+                                    <span class="new badge red right" data-badge-caption="">{{ s.state }}</span>
+                                </a> 
+                    {% endfor %}
+                    {% for t in tasks %}            
+                                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' t.id %}">
+                                    <i class="material-icons circle blue">bookmark</i>
+                                    <span class="title">{{ t.name }} ({{ t.project_code }})</span>
+                                </a> 
+                    {% endfor %}
+                     </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+</div>
+{% endblock %}

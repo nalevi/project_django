@@ -19,7 +19,7 @@ class Task(models.Model):
     description = models.CharField(max_length=250, default="Description")
     importance = models.CharField(max_length=8, default="low", choices=IMPORTANCE_CHOICES)
     state = models.CharField(default="OPEN", max_length=15, choices=STATE_CHOICES)
-    epic = models.ForeignKey("epics.Epic", on_delete=models.CASCADE, related_name="task_epic", null=True)
+    epic = models.ForeignKey("epics.Epic", on_delete=models.SET_NULL, related_name="task_epic", null=True)
 
 
     

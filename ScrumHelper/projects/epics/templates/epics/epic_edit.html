@@ -1,0 +1,17 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Epics {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4>New Epic</h4>
+        <form method="POST" class="col s12">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <button type="submit" class="save btn">Submit</button>
+        </form>
+    </div>
+{% endblock %}

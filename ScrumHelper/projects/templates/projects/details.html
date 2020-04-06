@@ -103,6 +103,12 @@
                                     <span class="new badge red right" data-badge-caption="">{{ s.state }}</span>
                                 </a> 
                     {% endfor %}
+                    {% for e in epic_list %}            
+                                <a class="collection-item avatar" href="{% url 'projects:epics:detail' e.id %}">
+                                    <i class="material-icons circle purple">crop_din</i>
+                                    <span class="title">{{ e.name }} ({{ e.project_code }})</span>
+                                </a> 
+                    {% endfor %}
                      </div>
                 </td>
             </tr>

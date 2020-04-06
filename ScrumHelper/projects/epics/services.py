@@ -19,7 +19,7 @@ def delete_epic(epic_id):
 
 def get_epic_details(epic_id):
     '''
-    Get stories details
+    Get epics details
 
     context: 
              - stories

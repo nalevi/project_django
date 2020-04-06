@@ -14,5 +14,6 @@ class Epic(models.Model):
     owner = models.ForeignKey("users.Profile", on_delete=models.CASCADE, related_name="epic_owner")
     description = models.CharField(max_length=250, default="Description")
 
-
+    def __str__(self):
+        return self.name
 

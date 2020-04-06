@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from .forms import SignUpForm
@@ -32,8 +33,8 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-def edit_user(request,username):
-    user = User.objects.get(username=username)
+def edit_user(request,user_id):
+    user = User.objects.get(pk=user_id)
     if request.method == 'POST':
         form = SignUpForm(request.POST, instance=user)
         if form.is_valid():
@@ -44,3 +45,13 @@ def edit_user(request,username):
         form = SignUpForm(instance=user)
     return render(request, 'registration/signup.html', {'form': form})
 
+def change_pw(request, user_id):
+    user = User.objects.get(pk=user_id)
+    if request.method == 'POST':
+        form = SignUpForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('users:detail', user.username)
+    else:
+        form = SignUpForm(instance=user)
+    return render(request, 'registration/signup.html', {'form': form})
