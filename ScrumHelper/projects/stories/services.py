@@ -67,8 +67,7 @@ def get_stories_for_user(user_id):
     Get the stories assinged to a specific user
 
     context: 
-             - assigned_to
-             - owner
+             - assigned_stories
     '''
     context = dict()
 
