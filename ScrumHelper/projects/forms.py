@@ -10,6 +10,8 @@ from .stories.models import UserStory
 from .comments.models import Comment
 from .epics.models import Epic
 from .tasks.models import Task
+from .issues.models import Issue
+from .contants import ISSUE_CHOICES
 
 from worklogs.models import Worklog
 
@@ -85,6 +87,23 @@ class CreateTaskForm(ModelForm):
         model = Task
         fields = ['name', 'project_code',
                   'assignee', 'description', 'importance', 'epic']
+        labels = {
+            'project_code': _('Project\'s code'),
+        }
+
+class CreateIssueForm(ModelForm):
+
+    project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
+    epic = forms.ModelChoiceField(widget=forms.Select, queryset=Epic.objects.all(), required=False)
+    assignee = forms.ModelChoiceField(widget=forms.Select, queryset=User.objects.all(), required=False)
+    defect_type = forms.ChoiceField(widget=forms.Select, choices=ISSUE_CHOICES)
+    solution = forms.CharField(required=False)
+    
+
+    class Meta:
+        model = Issue
+        fields = ['name', 'project_code',
+                  'assignee', 'description', 'importance', 'epic', 'defect_type', 'solution']
         labels = {
             'project_code': _('Project\'s code'),
         }

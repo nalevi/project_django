@@ -16,3 +16,10 @@ STATE_CHOICES = [
     ('TESTING','Testing'),
     ('DONE','Done'),
 ]
+
+ISSUE_CHOICES = [
+    ('BUG','Bug'),
+    ('SYSTEM DEFECT','System defect'),
+    ('SPECIFICATION ISSUE','Specification issue'),
+    ('DEVELOPMENT ISSUE','Development issue'),
+]

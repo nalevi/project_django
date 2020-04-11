@@ -73,6 +73,12 @@ def upload_doc(request, project_id):
 
     return redirect('projects:detail', project_id=project_id )
 
+def delete_doc(request, project_id,doc_id):
+    project = Project.objects.get(pk=project_id)
+
+    document = project.documents.get(id=doc_id).delete()
+    return redirect('projects:detail', project_id=project_id)
+
 
 def kanban_board(request):
     stories = UserStory.objects.all()

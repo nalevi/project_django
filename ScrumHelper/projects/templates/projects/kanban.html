@@ -43,7 +43,7 @@
                 {% endfor %}
                 {% for open_i in open_issues %}          
                         <a class="collection-item avatar" href="{% url 'projects:issues:detail' open_i.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle red">priority_high</i>
                             <span class="title">{{ open_i.name }} ({{ open_i.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ open_i.state }}</span>
                         </a> 
@@ -68,7 +68,7 @@
                 {% endfor %}
                 {% for inp_i in inprogress_issues %}           
                         <a class="collection-item avatar" href="{% url 'projects:issues:detail' inp_i.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle red">priority_high</i>
                             <span class="title">{{ inp_i.name }} ({{ inp_i.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ inp_i.state }}</span>
                         </a> 
@@ -94,7 +94,7 @@
                 {% endfor %}
                 {% for test_i in testing_issues %}          
                         <a class="collection-item avatar" href="{% url 'projects:issues:detail' test_i.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle red">priority_high</i>
                             <span class="title">{{ test_i.name }} ({{ test_i.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ test_i.state }}</span>
                         </a> 
@@ -120,7 +120,7 @@
                 {% endfor %}
                 {% for close_i in closed_issues %}
                         <a class="collection-item avatar" href="{% url 'projects:issues:detail' close_i.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle red">priority_high</i>
                             <span class="title">{{ close_i.name }} ({{ close_i.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ close_i.state }}</span>
                         </a> 

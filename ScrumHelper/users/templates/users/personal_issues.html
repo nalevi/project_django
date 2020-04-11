@@ -101,5 +101,26 @@
             </div>
         {% endif %}
 
+        {% if assigned_issues%}
+            <div class="section">
+                <h5>{{ profile }}'s issues</h5>
+            </div>
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="collection">
+                    
+                    {% for i in assigned_issues %}
+                        <a class="collection-item avatar" href="{% url 'projects:issues:detail' i.id %}" >
+                            <i class="material-icons circle red">priority_high</i>
+                            <span class="title">{{ i.name }}</span>
+                            <p>{{ i.project_code }}</p>
+                            <span class="new badge red" data-badge-caption="">{{ i.state }}</span>
+                        </a>
+                    {% endfor %}        
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 {% endblock %}

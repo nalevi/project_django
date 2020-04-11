@@ -41,29 +41,80 @@
       </a>
     </div>
 
-    <div class="row">
-        <p>Project: <a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a></p>
-    </div>
-    <div class="divider"></div>
-    <div class="row">
-        <p>Owner: <a href="{% url 'users:detail' owner_profile.user.username %}">{{ owner_profile.user.username }}</a></p>
-    </div>
-    <div class="row">
-        <p>Assignee: {% if assignee %}<a href="{% url 'users:detail' assignee.user.username %}">{{ assignee.user }}</a> {% endif %} </p>
-    </div><div class="divider"></div>
-    <div class="row">
-        <p>Epic link: {% if epic %}<a href="{% url 'projects:epics:detail' epic.id %}">{{ epic.name }}</a> {% endif %} </p>
-    </div>
-    <div class="divider"></div>
-    <div class="row">
-      <p>Acceptance criteria: {{ story.acceptance }}</p>
-    </div>
-    <div class="divider"></div>
-    <div class="row">
-      <p>Descripton: {{ story.description }}</p>
-    </div>
-
-    <div class="divider"></div>
+  <div class="row">
+      <div class="col s3">
+          Project:
+      </div>
+      <div class="col">
+          <a href="{% url 'projects:detail' proj.id %}">{{ proj.name }} ({{ proj.code }})</a>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s6">
+          <div class="divider"></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s3">
+          Owner:
+      </div>
+      <div class="col">
+          <a href="{% url 'users:detail' owner_profile.user.username %}">
+              {{ owner_profile.user.username }}</a>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s3">
+          Assignee:
+      </div>
+      <div class="col">
+          {% if assignee %}<a href="{% url 'users:detail' assignee.user.username %}">{{ assignee.user }}</a> {% endif %} 
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s6">
+          <div class="divider"></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s3">
+          Epic link:
+      </div>
+      <div class="col">
+          {% if epic %}<a href="{% url 'projects:epics:detail' epic.id %}">{{ epic.name }}</a> {% endif %} 
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s6">
+          <div class="divider"></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s3">
+          Descripton:
+      </div>
+      <div class="col">
+          {{ story.description }}
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s12">
+          <div class="divider"></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s3">
+          Acceptance criteria:
+      </div>
+      <div class="col">
+        {{ story.acceptance }}
+      </div>
+  </div>
+  <div class="row">
+      <div class="col s6">
+          <div class="divider"></div>
+      </div>
+  </div>
     <br><br><br>
     <div class="row">
       <h4>Comments</h4>

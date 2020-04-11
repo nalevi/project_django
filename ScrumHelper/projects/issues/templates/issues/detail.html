@@ -1,10 +1,11 @@
 {% extends 'ScrumHelper/base.html' %}
 {% load static %}
 
-{% block title %} Tasks {% endblock %}
+{% block title %} Issues {% endblock %}
 
 {% block navbar_create %}
-<li><a href="{% url 'projects:tasks:task_new' %}" class="btn center">Create task</a></li>
+<!--<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>-->
+<li><a href="{% url 'projects:issues:issue_new' %}" class="btn center">Create issue</a></li>
 {% endblock %}
 
 {% block content %}
@@ -15,26 +16,25 @@
           <i class="large material-icons">mode_edit</i>
         </a>
         <ul>
-          <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:tasks:task_edit' task.id %}" data-position="top" data-tooltip="Edit task">
+          <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:issues:issue_edit' issue.id %}" data-position="top" data-tooltip="Edit issue">
             <i class="material-icons">create</i></a></li>
-          {% if perms.delete_task %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:tasks:delete' task.id %}" data-position="top" data-tooltip="Delete task" onclick="M.toast({html: 'task deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
-          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog" href="{% url 'projects:tasks:add_worklog' task.id %}"><i class="material-icons">work</i></a></li>
-          <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
+          {% if perms.delete_issue %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:issues:delete' issue.id %}" data-position="top" data-tooltip="Delete issue" onclick="M.toast({html: 'Issue deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
+          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog" href="{% url 'projects:stories:add_worklog' issue.id %}"><i class="material-icons">work</i></a></li>
         </ul>
       </div>
 
     <div class="row">
-      <h4>{{ task.name }}</h4>
-      <a class="btn-small red right" href="{% url 'projects:stories:change_state' task.id %}">
-        {% if task.state == 'OPEN' %}
+      <h4>{{ issue.name }}</h4>
+      <a class="btn-small red right" href="{% url 'projects:issues:change_state' issue.id %}">
+        {% if issue.state == 'OPEN' %}
           IN PROGRESS
-        {% elif task.state == 'IN PROGRESS' %}
+        {% elif issue.state == 'IN PROGRESS' %}
           TESTING
-        {% elif task.state == 'TESTING' %}
+        {% elif issue.state == 'TESTING' %}
           DONE
-        {% elif task.state == 'DONE' %}
+        {% elif issue.state == 'DONE' %}
           CLOSE
-        {% elif task.state == 'CLOSED' %}
+        {% elif issue.state == 'CLOSED' %}
           REOPEN
         {% endif %}
       </a>
@@ -93,7 +93,7 @@
             Descripton:
         </div>
         <div class="col">
-            {{ task.description }}
+            {{ issue.description }}
         </div>
     </div>
     <div class="row">
@@ -103,12 +103,26 @@
     </div>
     <div class="row">
         <div class="col s3">
-            Acceptance criteria:
+            Defect type:
         </div>
         <div class="col">
-          {{ task.acceptance }}
+            {{ issue.defect_type }}
         </div>
     </div>
+    <div class="row">
+        <div class="col s6">
+            <div class="divider"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s3">
+            Solution:
+        </div>
+        <div class="col">
+            {{ issue.solution }}
+        </div>
+    </div>
+
     <div class="row">
         <div class="col s6">
             <div class="divider"></div>
@@ -119,7 +133,7 @@
       <h4>Comments</h4>
 
       <label>Submit a comment:</label>
-      <form method="POST" action="{% url 'projects:tasks:create_comment' task.id %}">
+      <form method="POST" action="{% url 'projects:issues:create_comment' issue.id %}">
         {% csrf_token %}
         <input type="text" name="comment_txt" class="" placeholder="Add comment">
 
@@ -139,7 +153,7 @@
                 {{ comment.text }}
               </td>
               <td>
-                <a href="{% url 'projects:tasks:delete_comment' task_id=task.id comment_id=comment.id %}"
+                <a href="{% url 'projects:issues:delete_comment' issue_id=issue.id comment_id=comment.id %}"
                  class="btn-small red" method="POST">
                   <i class="material-icons">close</i>
                  </a>

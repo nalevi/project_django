@@ -24,57 +24,98 @@
             {% if perms.delete_project %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:delete' project.id %}" data-position="top" data-tooltip="Delete project"><i class="material-icons">cancel</i></a></li>{% endif %}
             <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="Create story" href="{% url 'projects:stories:story_new' %}"><i class="material-icons">assessment</i></a></li>
             <li><a class="btn-floating purple tooltipped" data-position="top" data-tooltip="Create epic" href="{% url 'projects:epics:epic_new' %}"><i class="material-icons">crop_din</i></a></li>
-            <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Create issue" href="#!"><i class="material-icons">priority_high</i></a></li>
+            <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Create issue" href="{% url 'projects:issues:issue_new' %}"><i class="material-icons">priority_high</i></a></li>
             <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Create task" href="{% url 'projects:tasks:task_new' %}"><i class="material-icons">bookmark</i></a></li>
         </ul>
     </div>
 
     <div class="container">
         <div class="section">
-            <h4>Project details</h4>
+            <h4>{{ project.name }}</h4>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Name: {{ project.name }}</p>
+
+        <div class="row">
+            <div class="col s3">
+                Code:
+            </div>
+            <div class="col">
+                {{ project.code }}
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Code: {{ project.code }}</p>
+        <div class="row">
+            <div class="col s6">
+                <div class="divider"></div>
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Owner: <a href="{% url 'users:detail' project.project_owner.username %}">{{ project.project_owner.username }}</a></p>
+        <div class="row">
+            <div class="col s3">
+                Owner: 
+            </div>
+            <div class="col">
+                <a href="{% url 'users:detail' project.project_owner.username %}">{{ project.project_owner.username }}</a>
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Created date: {{ project.created_date }}</p>
+        <div class="row">
+            <div class="col s6">
+                <div class="divider"></div>
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Release: {{ project.release }}</p>
+        <div class="row">
+            <div class="col s3">
+                Created date: 
+            </div>
+            <div class="col">
+                {{ project.created_date }}
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section row col s12">
-            <h6>Documentation:</h6> 
-            <form method="POST" enctype="multipart/form-data" action="{% url 'projects:upload_doc' project.id %}">
-                {% csrf_token %}
-                <div class="file-field input-field row col s6">
-                    <div class="btn">
-                        <span>File</span>
-                        <input type="file" name="documentation">
+        <div class="row">
+            <div class="col s6">
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                Release: 
+            </div>
+            <div class="col">
+                {{ project.release }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="section row">
+            <div class="col s6">
+                <h6>Documentation:</h6> 
+                <form method="POST" enctype="multipart/form-data" action="{% url 'projects:upload_doc' project.id %}">
+                    {% csrf_token %}
+                    <div class="file-field input-field row col s11">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" name="documentation">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate col s12" type="text">
+                        </div>
                     </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text">
-                    </div>
-                </div>
-                <button class="btn-floating circle orange tooltipped" data-tooltip="Attach documentation"  type="submit"><i class="material-icons">attach_file</i></button>
-            </form>
-            <div class="col s12">
+                    <button class="btn-floating circle orange tooltipped right" data-tooltip="Attach documentation"  type="submit"><i class="material-icons">attach_file</i></button>
+                </form>
+            </div>
+            <div class="col s6">
                 <label for="docs">Uploaded documents:</label>
                 {% if documents_list %}
-                    <ul docs>
+                    <ul docs class="collection">
                     {% for d in documents_list %}
-                        <li><a href="{{ d.document.url }}">{{ d }}</a> </li>
+                        <li class="collection-item">
+                            <a href="{{ d.document.url }}">{{ d }}</a>
+                            {% if perms.delete_documentation %}
+                                <a href="{% url 'projects:delete_doc' project.id d.id %}" class="secondary-content">
+                                    <i class="material-icons">cancel</i>
+                                </a>
+                            {% endif %}
+                         </li>
                     {% endfor %}
                     </ul>
                 {% endif %}
@@ -115,6 +156,13 @@
                                     <i class="material-icons circle blue">bookmark</i>
                                     <span class="title">{{ t.name }} ({{ t.project_code }})</span>
                                     <span class="new badge red right" data-badge-caption="">{{ t.state }}</span>
+                                </a> 
+                    {% endfor %}
+                    {% for i in issue_list %}            
+                                <a class="collection-item avatar" href="{% url 'projects:issues:detail' i.id %}">
+                                    <i class="material-icons circle red">priority_high</i>
+                                    <span class="title">{{ i.name }} ({{ i.project_code }})</span>
+                                    <span class="new badge red right" data-badge-caption="">{{ i.state }}</span>
                                 </a> 
                     {% endfor %}
                      </div>
