@@ -1,11 +1,10 @@
 {% extends 'ScrumHelper/base.html' %}
 {% load static %}
 
-{% block title %} Stories {% endblock %}
+{% block title %} Tasks {% endblock %}
 
 {% block navbar_create %}
-<!--<li><button class="btn center modal-trigger" data-target="modalCreate" >Create story</button></li>-->
-<li><a href="{% url 'projects:stories:story_new' %}" class="btn center">Create story</a></li>
+<li><a href="{% url 'projects:tasks:task_new' %}" class="btn center">Create task</a></li>
 {% endblock %}
 
 {% block content %}
@@ -16,26 +15,26 @@
           <i class="large material-icons">mode_edit</i>
         </a>
         <ul>
-          <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:stories:story_edit' story.id %}" data-position="top" data-tooltip="Edit story">
+          <li><a class="btn-floating yellow tooltipped" href="{% url 'projects:tasks:task_edit' task.id %}" data-position="top" data-tooltip="Edit task">
             <i class="material-icons">create</i></a></li>
-          {% if perms.delete_userstory %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:stories:delete' story.id %}" data-position="top" data-tooltip="Delete story" onclick="M.toast({html: 'Story deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
-          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog" href="{% url 'projects:stories:add_worklog' story.id %}"><i class="material-icons">work</i></a></li>
-          <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task" href="{% url 'projects:tasks:task_new' %}"><i class="material-icons">bookmark</i></a></li>
+          {% if perms.delete_task %}<li><a class="btn-floating red tooltipped" href="{% url 'projects:tasks:delete' task.id %}" data-position="top" data-tooltip="Delete task" onclick="M.toast({html: 'task deleted'})"><i class="material-icons">cancel</i></a></li>{% endif %}
+          <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Add worklog" href="{% url 'projects:tasks:add_worklog' task.id %}"><i class="material-icons">work</i></a></li>
+          <li><a class="btn-floating light-blue tooltipped" data-position="top" data-tooltip="Create task"><i class="material-icons">bookmark</i></a></li>
         </ul>
       </div>
 
     <div class="row">
-      <h4>{{ story.name }}</h4>
-      <a class="btn-small red right" href="{% url 'projects:stories:change_state' story.id %}">
-        {% if story.state == 'OPEN' %}
+      <h4>{{ task.name }}</h4>
+      <a class="btn-small red right" href="{% url 'projects:stories:change_state' task.id %}">
+        {% if task.state == 'OPEN' %}
           IN PROGRESS
-        {% elif story.state == 'IN PROGRESS' %}
+        {% elif task.state == 'IN PROGRESS' %}
           TESTING
-        {% elif story.state == 'TESTING' %}
+        {% elif task.state == 'TESTING' %}
           DONE
-        {% elif story.state == 'DONE' %}
+        {% elif task.state == 'DONE' %}
           CLOSE
-        {% elif story.state == 'CLOSED' %}
+        {% elif task.state == 'CLOSED' %}
           REOPEN
         {% endif %}
       </a>
@@ -56,11 +55,11 @@
     </div>
     <div class="divider"></div>
     <div class="row">
-      <p>Acceptance criteria: {{ story.acceptance }}</p>
+      <p>Acceptance criteria: {{ task.acceptance }}</p>
     </div>
     <div class="divider"></div>
     <div class="row">
-      <p>Descripton: {{ story.description }}</p>
+      <p>Descripton: {{ task.description }}</p>
     </div>
 
     <div class="divider"></div>
@@ -69,7 +68,7 @@
       <h4>Comments</h4>
 
       <label>Submit a comment:</label>
-      <form method="POST" action="{% url 'projects:stories:create_comment' story.id %}">
+      <form method="POST" action="{% url 'projects:tasks:create_comment' task.id %}">
         {% csrf_token %}
         <input type="text" name="comment_txt" class="" placeholder="Add comment">
 
@@ -89,7 +88,7 @@
                 {{ comment.text }}
               </td>
               <td>
-                <a href="{% url 'projects:stories:delete_comment' story_id=story.id comment_id=comment.id %}"
+                <a href="{% url 'projects:tasks:delete_comment' task_id=task.id comment_id=comment.id %}"
                  class="btn-small red" method="POST">
                   <i class="material-icons">close</i>
                  </a>

@@ -1,11 +1,11 @@
 {% extends 'ScrumHelper/base.html' %}
 {% load static %}
 
-{% block title %} Stories {% endblock %}
+{% block title %} Tasks {% endblock %}
 
 {% block content %}
     <div class="container">
-        <h4>New Story</h4>
+        <h4>New Task</h4>
         <form method="POST" class="col s12">
             {% csrf_token %}
             <table>

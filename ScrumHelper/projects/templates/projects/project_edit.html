@@ -4,14 +4,14 @@
 {% block title %} Projects {% endblock %}
 
 {% block content %}
-
-    <h3>New Project</h3>
-    <form method="POST" class="col s12">
-        {% csrf_token %}
-        <ul>
-            {{ form.as_p }}
-        </ul>
-        <button type="submit" class="save btn">Submit</button>
-    </form>
-
+    <div class="container">
+        <h3>New Project</h3>
+        <form method="POST" class="col s12">
+            {% csrf_token %}
+            <ul>
+                {{ form.as_p }}
+            </ul>
+            <button type="submit" class="save btn">Submit</button>
+        </form>
+    </div>
 {% endblock %}

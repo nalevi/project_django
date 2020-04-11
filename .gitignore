@@ -8,3 +8,5 @@ ScrumHelper/ScrumHelper/__pycache__/__init__.cpython-37.pyc
 ScrumHelper/.vscode/settings.json
 ScrumHelper/.vscode/settings.json
 ScrumHelper/media/
+.venv/
+.vscode/settings.json

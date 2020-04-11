@@ -25,6 +25,7 @@
             <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="Create story" href="{% url 'projects:stories:story_new' %}"><i class="material-icons">assessment</i></a></li>
             <li><a class="btn-floating purple tooltipped" data-position="top" data-tooltip="Create epic" href="{% url 'projects:epics:epic_new' %}"><i class="material-icons">crop_din</i></a></li>
             <li><a class="btn-floating red tooltipped" data-position="top" data-tooltip="Create issue" href="#!"><i class="material-icons">priority_high</i></a></li>
+            <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="Create task" href="{% url 'projects:tasks:task_new' %}"><i class="material-icons">bookmark</i></a></li>
         </ul>
     </div>
 
@@ -107,6 +108,13 @@
                                 <a class="collection-item avatar" href="{% url 'projects:epics:detail' e.id %}">
                                     <i class="material-icons circle purple">crop_din</i>
                                     <span class="title">{{ e.name }} ({{ e.project_code }})</span>
+                                </a> 
+                    {% endfor %}
+                    {% for t in task_list %}            
+                                <a class="collection-item avatar" href="{% url 'projects:tasks:detail' t.id %}">
+                                    <i class="material-icons circle blue">bookmark</i>
+                                    <span class="title">{{ t.name }} ({{ t.project_code }})</span>
+                                    <span class="new badge red right" data-badge-caption="">{{ t.state }}</span>
                                 </a> 
                     {% endfor %}
                      </div>

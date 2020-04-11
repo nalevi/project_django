@@ -39,7 +39,7 @@
         </div>
         <br><br>
 
-        {% if assigned_to %}
+        {% if assigned_stories %}
             <div class="section">
                 <h5>{{ profile }}'s stories</h5>
             </div>
@@ -48,7 +48,7 @@
             <div class="section">
                 <div class="collection">
                     
-                    {% for s in assigned_to %}
+                    {% for s in assigned_stories %}
                         <a class="collection-item avatar" href="{% url 'projects:stories:detail' s.id %}" >
                             <i class="material-icons circle green">assessment</i>
                             <span class="title">{{ s.name }}</span>
@@ -76,6 +76,27 @@
                         </a>
                     {% endfor %}
                     
+                </div>
+            </div>
+        {% endif %}
+
+        {% if assigned_tasks %}
+            <div class="section">
+                <h5>{{ profile }}'s tasks</h5>
+            </div>
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="collection">
+                    
+                    {% for t in assigned_tasks %}
+                        <a class="collection-item avatar" href="{% url 'projects:tasks:detail' t.id %}" >
+                            <i class="material-icons circle blue">bookmark</i>
+                            <span class="title">{{ t.name }}</span>
+                            <p>{{ t.project_code }}</p>
+                            <span class="new badge red" data-badge-caption="">{{ t.state }}</span>
+                        </a>
+                    {% endfor %}        
                 </div>
             </div>
         {% endif %}

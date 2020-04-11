@@ -74,7 +74,7 @@ def get_stories_for_user(user_id):
 
     try:
         assigned_user_stories = UserStory.objects.filter(assignee=user_id)
-        context['assigned_to'] = assigned_user_stories
+        context['assigned_stories'] = assigned_user_stories
     except Exception:
         pass    
     

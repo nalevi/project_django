@@ -55,8 +55,7 @@ def create_comment(request, story_id):
             return redirect('projects:stories:detail', story_id=story.id )
         except Exception:
             raise Http404
-    else:
-        return render(request, 'stories/story_edit.html', {'form': form})
+    
 
 
 def delete_comment(request, story_id,comment_id):    

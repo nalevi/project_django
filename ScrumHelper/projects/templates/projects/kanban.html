@@ -36,7 +36,7 @@
                 {% endfor %}
                 {% for open_t in open_tasks %}         
                         <a class="collection-item avatar" href="{% url 'projects:tasks:detail' open_t.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle blue">bookmark</i>
                             <span class="title">{{ open_t.name }} ({{ open_t.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ open_t.state }}</span>
                         </a> 
@@ -61,7 +61,7 @@
                 {% endfor %}
                 {% for inp_t in inprogress_tasks %}          
                         <a class="collection-item avatar" href="{% url 'projects:tasks:detail' inp_t.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle blue">bookmark</i>
                             <span class="title">{{ inp_t.name }} ({{ inp_t.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ inp_t.state }}</span>
                         </a> 
@@ -87,7 +87,7 @@
                 {% endfor %}
                 {% for test_t in testing_tasks %}        
                         <a class="collection-item avatar" href="{% url 'projects:tasks:detail' test_t.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle blue">bookmark</i>
                             <span class="title">{{ test_t.name }} ({{ test_t.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ test_t.state }}</span>
                         </a> 
@@ -113,7 +113,7 @@
                 {% endfor %}
                 {% for close_t in closed_tasks %}       
                         <a class="collection-item avatar" href="{% url 'projects:tasks:detail' close_t.id %}">
-                            <i class="material-icons circle green">assessment</i>
+                            <i class="material-icons circle blue">bookmark</i>
                             <span class="title">{{ close_t.name }} ({{ close_t.project_code }})</span>
                             <span class="new badge red right" data-badge-caption="">{{ close_t.state }}</span>
                         </a> 

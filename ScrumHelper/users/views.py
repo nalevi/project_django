@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 
 from projects.stories.services import get_stories_for_user
 from projects.epics.services import get_epics_for_user
+from projects.tasks.services import get_tasks_for_user
 
 from worklogs.models import Worklog
 
@@ -34,6 +35,10 @@ def detail(request, username):
     epics = get_epics_for_user(user.id)
 
     context.update(epics)
+
+    tasks = get_tasks_for_user(user.id)
+
+    context.update(tasks)
 
     context['profile'] = profile
 

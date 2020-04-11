@@ -42,6 +42,11 @@ def get_issues_for_project(project_id):
     except Http404:
         pass
 
+    try:
+        task_list = get_list_or_404(Task, project_code=project.code)
+        context['task_list'] = task_list
+    except Http404:
+        pass
 
     return context
 

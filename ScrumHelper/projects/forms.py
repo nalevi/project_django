@@ -6,17 +6,20 @@ from django.contrib.auth.models import User
 from django.contrib.admin import widgets                                       
 
 from .models import Project
-from projects.stories.models import UserStory
-from projects.comments.models import Comment
-from projects.epics.models import Epic
+from .stories.models import UserStory
+from .comments.models import Comment
+from .epics.models import Epic
+from .tasks.models import Task
 
 from worklogs.models import Worklog
 
 
 class CreateProjectForm(ModelForm):
+    release = forms.CharField(required=False)
+
     class Meta:
         model = Project
-        fields = ['name', 'code']
+        fields = ['name', 'code', 'release']
         labels = {
             'name': _('Project name'),
             'code': _('Project code'),
@@ -70,3 +73,18 @@ class CreateWorklogform(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateWorklogform, self).__init__(*args, **kwargs)
         self.fields['log_date'].widget = widgets.AdminDateWidget()
+
+class CreateTaskForm(ModelForm):
+
+    project_code = forms.ModelChoiceField(widget=forms.Select,queryset=Project.objects.all())
+    epic = forms.ModelChoiceField(widget=forms.Select, queryset=Epic.objects.all(), required=False)
+    assignee = forms.ModelChoiceField(widget=forms.Select, queryset=User.objects.all(), required=False)
+    
+
+    class Meta:
+        model = Task
+        fields = ['name', 'project_code',
+                  'assignee', 'description', 'importance', 'epic']
+        labels = {
+            'project_code': _('Project\'s code'),
+        }

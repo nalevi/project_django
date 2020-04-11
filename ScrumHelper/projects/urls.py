@@ -12,6 +12,7 @@ urlpatterns = [
     path('<int:project_id>/', views.detail, name='detail'), 
     path('stories/', include('projects.stories.urls', namespace='stories')),
     path('epics/',include('projects.epics.urls', namespace='epics')),
+    path('tasks/', include('projects.tasks.urls', namespace='tasks')),
     path('delete/<int:project_id>/', views.delete, name='delete'),
     path('kanban/', views.kanban_board, name='kanban_board'),
     path('kanban_chart/', views.get_chart_data, name='get_chart_data'),
