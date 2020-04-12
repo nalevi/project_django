@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .models import Epic
-from .services import get_epic_details, delete_epic
+from .services import get_epic_details, delete_epic, get_epic_object
 
 from projects.forms import CreateEpicForm
 from projects.models import Project
@@ -42,4 +42,4 @@ def epic_edit(request, epic_id):
 def delete(request, epic_id):
     delete_epic(epic_id)
 
-    return render(request, 'users/index.html', {})
+    return redirect('users:index')
