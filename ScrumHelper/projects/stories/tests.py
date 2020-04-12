@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.http import Http404
+from datetime import datetime
 
 from projects.forms import CreateStoryForm
 from projects.models import Project
@@ -206,4 +207,94 @@ Views tests
 -----------------------------------------------------------------------------------
 '''
 
-#class StoryViewsTest(BaseTest):
+class StoryViewsTest(BaseTest):
+
+    def test_create_comment_view_redirect(self):
+        """
+        Tests if the CreateCommentForm gets the input->creates the comment->saves it-> then redirects to the story's detail page.
+        """
+
+        story = UserStory.objects.create(name="test",project_code=Project.objects.all()[0],owner=self.user)
+
+        comment_form = {
+            "comment_txt": "Hello world!",
+        }
+
+        response = self.client.post(reverse('projects:stories:create_comment',  kwargs={'story_id':story.id}), comment_form, follow=True)
+        self.assertRedirects(response,reverse('projects:stories:detail', kwargs={'story_id':story.id}), status_code=302, target_status_code=200)
+
+    
+    def test_create_comment_view_data(self):
+        """
+          Tests if the created comment's text gets saved for the desired story.
+        """
+        story = UserStory.objects.create(name="test",project_code=Project.objects.all()[0],owner=self.user)
+
+        comment_form = {
+            "comment_txt": "Hello world!",
+        }
+
+        self.client.post(reverse('projects:stories:create_comment',  kwargs={'story_id':story.id}), comment_form, follow=True)
+
+        testcontext = get_story_details(story.id)
+
+        self.assertEqual(testcontext["comments"][0].text, "Hello world!")
+
+    def test_delete_comment_view_redirect(self):
+        """
+          Tests if the delete_comment view makes the right redirection adn actually deletes the comment.
+        """
+        story = UserStory.objects.create(name="test",project_code=Project.objects.all()[0],owner=self.user)
+
+        comment_form = {
+            "comment_txt": "Hello world!",
+        }
+
+        #creating comment
+        self.client.post(reverse('projects:stories:create_comment',  kwargs={'story_id':story.id}), comment_form, follow=True)
+
+        test_comment = get_story_details(story.id)
+
+        #deleting comment
+        response = self.client.post(reverse('projects:stories:delete_comment',  kwargs={'story_id':story.id, 'comment_id':test_comment["comments"][0].id}), follow=True)
+        self.assertRedirects(response,reverse('projects:stories:detail', kwargs={'story_id':story.id}), status_code=302, target_status_code=200)
+
+        #creating another comment to check if only this one exist after the delete
+        comment_form2 = {
+            "comment_txt": "Hello world again!",
+        }
+
+        self.client.post(reverse('projects:stories:create_comment',  kwargs={'story_id':story.id}), comment_form2, follow=True)
+
+        post_delete_details = get_story_details(story.id)
+
+        self.assertEqual(len(post_delete_details["comments"]), 1)
+
+
+    def test_delete_story_redirect(self):
+        """
+         Test the deleting story view.
+        """
+        story = UserStory.objects.create(name="name",project_code=Project.objects.all()[0],owner=self.user)
+
+        response = self.client.post(reverse('projects:stories:delete',  kwargs={'story_id':story.id}), follow=True)
+        self.assertRedirects(response,reverse('users:index'), status_code=302, target_status_code=200)
+
+
+    def test_adding_worklog(self):
+        """
+         Tests the view's redirection and if the worklog is in the database.
+        """
+        story = UserStory.objects.create(name="name",project_code=Project.objects.all()[0],owner=self.user)
+
+        test_worklog_form = {
+            "log_date": datetime.strptime("2020-04-15","%Y-%m-%d").date(),
+            "logged_hour": 8
+        }
+
+        response = self.client.post(reverse('projects:stories:add_worklog',  kwargs={'story_id':story.id}), test_worklog_form, follow=True)
+        self.assertRedirects(response,reverse('projects:stories:detail', kwargs={'story_id':story.id}), status_code=302, target_status_code=200)
+
+        test_details = get_story_details(story.id)
+
+        self.assertEqual(test_details["worklogs"][0].logged_hour, 8)
