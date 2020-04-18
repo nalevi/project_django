@@ -239,3 +239,14 @@ def delete_user(request, user_id):
 
     return render(request, 'users/index.html', {})
 
+def list_all_users(request):
+    try:
+        users = User.objects.all()
+        context = {
+            'users': users,
+        }
+    except Exception:
+        context = dict()
+
+    return render(request, 'users/all_users.html', context)
+

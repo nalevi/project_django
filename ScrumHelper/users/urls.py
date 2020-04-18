@@ -7,6 +7,7 @@ app_name = "users"
 urlpatterns = [
     path('', views.index, name='index'),
     path('team_worklogs/', views.team_worklogs, name='team_worklogs'),
+    path('all_users/', views.list_all_users, name='list_all_users'),
     path('groups/', views.group_list, name='group_list'),
     path('groups/<int:gr_id>', views.group_detail, name='group_detail'),
     path('groups_delete/<int:gr_id>', views.delete_group, name='delete_group'),

@@ -44,6 +44,7 @@
             {% if perms.add_user %}
             <li><a href="{% url 'login:signup' %}">Create user</a></li>
             <li><a href="{% url 'users:group_list' %}">Manage user groups</a></li>
+            <li><a href="{% url 'users:list_all_users' %}">All users</a></li>
             {% endif %}
         </ul>
         {% endif %}

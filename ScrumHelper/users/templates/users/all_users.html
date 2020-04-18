@@ -1,0 +1,23 @@
+{% extends 'ScrumHelper/base.html' %}
+{% load static %}
+
+{% block title %} Users {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% if users %}
+        <ul class="collection with-header">
+            <li class="collection-header"><h4>All users</h4></li>
+        {% for usr in users %}
+            <li class="collection-item">
+                <a href="{% url 'users:detail' usr.username %}"> {{ usr.first_name }} {{ usr.last_name }} ({{ usr.username }}) </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no available users.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
