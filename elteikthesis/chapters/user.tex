@@ -14,12 +14,12 @@ Ezen fejezet a felhasználó részletes tájékoztatására szolgál. Az alfejez
 
 Pár fontosabb fogalom, amely a későbbiekben külön fejezetben részletezve lesz:
 \begin{itemize}
-	\item Projekt \ref{Projekt}
-	\item Epic \ref{Epic}
-	\item User stories \ref{User story}
-	\item Task \ref{Task}
-	\item Issue \ref{Issue}
-	\item Kanban \ref{Kanban}
+	\item Projekt \ref{projects}. fejezet
+	\item Epic \ref{stories}. fejezet
+	\item User stories \ref{stories}. fejezet
+	\item Task \ref{stories}. fejezet
+	\item Issue \ref{stories}. fejezet
+	\item Kanban \ref{Kanban}. fejezet
 \end{itemize}
 
 \newpage
@@ -39,3 +39,76 @@ Rendszergazdai oldalról ha még nem rendelkezik felhasználóval, akkor a fejle
 \newpage
 
 \section{Az alkalmazás felépítése}
+
+\subsection{Bejelentkezés, felhasználók}
+
+Az alkalmazásban az első képernyő, amely fogadja a felhasználót az a login oldal. A ScrumHelper-t csak sikeres bejelentkezés után lehetséges használni. Ha nem rendelkezik felhasználóval, akkor keresse meg a rendszergazdát, és igényeljen egyet. Az egyes felhasználói fiókok egy-egy jogosultsági csoporthoz kötöttek. 
+
+A felhasználói csoportok és jogosultságaik:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | m{0.25\textwidth} | m{0.65\textwidth} | }
+		\hline
+		\textbf{Csoport} & \textbf{Jogosultságok} \\
+		\hline \hline
+		\emph{Fejlesztő} & projekt/epic/story/task/issue létrehozás/szerkeztés, komment létrehozás/törlés, saját munkaidő napló létrehozása/törlése, Dokumentum feltöltés (ha projekt tulajdonos, akkor törlés), jelszóváltás \\
+		\hline
+		\emph{Tesztelő} &   projekt/epic/story/task/issue létrehozás/szerkeztés, komment létrehozás/törlés, saját munkaidő napló létrehozása/törlése, Dokumentum feltöltés (ha projekt tulajdonos, akkor törlés), jelszóváltás \\
+		\hline
+		\emph{Scrum master} & projekt/epic/story/task/issue létrehozás/szerkeztés/törlés, komment létrehozás/törlés, saját munkaidő napló létrehozása/törlése/egész scrum könyvelés megjelenítése, Dokumentum feltöltés (ha projekt tulajdonos, akkor törlés), jelszóváltás \\
+		\hline
+		\emph{Projekt menedzser} & projekt/epic/story/task/issue létrehozás/szerkeztés/törlés, komment létrehozás/törlés, saját munkaidő napló létrehozása/törlése/egész scrum könyvelés megjelenítése, Dokumentum feltöltés (ha projekt tulajdonos, akkor törlés, jelszóváltás) \\
+		\hline
+		\emph{Rendszergazda} & minden jogosultsággal rednelkezik, létre is hozhat új csoportokat, kezelheti azok jogosultságait, illetve a felhasználókat is tudja szerkezteni/törölni \\
+		\hline
+	\end{tabular}
+	\caption{Jogosultsági csoportok és jogosultságaik}
+	\label{tab:example-1}
+\end{table}
+
+\subsection{Főoldal}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,height=175px,frame]{index_page}
+	\caption{Főoldal}
+	\label{fig:example-1}
+\end{figure}
+
+A \ref{fig:example-1}. ábrán látható a főoldal kinézete. A navigációs sávban az alklamazás neve, Kanban board, Projects, Account és Logout mezőket olvashatjuk. A kanban board elnavigál a scrum Kanban táblájára, ahol az összes felvett feladatot láthatjuk egyben. A Projects menüponttal juthatunk el az adatbázisban szereplő projektek listájához. Az Account menüpont egy legördülő menü, amelyben a \ref{fig:example-2}. ábrán látható tartalom jelenik meg.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{account_dropdown}
+	\caption{Account legördülő menü}
+	\label{fig:example-2}
+\end{figure}
+
+Az elválasztó vonal alatti almenük: Create user,  Manage user groups, All users csak a rendszergazda jogosultságú felhasználók számára láthatóak. A Logout menüpont értelemszerűen kijelentkezteti a felhasználót.
+
+A főoldal törzsében található 3 opció: Projects - a Projects menüponttal megegyezően a projektek listájára navigál, My open stories - a bejeletnkezett felhasználóhoz rendelt story-k/task-ok/issue-k tekinthetőek meg és a profil adatok, My timesheet - a felhasználó munkaidő könyvelési oldalára kalauzol.
+
+\subsection{Projektek}
+\label{projects}
+
+A projektek listájához a Projects menüpont, illetve a főoldalról tudunk eljutni. Az oldalon egyszerre 5 projekt jelenik meg, a többit a \ref{fig:example-3}.ábra alján látható oldal léptetéssel érhetjük el. A projektek létrehozási dátum szerint a legújabbtól haladva a legrégebbi felé jelennek meg. A projekt oldalak esetében a navigációs sávban is megjelenik egy "Create project" neveztű gomb, mellyel egyből a létrehozás oldalra juthatunk.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{project_list}
+	\caption{Projektek listája}
+	\label{fig:example-3}
+\end{figure}
+
+Az egyes projektekre kattintva eljuthatunk a projekt saját oldalára. Itt megtalálhatjuk az alapvető információkat a projektről, a projektekhez feltöltött dokumentumokat, valamint a projekthez tartozó összes feladat (epic,story,task,issue) felosolását. A jobb alsó sarokban található egy menü, mely az egyes feladat fajták saját oldalain is megtalálhatóak, természetesen részben eltérő menüpontokkal. A projektek esetében ezt tartalmazza a szerkeztés, epic, story, task, issue létrehozását, valamint a projekt szerkeztését, illetve a megfelelő jogosultsággal rendelkezőknek a törlés opciót. (\ref{fig:example-4}. ábra).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{edit_menu}
+	\caption{almenü, mely különböző opciókat tartalmaz projekt, vagy feladat típustól függően}
+	\label{fig:example-4}
+\end{figure}
+
+\subsection{Epic, Story, Task, Issue}
+\label{stories}

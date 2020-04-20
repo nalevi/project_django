@@ -198,6 +198,7 @@
 % Grafika
 \RequirePackage{graphicx}
 \RequirePackage{float}
+\RequirePackage{wrapfig}
 % Maximális ill. minimális méret megadása ábráknak
 \RequirePackage[export]{adjustbox}
 % Több ábra egy figure-on belül
