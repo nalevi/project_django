@@ -134,5 +134,41 @@ Az egyes projektekre kattintva eljuthatunk a projekt saját oldalára. Itt megta
 \begin{description}
 	\item[Epic:] Egy projekten belül levő feladatok gyűjteménye. Mivel projektek több sprinten át élhetnek, ezért rövidebb időszakokban az összefüggő story-k és taskok összefogására érdemes ezt használni. Létrehozni az adott projekt oldalán a korábban említett almenüből lehet (\ref{fig:example-4}. ábra). 
 	\item[Story:] Felhasználói feladat. Ha valamilyen jól körülhatárolt fejlesztés van a projekten belül, akkor érdemes ezt használni annak leírására. Létrehozatalkor még nem kötelező hozzárendelni felhasználót, lehet később is a story szerkeztésével. Létrehozni a projekt oldalán levő almenüből (\ref{fig:example-4}. ábra) lehetséges, avagy a navigációs menün megjelenő "Create story" gombra kattintva. Ez olyankor elérhető, amikor egy meglévő story oldalán vagyunk éppen.
-	\item[Task:]
+	\item[Task:] Szintén felhasználói feladat. A taskot a storyval szemben kisebb feladatok leírására érdemes használni. Például, ha valaki dokumentációt ír, vagy meetingekre jár, vagy csak valami apró fejlesztésről van szó, akkor érdemes azt "taskosítani". Létrehozni a projektek, illetve epicek és storyk oldalán lehetséges (\ref{fig:example-4}. ábra). 
+	\item[Issue:] Az issue kicsit eltér a storytól és a tasktól. Az issue valamilyen jellegű probléma leírására használható. Például ha egy elkészült fejlesztésben a teszetelő hibát talál, vagy ha már a leszállított build-ben derül ki valamiféle "bug". Létrehozni a projekt almenüjében lehetséges (\ref{fig:example-4}. ábra).
 \end{description}
+
+A story, task és issue hármas státusszal is rendelkezik. Az aktuális státuszt minden olyan oldalon láthatjuk, ahol valamilyen felsorolásban szerepel a 3 közül bármely feladat típus. A státuszt az adott feladat saját oldalán lehet a jobb felső sarokba látható gombbal állítani, melyen mindig az a státusz olvasható, amely az éppen aktuálisat követi.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{storyExample}
+	\caption{Példa egy story-ra egy felsorolásban: látható a neve, a projekt kódja, emblémája és aktuális státusza}
+	\label{fig:example-6}
+\end{figure}
+
+\subsection{Egy példa fejelsztési ciklus}
+\label{example_workflow}
+
+Az egyes fogalmak gyorsabb és könnyebb megértése érdekében egy példa fejlesztési folyamaton keresztül szemléltetném a használatukat:
+
+\begin{enumerate}
+	\item A scrum master-hez megérkezik a fejlesztési igény (projekt) a klienstől.
+	\item Felvesz egy projektet a ScrumHelper-ben. Feltölti hozzá az igényhez kapott dokumentumokat, amelyek segítik majd a tervezők munkáját.
+	\item Ezt követően kiosztja az igény megtervezését egy tervezőnek (architect). Ehhez task-ot készít, ahol összeírja a teendőket röviden.
+	\item A tervező megírja az igény specifikációját arról, hogyan lehetne ezt az adott rendszerben implementálni (High Level Solution Design).
+	\item Utóbbit feltölti a projekt többi dokumentuma közé, majd elkezdi lebontani feladatcsoportokra (epic) és feladatokra (story).
+	\item A fejlesztő ezután válogathat a story-k között, melyiket tudja megcsinálni. Amelyiket kiválasztja azt magához rendeli a story szerkeztői oldalán és IN PROGRESS-be rakja a státuszt.
+	\item Amint végzett a fejlesztéssel, TESTING státuszba állítja. Egy tesztelő megkeresi (például a Kanban boardon) és magához rendeli.
+	\item Ha tesztelés közben hibát talál, akkor felvesz a projekthez egy Issue-t amit az eredeti fejlesztőhöz (vagy aki javítani tudja) rendeli.
+	\item Amikor már nincsen probléma a story-val, akkor DONE státuszba rakja.
+	\item Egy feladat életciklusának utolsó állomása a CLOSED, amelyre a sprint végén ajánlatos állítani. Ha valami okból újra foglalkozni kell vele, akkor lehetőség van a REOPEN opcióval újra nyitottá tenni.
+	\item Egyes Release-k idején, hogy ne legyen túl sok a story, érdemes a rendszergazdáknak egy karbantartó scripttel kiüríteni a már régebben lezárt feladatokat (részletek a \ref{ch:impl}. fejezetben).
+\end{enumerate}
+
+\subsection{Kanban tábla}
+\label{kanbanboard}
+
+\subsection{Munkaidő könyvelés}
+\label{worklog}
+
