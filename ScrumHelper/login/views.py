@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import IntegrityError
 
 from .forms import SignUpForm
@@ -20,12 +20,12 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            try:
-                form.save()
-            except IntegrityError:
-                error_msg = "Can't create user"
-                form = SignUpForm()
-                return render(request, 'registration/signup.html', {'form': form, 'error_msg': error_msg} )
+            grp = form.cleaned_data['group']
+
+            user = form.save()
+            group = Group.objects.get(name=grp)
+            user.groups.add(group.id)
+            
                 
             return redirect('users:index')
     else:
@@ -38,7 +38,10 @@ def edit_user(request,user_id):
     if request.method == 'POST':
         form = SignUpForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()
+            grp = form.cleaned_data['group']
+            user = form.save()
+            group = Group.objects.get(name=grp)
+            user.groups.add(group.id)
                 
             return redirect('users:index')
     else:
