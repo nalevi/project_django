@@ -114,7 +114,11 @@ def team_worklogs(request):
         
         filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
 
-        if request.user.groups.filter(name=Group(name='project_manager')).exists():
+        grps = request.user.groups.all()
+
+        print(grps)
+
+        if request.user.groups.filter(name='project_manager').exists():
 
             for u in users:
                 workhours = Worklog.objects.filter(log_date__month=filter_date.month).filter(log_user=u)

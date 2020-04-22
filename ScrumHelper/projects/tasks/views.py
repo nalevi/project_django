@@ -77,7 +77,7 @@ def delete(request, task_id):
 def change_state(request, task_id):
     succes = change_task_state(task_id)
 
-    return redirect('projects:stories:detail', task_id=task_id)
+    return redirect('projects:tasks:detail', task_id=task_id)
     
 
 def add_worklog(request, task_id):

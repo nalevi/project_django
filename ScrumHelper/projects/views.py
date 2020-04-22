@@ -98,23 +98,23 @@ def kanban_board(request):
     testing_tasks = tasks.filter(state="TESTING")
     testing_issues = issues.filter(state="TESTING")
 
-    closed_stories = stories.filter(state="CLOSED")
-    closed_tasks = tasks.filter(state="CLOSED")
-    closed_issues = issues.filter(state="CLOSED")
+    done_stories = stories.filter(state="DONE")
+    done_tasks = tasks.filter(state="DONE")
+    done_issues = issues.filter(state="DONE")
 
     context = {
         'open_stories': open_stories,
         'inprogress_stories': inprogress_stories,
         'testing_stories': testing_stories,
-        'closed_stories': closed_stories,
+        'done_stories': done_stories,
         'open_tasks': open_tasks,
         'inprogress_tasks': inprogress_tasks,
         'testing_tasks': testing_tasks,
-        'closed_tasks': closed_tasks,
+        'done_tasks': done_tasks,
         'open_issues': open_issues,
         'inprogress_issues': inprogress_issues,
         'testing_issues': testing_issues,
-        'closed_issues': closed_issues,
+        'done_issues': done_issues,
     }
 
     return render(request, 'projects/kanban.html', context)
@@ -138,15 +138,15 @@ def get_chart_data(request):
     testing_tasks = tasks.filter(state="TESTING").count()
     testing_issues = issues.filter(state="TESTING").count()
 
-    closed_stories = stories.filter(state="CLOSED").count()
-    closed_tasks = tasks.filter(state="CLOSED").count()
-    closed_issues = issues.filter(state="CLOSED").count()
+    done_stories = stories.filter(state="DONE").count()
+    done_tasks = tasks.filter(state="DONE").count()
+    done_issues = issues.filter(state="DONE").count()
 
     json = {
         'open_all': open_stories + open_tasks + open_issues,
         'inprogress_all': inprogress_stories + inprogress_tasks + inprogress_issues,
         'testing_all': testing_stories + testing_tasks + testing_issues, 
-        'closed_all': closed_stories + closed_tasks + closed_issues,
+        'done_all': done_stories + done_tasks + done_issues,
     }
 
     # JsonResponse(json)

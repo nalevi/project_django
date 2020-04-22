@@ -68,6 +68,8 @@ class CreateEpicForm(ModelForm):
 
 class CreateWorklogform(ModelForm):
 
+    logged_hour = forms.IntegerField(max_value=8, min_value=1)
+    
     class Meta:
         model = Worklog
         fields = ['log_date', 'logged_hour']

@@ -36,7 +36,7 @@
             var openData = parseInt("{{ open_all }}")
             var inpData = parseInt("{{ inprogress_all }}")
             var testData = parseInt("{{ testing_all }}")
-            var closeData = parseInt("{{ closed_all }}")
+            var doneData = parseInt("{{ done_all }}")
 
             window.chartColors = {
                 red: 'rgb(226, 16, 16)',
@@ -54,7 +54,7 @@
 						openData,
 						inpData,
 						testData,
-						closeData,
+						doneData,
 					],
 					backgroundColor: [
 						window.chartColors.green,
@@ -68,7 +68,7 @@
 					'OPEN',
 					'IN PROGRESS',
 					'TESTING',
-					'CLOSED'
+					'DONE'
 				]
 			},
 			    options: {
