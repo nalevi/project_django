@@ -7,18 +7,15 @@ Ezen fejezet a felhasználó részletes tájékoztatására szolgál. Az alfejez
 \section{Röviden az agilis módszertanról és a  "scrum"-ról} % Briefly about the "scrum" 
 
 \begin{description}
-	\item[Mi az agilis módszertan?] A szoftverfejlesztési módszerek egy csoportja, ahol a követelmények és megoldások szoros együttműködésén keresztül fejlődnek az önszerveződő  és 		     	multifonkcionális csapatok. Ez elősegíti az korai szállítást, folytonos továbbfejlesztést és bátorít a változásokra adható gyors és rugalmas válaszokra. \footnote{Részletes leírás 		 	   	megtalálható: \url{https://www.agilealliance.org/agile101/}}
+	\item[Mi az agilis módszertan?] A szoftverfejlesztési módszerek egy csoportja, ahol a követelmények és megoldások szoros együttműködésén keresztül fejlődnek az önszerveződő  és 		     	multifonkcionális csapatok. Ez elősegíti a korai szállítást, folytonos továbbfejlesztést és bátorít a változásokra adható gyors és rugalmas válaszokra. \footnote{Részletes leírás 		 	   	megtalálható: \url{https://www.agilealliance.org/agile101/}}
 	\item[Mi a "scrum"?] Az agilis módszertanon belül sokféle irányzat van, ezek egyike a scrum. A scrum középpontjában a kis létszámú, önszerveződő agilis csapatok állnak. Itt,
- szemben a többi agilis ágazattal, nincsenek általánosan megszabott ,egész rendszert egybefogó szállítási és frissítési időpontok, hanem az aktuális fejlesztések Sprintekbe rendeződnek és ezek lejárta után történik az átadás. Ez közvetlenebb visszajelzést is biztosít a szállító és a kliens között. A scrum szerkezeti felépítése a következő: van egy scrum master, aki egybe fogja a csapat működését, feldata a scrum "menedzselése" gyakorlatilag. Mellete a csapat tartalmaz természetesen fejlesztőket és tesztelőket. A scrum létszáma nincsen hivatalosan meghatározva, de ajánlatos 8-10 főnél nem nagyobbra nőnie, ugyanis így veszít hatékonyságából. A csapatok minden nap egy meghatározott időpontban tartanak stand up-okat, amelyeken minden tag beszámol feladatairól, haldásáról, így mindenki a csapaton belül képbe kerülhet a Sprint aktuális állásáról.
+ szemben a többi agilis ágazattal, nincsenek általánosan megszabott ,egész rendszert egybefogó szállítási és frissítési időpontok, hanem az aktuális fejlesztések Sprintekbe rendeződnek és ezek lejárta után történik az átadás. Ez közvetlenebb visszajelzést biztosít a szállító és a megrendelő között. A scrum szerkezeti felépítése a következő: van egy scrum master, aki egybe fogja a csapat működését, feldata a scrum "menedzselése" gyakorlatilag. Mellette a csapat tartalmaz természetesen fejlesztőket és tesztelőket. A scrum létszáma nincsen hivatalosan meghatározva, de ajánlatos 8-10 főnél nem nagyobbra nőnie, ugyanis így veszít hatékonyságából. A csapatok minden nap egy meghatározott időpontban tartanak stand up-okat, amelyeken minden tag beszámol feladatairól, haldásáról, így mindenki a csapaton belül képbe kerülhet a Sprint aktuális állásáról.
 \end{description}
 
 Pár fontosabb fogalom, amely a későbbiekben külön fejezetben részletezve lesz:
 \begin{itemize}
 	\item Projekt \ref{projects}. fejezet
-	\item Epic \ref{stories}. fejezet
-	\item User stories \ref{stories}. fejezet
-	\item Task \ref{stories}. fejezet
-	\item Issue \ref{stories}. fejezet
+	\item Epic, User stories, Task, Issue \ref{stories}. fejezet
 	\item Kanban \ref{kanbanboard}. fejezet
 \end{itemize}
 
@@ -26,15 +23,17 @@ Pár fontosabb fogalom, amely a későbbiekben külön fejezetben részletezve l
 
 \section{Rendszerkövetelmények} % System requirements
 
-\textbf{Minimum követelmények}: A ScumHelper egy webes alkalmazás. Ez azt jelenti, hogy a felhasználónak csak egy böngészőre van szüksége a számítógépén (például: Google Chrome, Mozilla Firefox, Safari, stb.) és természetesn internet elérésre ahhoz, hogy futtatni tudja a szoftvert. Utóbbi elengedhetetlen, ugyanis csak bejelentkezve lehetséges használni, továbbá internet kapcsolat nélkül a számítógép csak a gyorsírótárában mentett oldalakat tudja megnyitni, de módosításokat nem tudunk végrehajtani az oldalon és váltani sem tudunk az alkalmazáson belül. Nincsen megkötés operációs rendszer tekintetében sem, tehát minden, napjainkban használatos rendszeren (Linux, Windows, Mac OS) egyaránt használható.  
+\textbf{Minimum követelmények}: A ScumHelper egy webes alkalmazás. Ez azt jelenti, hogy a felhasználónak csak egy böngészőre van szüksége a számítógépén (például: Google Chrome, Mozilla Firefox, Safari, stb.) és természetesn internet elérésre ahhoz, hogy futtatni tudja a szoftvert. Utóbbi elengedhetetlen, ugyanis csak bejelentkezve lehetséges használni, továbbá internet kapcsolat nélkül a számítógép csak a gyorsírótárában mentett oldalakat tudja megnyitni, de módosításokat nem tudunk végrehajtani a betöltött oldalon és új lapot sem tudunk megnyitni az alkalmazáson belül. Nincsen megkötés operációs rendszer tekintetében, tehát minden, napjainkban használatos rendszeren (Linux, Windows, Mac OS) egyaránt használható. 
 
-\textbf{Ajánlott követelmények}: A jobb felhasználói élmény érdekében érdemes legalább 1280x720 felbontású kijelzőn használni és a korábban már felsorolt, jelenleg leggyorsabbnak és legbiztonságosabbnak számító böngészővel megnyitni : Chrome, Mozilla firefox, Chromium.
+\textbf{Ajánlott követelmények}: A jobb felhasználói élmény érdekében érdemes legalább 1280x720 felbontású kijelzőn használni és a korábban már felsorolt, jelenleg leggyorsabbnak és legbiztonságosabbnak számító böngészővel megnyitni : Chrome, Mozilla firefox, Chromium, valamint érdemes szélessávú internet eléréssel rendelkezni.
 
 \section{Telepítés}
+\label{install}
 
 A felhasználói oldalról nem igényel telepítést. Az eléréshez a szerver elérési URL-jére van szükség, illetve egy felhasználó igénylésére az aktuális rendszergazdától. Érdemes az új felhasználóba való belépés után megváltoztatni jelszavunkat biztonsági okokból.
 
-Rendszergazdai oldalról ha még nem rendelkezik felhasználóval, akkor a fejlesztői dokumentációban (\ref{ch:impl}. fejezet) található részletesebb információ az alkalmazás beüzemelésésől, illetve rendszergazdai felhasználó létrehozásának lépéseiről. 
+Rendszergazdai oldalról ha még nem rendelkezik felhasználóval, akkor a fejlesztői dokumentációban (\ref{ch:impl}. fejezet) található információ a rendszergazda felhasználó létrehozásának lépéseiről.  Ha futtatni szeretné az alkamazás szervert lokálisan a saját számítógépen, vagy egy kihelyezett szervergépen, akkor azon rendszeren telepíteni kell a következő programokat:  python (3.5 vagy később verzió) \footnote{\url{https://www.python.org/downloads/}}, django és django-extension python csomagok\footnote{\url{https://docs.djangoproject.com/en/3.0/intro/install/}}, valamint egy adatbázis kezelő szoftvert (PostgreSQL, Oracle, MySQL, MariaDB, SQLite).
+
 
 \newpage
 
@@ -60,7 +59,7 @@ A felhasználói csoportok és jogosultságaik:
 		\hline
 		\emph{Projekt menedzser} & projekt/epic/story/task/issue létrehozás/szerkeztés/törlés, komment létrehozás/törlés, saját munkaidő napló létrehozása/törlése/egész scrum könyvelés megjelenítése, Dokumentum feltöltés (ha projekt tulajdonos, akkor törlés, jelszóváltás) \\
 		\hline
-		\emph{Rendszergazda} & minden jogosultsággal rednelkezik, létre is hozhat új csoportokat, kezelheti azok jogosultságait, illetve a felhasználókat is tudja szerkezteni/törölni \\
+		\emph{Rendszergazda} & minden jogosultsággal rendelkezik, létre is hozhat új csoportokat, kezelheti azok jogosultságait, illetve a felhasználókat is tudja szerkezteni/törölni \\
 		\hline
 	\end{tabular}
 	\caption{Jogosultsági csoportok és jogosultságaik}
@@ -101,7 +100,7 @@ A projektek listájához a Projects menüpont, illetve a főoldalról tudunk elj
 	\label{fig:example-3}
 \end{figure}
 
-Az egyes projektekre kattintva eljuthatunk a projekt saját oldalára. Itt megtalálhatjuk az alapvető információkat a projektről, a projektekhez feltöltött dokumentumokat, valamint a projekthez tartozó összes feladat (epic,story,task,issue) felosolását. A jobb alsó sarokban található egy menü, mely az egyes feladat fajták saját oldalain is megtalálhatóak, természetesen részben eltérő menüpontokkal. A projektek esetében ezt tartalmazza a szerkeztés, epic, story, task, issue létrehozását, valamint a projekt szerkeztését, illetve a megfelelő jogosultsággal rendelkezőknek a törlés opciót. (\ref{fig:example-4}. ábra).
+Az egyes projektekre kattintva eljuthatunk a projekt saját oldalára. Itt megtalálhatjuk az alapvető információkat a projektről, a projektekhez feltöltött dokumentumokat, valamint a projekthez tartozó összes feladat (epic,story,task,issue) felosolását. A jobb alsó sarokban található egy menü, mely az egyes feladat fajták saját oldalain is megtalálhatóak, természetesen részben eltérő menüpontokkal. A projektek esetében ez tartalmazza a szerkeztés, epic, story, task, issue létrehozását, valamint a projekt szerkeztését, illetve a megfelelő jogosultsággal rendelkezőknek a törlés opciót. (\ref{fig:example-4}. ábra).
 
 \begin{figure}[H]
 	\centering
@@ -126,15 +125,15 @@ Az egyes projektekre kattintva eljuthatunk a projekt saját oldalára. Itt megta
 	\hspace{35pt}
 	\subfigure[Issue]{
 		\includegraphics[scale=1]{issue}}
-	\caption{Az egyes feladat típusok emblémái}
+	\caption{Az egyes feladat típusok ikonjai}
 	\label{fig:example-5}
 \end{figure}
 
 
 \begin{description}
 	\item[Epic:] Egy projekten belül levő feladatok gyűjteménye. Mivel projektek több sprinten át élhetnek, ezért rövidebb időszakokban az összefüggő story-k és taskok összefogására érdemes ezt használni. Létrehozni az adott projekt oldalán a korábban említett almenüből lehet (\ref{fig:example-4}. ábra). 
-	\item[Story:] Felhasználói feladat. Ha valamilyen jól körülhatárolt fejlesztés van a projekten belül, akkor érdemes ezt használni annak leírására. Létrehozatalkor még nem kötelező hozzárendelni felhasználót, lehet később is a story szerkeztésével. Létrehozni a projekt oldalán levő almenüből (\ref{fig:example-4}. ábra) lehetséges, avagy a navigációs menün megjelenő "Create story" gombra kattintva. Ez olyankor elérhető, amikor egy meglévő story oldalán vagyunk éppen.
-	\item[Task:] Szintén felhasználói feladat. A taskot a storyval szemben kisebb feladatok leírására érdemes használni. Például, ha valaki dokumentációt ír, vagy meetingekre jár, vagy csak valami apró fejlesztésről van szó, akkor érdemes azt "taskosítani". Létrehozni a projektek, illetve epicek és storyk oldalán lehetséges (\ref{fig:example-4}. ábra). 
+	\item[Story:] Felhasználói feladat. Ha valamilyen jól körülhatárolt fejlesztés van a projekten belül, akkor érdemes ezt használni annak leírására. Létrehozatalkor még nem kötelező hozzárendelni felhasználót, lehet később is a story szerkeztésével. Létrehozni a projekt oldalán levő almenüből (\ref{fig:example-4}. ábra) lehetséges, avagy a navigációs sávban megjelenő "Create story" gombra kattintva. Ez olyankor elérhető, amikor egy meglévő story oldalán vagyunk éppen.
+	\item[Task:] Szintén felhasználói feladat. A taskot a storyval szemben kisebb feladatok leírására érdemes használni. Például, ha valaki dokumentációt ír, vagy meetingekre jár, vagy csak valami apró fejlesztésről van szó, akkor érdemes azt "taskosítani". Létrehozni a projektek, illetve epicek és storyk oldalán lehetséges az almenüből (\ref{fig:example-4}. ábra). 
 	\item[Issue:] Az issue kicsit eltér a storytól és a tasktól. Az issue valamilyen jellegű probléma leírására használható. Például ha egy elkészült fejlesztésben a teszetelő hibát talál, vagy ha már a leszállított build-ben derül ki valamiféle "bug". Létrehozni a projekt almenüjében lehetséges (\ref{fig:example-4}. ábra).
 \end{description}
 
@@ -192,7 +191,7 @@ A jobb felső sarokban látható gomb ( \ref{fig:kanban}. ábra "Progress graph"
 \subsection{Munkaidő napló}
 \label{worklog}
 
-Az alkalmazás lehetőséget biztosít az egyes feldatokkal eltöltött munkaidő számontartására is. Ehhez el kell navigálnuk az adott feladat (story, task, issue) oldalára és a már korábban többször is említett (\ref{fig:example-4}. ábra) jobb alsó sarokban található almenüben kiválasztani a munkaidő könyvelése opciót ("Add worklog", ikon: kék körben fehér aktatáska). Ez eljuttatja a felhasználót a munkaidő létrehozó oldalára. Itt a dátum mezőt mgfelelő formátumban kitöltve, avagy a naptár ikont használva meg kell adni a munkanapot. Alatta pedig megadni a feladattal töltött munkaórát számát, amely 1 és 8 közé kell essen. Ettől eltérő bementre figyelmeztet az alkalmazás, hogy rossz adatot adtott meg. A navigációs sáv "Account" legördülő menüjében (\ref{fig:example-2}. ábra) a "Timesheet" opcióra kattintva, avagy a főoldalról a "Timesheet" pontra kattintva tekinthető meg a saját profilunkhoz rögzített összes munkaidő napló bejegyzés napi és havi bontásban (\ref{fig:personaltimesheet}. ábra).
+Az alkalmazás lehetőséget biztosít az egyes feldatokkal eltöltött munkaidő számontartására is. Ehhez el kell navigálnuk az adott feladat (story, task, issue) oldalára és a már korábban többször is említett (\ref{fig:example-4}. ábra) jobb alsó sarokban található almenüben kiválasztani a munkaidő könyvelése opciót ("Add worklog", ikon: kék körben fehér aktatáska). Ez eljuttatja a felhasználót a munkaidő létrehozó oldalára. Itt a dátum mezőt megfelelő formátumban kitöltve, avagy a naptár ikont használva meg kell adni a munkanapot. Alatta pedig megadni a feladattal töltött munkaórák számát, amely 1 és 8 közé kell essen. Ettől eltérő bementre figyelmeztet az alkalmazás, hogy rossz adatot adtott meg. A navigációs sáv "Account" legördülő menüjében (\ref{fig:example-2}. ábra) a "Timesheet" opcióra kattintva, avagy a főoldalról a "Timesheet" pontra kattintva tekinthető meg a saját profilunkhoz rögzített összes munkaidő napló bejegyzés napi és havi bontásban (\ref{fig:personaltimesheet}. ábra).
 
 \begin{figure}[H]
 	\centering
