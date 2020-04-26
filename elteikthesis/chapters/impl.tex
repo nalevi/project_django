@@ -150,3 +150,51 @@ A \textbf{Documents} model rendelkezik egy \textit{document} attribútummal, mel
 	\caption{Epic modell diagrammja}
 	\label{fig:epicmodel}
 \end{figure}
+
+Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Project} tábla \textit{code} mezőjéhez. Egy projekthez több több epic is tartozhat, de egy epic csak egy projekthez kapcsolódhat. Ha a projekt törlődik, vagy a létrehozó felhasználó, akkor az összes epic is amelyek hozzá tartoznak. A modell mezői:
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{owner}: az epic-et létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
+	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
+	\item \textit{created\_date}: a létrehozás dátuma
+	\item \textit{modified\_date}: az utolsó módosítás dátuma
+	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{description}: egy leírás az epic-ről (maximum 250 karakter hosszú)
+\end{itemize}
+
+\subsection{Story modellje}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.5]{storyModel}
+	\caption{Story modell diagrammja}
+	\label{fig:storymodel}
+\end{figure}
+
+A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolódik egyrészt a projekthez, amely alatt létrehozták, kapcsolódik továbbá a felhasználóhoz, aki létrehozta, illetve akihez rednelve van (utóbbi opcionális), valamint kapcsolódik egy epic-hez (ez is opcionális). Egy story csak addig létezik, amíg a projekt is, amely alatt létehozták, avagy ki nem törlik. Ha epic-hez van rendelve és töröljük, akkor csak kinullázódik azon mezője. Abban az esetben, ha a felhasználót töröljük, aki létrehozta a story-t, akkor is törlődik. A modell mezői:
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{assignee}: idegen kulcs a hozzárendelt felhasználóra (lehet üres, \textbf{User} tábla)
+	\item \textit{epic}: idegen kulcs az \textbf{Epic} táblára (lehet üres)
+	\item \textit{owner}: az story-t létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
+	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
+	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
+	\item \textit{created\_date}: a létrehozás dátuma
+	\item \textit{modified\_date}: az utolsó módosítás dátuma
+	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{description}: egy leírás a story-ról (maximum 250 karakter hosszú)
+	\item \textit{importance}: fontosság (Low, Medium, High)
+	\item \textit{state}: aktuális állapot (OPEN, IN PROGRESS, TESTING, DONE, CLOSED)
+\end{itemize}
+
+\subsection{Task modellje}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.5]{taskModel}
+	\caption{Task modell diagrammja}
+	\label{fig:taskmodel}
+\end{figure}
+

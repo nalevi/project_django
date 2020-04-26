@@ -11,7 +11,6 @@ class UserStory(models.Model):
     '''
     UserStory object's model.
     '''
-    #id = models.IntegerField(primary_key=True, unique=True, db_index=True)
     name = models.CharField(max_length=50, unique=True, default="Unkown")
     project_code = models.ForeignKey("projects.Project",to_field="code", on_delete=models.CASCADE,related_name="userstory_project_code")
     created_date = models.DateTimeField(null=False, blank=False,default=timezone.now)
