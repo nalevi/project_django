@@ -183,11 +183,13 @@ A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolód
 	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
 	\item \textit{created\_date}: a létrehozás dátuma
 	\item \textit{modified\_date}: az utolsó módosítás dátuma
-	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{name}: a story neve (maximum 50 karakter hosszú)
 	\item \textit{description}: egy leírás a story-ról (maximum 250 karakter hosszú)
 	\item \textit{importance}: fontosság (Low, Medium, High)
 	\item \textit{state}: aktuális állapot (OPEN, IN PROGRESS, TESTING, DONE, CLOSED)
 \end{itemize}
+
+Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{UserStory}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
 
 \subsection{Task modellje}
 
@@ -198,7 +200,7 @@ A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolód
 	\label{fig:taskmodel}
 \end{figure}
 
-A \txtbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval. Ugyanúgy egy projekthez, esetlegesen egy epichez és a felhasználó(k)hoz kapcsolódik össze. A mezői:
+A \textbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval. Ugyanúgy egy projekthez, esetlegesen egy epic-hez és a felhasználó(k)hoz kapcsolódik. Az eltérés a státuszaiban van: csak OPEN (nyitott), DONE(kész) és CLOSED(lezárt) lehet. A mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -209,8 +211,78 @@ A \txtbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval
 	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
 	\item \textit{created\_date}: a létrehozás dátuma
 	\item \textit{modified\_date}: az utolsó módosítás dátuma
-	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{name}: a task neve (maximum 50 karakter hosszú)
 	\item \textit{description}: egy leírás a task-ról (maximum 250 karakter hosszú)
 	\item \textit{importance}: fontosság (Low, Medium, High)
 	\item \textit{state}: aktuális állapot (OPEN, DONE, CLOSED)
 \end{itemize}
+
+Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{Task}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
+
+\subsection{Issue modell}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.5]{issueModel}
+	\caption{Issue modell diagrammja}
+	\label{fig:issuemodel}
+\end{figure}
+
+Az \textbf{Issue} modellje már több mezőben is eltér a \textbf{Task} és \textbf{UserStory}-tól. A plusz mezők a korábbiakhoz képest, a \textit{defect\_type} és \textit{solution}. Előbbi a hiba típusát hívatott reprezentálni, utóbbi pedig egy rövid leírás a megoldásról. Ez is kapcsolódik egy projekthez és a létrehozójához, valamint ahhoz akihez hozzárendelik (opcionális).
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{assignee}: idegen kulcs a hozzárendelt felhasználóra (lehet üres, \textbf{User} tábla)
+	\item \textit{owner}: az issue-ot létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
+	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
+	\item \textit{created\_date}: a létrehozás dátuma
+	\item \textit{defect\_type}: a hiba típusa (BUG, SYSTEM DEFECT - rendszer szintű, SPECIFICATION ISSUE - tervezési hiba, DEVELOPMENT ISSUE - fejelsztési hiba)
+	\item \textit{modified\_date}: az utolsó módosítás dátuma
+	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{description}: egy leírás az issue-ról (maximum 250 karakter hosszú)
+	\item \textit{importance}: fontosság (Low, Medium, High)
+	\item \textit{soultion}: a megoldás rövid leírása (maximum 150 karakter)
+	\item \textit{state}: aktuális állapot (OPEN, DONE, CLOSED)
+\end{itemize}
+
+Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{Issue}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
+
+\subsection{Comment modell}
+
+A \textbf{Projects} applikáción belül található a \textbf{Comments} modul is. Egy-egy \textbf{UserStory, Task, Issue} rendelkezhet kommentekkel különböző felhasználóktól. Ezekhez az egyes modellekben van idegen kulcsos mező, amely mutat egy-egy kommentre (\textbf{Many-To-Many} kapcsolat). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.5]{commentModel}
+	\caption{Comment modell diagrammja}
+	\label{fig:commentModel}
+\end{figure}
+
+Mezői:
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{owner}: a kommentelő felhasználó (idegen kulcs a \textbf{User} táblára)
+	\item \textit{created\_date}: a létrehozás dátuma
+	\item \textit{text}: a komment szövege (maximum 250 karakter hosszú)
+\end{itemize}
+
+\subsection{Worklog modell}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.5]{worklogModel}
+	\caption{Worklog modell diagrammja}
+	\label{fig:worklogmodel}
+\end{figure}
+
+A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} model szolgál. Munkaidő napló bejegyzést \textbf{UserStory-hoz, Task-hoz és Issue-hoz} tudunk létrehozni. Ezekhez az egyes modellek saját \textit{work\_log} mezőjével kapcsolódik. A mezői:
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{log\_user}: a létrehozó felhasználója (idegen kulcs a \textbf{User} táblára)
+	\item \textit{log\_date}: a létrehozás dátuma
+	\item \textit{logged\_hour}: az órák száma ([0..8] intervallumba kell essen)
+\end{itemize}
+
+\section{Szerver réteg}
