@@ -198,3 +198,19 @@ A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolód
 	\label{fig:taskmodel}
 \end{figure}
 
+A \txtbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval. Ugyanúgy egy projekthez, esetlegesen egy epichez és a felhasználó(k)hoz kapcsolódik össze. A mezői:
+
+\begin{itemize}
+	\item \textit{id}: mezőazonosító (alapvetően generált)
+	\item \textit{assignee}: idegen kulcs a hozzárendelt felhasználóra (lehet üres, \textbf{User} tábla)
+	\item \textit{epic}: idegen kulcs az \textbf{Epic} táblára (lehet üres)
+	\item \textit{owner}: az task-ot létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
+	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
+	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
+	\item \textit{created\_date}: a létrehozás dátuma
+	\item \textit{modified\_date}: az utolsó módosítás dátuma
+	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
+	\item \textit{description}: egy leírás a task-ról (maximum 250 karakter hosszú)
+	\item \textit{importance}: fontosság (Low, Medium, High)
+	\item \textit{state}: aktuális állapot (OPEN, DONE, CLOSED)
+\end{itemize}

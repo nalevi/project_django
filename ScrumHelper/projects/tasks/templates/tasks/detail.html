@@ -27,10 +27,6 @@
       <h4>{{ task.name }}</h4>
       <a class="btn-small red right" href="{% url 'projects:tasks:change_state' task.id %}">
         {% if task.state == 'OPEN' %}
-          IN PROGRESS
-        {% elif task.state == 'IN PROGRESS' %}
-          TESTING
-        {% elif task.state == 'TESTING' %}
           DONE
         {% elif task.state == 'DONE' %}
           CLOSE

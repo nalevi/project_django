@@ -91,10 +91,6 @@ def change_task_state(task_id):
     task = get_object_or_404(Task, pk=task_id)
 
     if task.state == 'OPEN':
-        task.state = 'IN PROGRESS'
-    elif task.state == 'IN PROGRESS':
-        task.state = 'TESTING'
-    elif task.state == 'TESTING':
         task.state = 'DONE'
     elif task.state == 'DONE':
         task.state = 'CLOSED'

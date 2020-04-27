@@ -166,20 +166,6 @@ class TaskServicesTest(BaseTest):
         task = Task.objects.all()[0]
 
         self.assertTrue(ret_value)
-        self.assertEqual(task.state, "IN PROGRESS")
-
-        ret_value = change_task_state(task.id)
-
-        task = Task.objects.all()[0]
-
-        self.assertTrue(ret_value)
-        self.assertEqual(task.state, "TESTING")
-
-        ret_value = change_task_state(task.id)
-
-        task = Task.objects.all()[0]
-
-        self.assertTrue(ret_value)
         self.assertEqual(task.state, "DONE")
 
         ret_value = change_task_state(task.id)
