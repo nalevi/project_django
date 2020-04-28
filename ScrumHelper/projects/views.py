@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 from .stories.models import UserStory
 from .tasks.models import Task
@@ -98,9 +99,9 @@ def kanban_board(request):
     testing_tasks = tasks.filter(state="TESTING")
     testing_issues = issues.filter(state="TESTING")
 
-    done_stories = stories.filter(state="DONE")
-    done_tasks = tasks.filter(state="DONE")
-    done_issues = issues.filter(state="DONE")
+    done_stories = stories.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30))
+    done_tasks = tasks.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30))
+    done_issues = issues.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30))
 
     context = {
         'open_stories': open_stories,
