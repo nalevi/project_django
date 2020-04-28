@@ -162,13 +162,12 @@ Az egyes fogalmak gyorsabb és könnyebb megértése érdekében egy példa fejl
 	\item Ha tesztelés közben hibát talál, akkor felvesz a projekthez egy Issue-t amit az eredeti fejlesztőhöz (vagy aki javítani tudja) rendeli.
 	\item Amikor már nincsen probléma a story-val, akkor DONE státuszba rakja.
 	\item Egy feladat életciklusának utolsó állomása a CLOSED, amelyre a sprint végén ajánlatos állítani. Ha valami okból újra foglalkozni kell vele, akkor lehetőség van a REOPEN opcióval újra nyitottá tenni.
-	\item Egyes Release-k idején, hogy ne legyen túl sok a story, érdemes a rendszergazdáknak egy karbantartó scripttel kiüríteni a már régebben lezárt feladatokat (részletek a \ref{ch:impl}. fejezetben).
 \end{enumerate}
 
 \subsection{Kanban tábla}
 \label{kanbanboard}
 
-A kanban szintén egy egységesen használt fogalom (avagy eszköz) a scrum módszertanban. A kanban board - azaz "tábla" - arra szolgál, hogy egybe gyűjtse a scrum összes felvett feladat típusát. A ScrumHelper-ben ez a funkció a navigációs sávban a Kanban board menüpontra kattintva érhető el. Itt négy státusz alapján négy oszlopba osztva láthatóak az aktuális feladatok: OPEN (nyitott), IN PROGRESS (folyamatban), TESTING (tesztelés alatt), DONE (kész).
+A kanban szintén egy egységesen használt fogalom (avagy eszköz) a scrum módszertanban. A kanban board - azaz "tábla" - arra szolgál, hogy egybe gyűjtse a scrum összes felvett feladat típusát. A ScrumHelper-ben ez a funkció a navigációs sávban a Kanban board menüpontra kattintva érhető el. Itt négy státusz alapján négy oszlopba osztva láthatóak az aktuális (DONE státuszban csak a 30 napon belül módosultak maradnak megjelenítve) feladatok: OPEN (nyitott), IN PROGRESS (folyamatban), TESTING (tesztelés alatt), DONE (kész).
 
 \begin{figure}[H]
 	\centering
