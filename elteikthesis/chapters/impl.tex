@@ -309,7 +309,7 @@ A következő alfejezetekben az egyes applikációk szerver rétegébe tartozó 
 A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a keretrendszerben implementált bejelentkeztetést használja, illetve azt bővíti ki.
 
 \begin{itemize}
-	\item \textbf{Formulák:}
+	\item \textbf{Forms:}
 
 	\begin{description}
 		\item[SignUpForm:] A regisztrációs formula. \textbf{UserCreationForm}-ból van származtatva, amely a \textit{django.contrib.auth.forms} modulban van implementálva. A formulának hét mezője van: \textit{username, first\_name, last\_name, email, password1, password2, group}. Vannak megkötések az egyes mezőkre. A \textit{first\_name} csak 30 karakter hosszú lehet, nem kötelező megadni. Ugyanezek igazak a \textit{last\_name} mezőre is. Az \textit{email} mező egy maximum 254 karakter hosszú, email formátumú bemenetet fogad csak el. A \textit{password1} és \textit{password2} mezők jelszó mezők, amiknek egyezniük kell a formula véglegesítésekor. A \textit{group} egy olyan mezőtípus (\textbf{ChoiceField}, amely közvetlenül az adatbázisból kérdezi le a választási lehetőségeket (az \textit{auth\_groups} táblából).
@@ -335,16 +335,66 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 
 \subsection{Projects}
 
-A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetkben leszek részletezve. A \textbf{Comments} applikációs lényegében csak a kommentek adatbázis reprezentációjára jött létre, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
+A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetkben leszek részletezve. A \textbf{Comments} applikáció lényegében csak a kommentek adatbázis reprezentációjára szolgál, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
 
 \begin{itemize}
-	\item \textbf{Formulák:}
+	\item \textbf{Forms:}
 	\begin{description}
-		\item[CreateProjectForm:]
+		\item[CreateProjectForm:] A projekt létrehozásához használatos form. Mezői: \textit{name, code, release}, azaz a projekt neve, a projekt 6 karakter hosszú kódja és a release kódja.
+		\item[CreateStoryForm:] A \textbf{Story} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínálnak fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
+		\item[CommentForm:] A kommentek létrehozásához használt form. Csak \textit{text} mezője van a komment szövegének lementéséhez.
+		\item[CreateEpicForm:] Az \textbf{Epic} létrehozó formulája. Mezői: \textit{name, project\_code, description}, azaz a neve, a projekt kódja, amelyhez tartozik és egy leírás.
+		\item[CreateWorklogform:] A \textbf{Worklog}, azaz munkanapló bejegyzés létrehozásához használt form. Mezők: \textit{log\_date, logged\_hour}. A feladattal végzett munkaidő és maga a munkanap.
+		\item[CreateTaskForm:]  A \textbf{Task} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínál fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
+		\item[CreateIssueForm:] Az \textbf{Issue} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic, defect\_type,solution}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínál fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező. A \textit{defect\_type} mező is egy \textbf{ChoiceField}, tehát adott lehetőségekből lehet választani: BUG, SYSTEM DEFECT, DEVELOPMENT, SPECIFICATION ISSUE. Utóbbi értékek egy konstansban találhatóak a \textit{contants.py} modulban, az \textit{ISSUE\_CHOICES} változóban.
 	\end{description}
 	\item \textbf{Szolgáltatások (services):}
 	\begin{description}
-		\item[get\_issues\_for\_project:]
+		\item[get\_issues\_for\_project:] Bemeneti paramétere: \textit{project\_id}. A megkapott projekt azonosítóhoz lekérdezi magát a projektet, a hozzátartozó story-kat, task-okat, issue-kat, epic-eket és feltöltött dokumentumokat. Ezeket egy \textit{context} nevű, dictionary típusú változóba gyűjti, ami a visszatérési értéke a függvénynek.
+		\item[delete\_project:] Bemeneti paraméter: \textit{project\_id}. A megkapott projekt azonosító alapján megkeresi az adatbázisban a projektet és kitörli.
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[index:] Lekérdezi az adatbázisban található összes projektet. A \textit{django.core.paginator} modul beli \textbf{Paginator} segítségével oldalakra osztja az eredményeket (jelen beállítás szerint ötösével). Ennek megoldása a \ref{src:paginator}. kódrészletben látható. Az így rendezett projekt listát hozzárendeli a "projects/index.html"-hez. \textbf{Végpont:} "projects/".
+		\item[detail:] Bemenő paraméter: \textit{request, project\_id}. Utóbbival meghívja a \textit{get\_issues\_for\_project} szolgáltatást és az ebből megszerzett \textit{context} változót hozzárendeli a "projects/details.html" oldalhoz. \textbf{Végpont}: "projects/<int:project\_id>/".
+		\item[project\_new:] Új projekt létrehozását kezelő view. "GET" üzenet esetén biztosítja az üres \textbf{CreateProjectForm}-ot, "POST" üzenet esetén ellenőrzi és lementi az adatokat. \textbf{Végpont:} "projects/new/".
+		\item[project\_edit:] A bemeneti paraméterként megkapott \textit{project\_id} alapján megkeresi az adatbázisban a projektet, majd egy \textbf{CreateProjectForm}-ot ad vissza az ismert adatokkal kitöltve "GET" üzenet esetén. "POST" üzenet esetén frissíti az adatbázisban a projekt adatait. \textbf{Végpont:} "projects/<int:project\_id>/edit".
+		\item[delete:] A paraméterül kapott \textit{project\_id}-val meghívja a \textit{delete\_project} szolgáltatást. \textbf{Végpont:} "projects/delete/<int:project\_id>/".
+		\item[upload\_doc:] Bemeneti paramétere: \textit{project\_id}. Az adott projekthez való dokumentum feltöltést végzi. A fájlt a \textit{request} paraméter FILE attribútumában kapja meg. \textbf{Végpont:} "projects/<int:project\_id>/upload\_doc".
+		\item[delete\_doc:] Bementben megkapja a \textit{project\_id}-ját és a \textit{doc\_id}-ját. E kettő segítségével törli az adatbázisból a fájlt. \textbf{Végpont:} "projects/<int:project\_id>/delete\_doc/<int:doc\_id>".
+		\item[kanban\_board]: Legyűjti a az összes story-t, task-ot, issue-ot a kanban táblához (amelyek az elmúlt 30 napban módosultak). \textbf{Végpont:} "projects/kanban/".
+		\item[get\_chart\_data:] Összeszedi az adatbázisból a szükséges adatokat a kanban körgrafikonos kimutatásához. \textbf{Végpont:} "projects/kanban\_chart".
+	\end{description}
+\end{itemize}
+
+\pagebreak
+
+\lstset{caption={Az adatbázisban található projektek listájának oldalakra tördelése a Paginator segítségével}, label=src:paginator}
+\begin{lstlisting}[language={python}]
+
+def index(request):
+    projects_list = Project.objects.all().order_by('-created_date')
+    paginator = Paginator(projects_list, 5)
+
+    page_number = request.GET.get('page',1)
+    projects = paginator.get_page(page_number)
+
+    context = {
+        'project_list': projects_list,
+        'projects': projects,
+    }
+    return render(request, 'projects/index.html', context)
+
+\end{lstlisting}
+
+\subsection{Epics}
+
+Az \textbf{Epics} applikáció az epic-ek megvalósítása. 
+
+\begin{itemize}
+	\item \textbf{Szolgáltatások (services):}
+	\begin{description}
+		\item[]
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
