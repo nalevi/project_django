@@ -12,7 +12,7 @@ from .forms import CreateProjectForm
 from .services import get_issues_for_project, delete_project
 
 def index(request):
-    projects_list = Project.objects.all()
+    projects_list = Project.objects.all().order_by('-created_date')
     paginator = Paginator(projects_list, 5)
 
     page_number = request.GET.get('page',1)
