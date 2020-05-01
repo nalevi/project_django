@@ -81,7 +81,7 @@ Ezek implementáció, részletei a későbbi alfejezetekben olvashatóak.
 
 A django keretrendszernek köszönhetően az alapkonfigurációt leszámítva nem számít, hogy milyen adatbázissal dolgozunk. A ScrumHelper fejelsztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
 
-Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django model típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testreszabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A model szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
+Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django modell típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testreszabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A modell szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
 
 \subsection{Felhasználó kezelés: Users, Login modellek}
 
@@ -92,7 +92,7 @@ Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forr
 	\label{fig:usermodel}
 \end{figure}
 
-A \textbf{django.contrib.auth.models.User} model reprezentál egy-egy felhasználót. Ez magában a keretrendszerben megtalálható. Elég sokoldalú, de van lehetőség kiegészíteni, esetlegesen helyettesíteni saját megvalósítással is. Kiegészítésre példa a \textbf{Profile} model osztály a users applikációban. Egy \textbf{OneToOneField} segítségével és szignálokkal (\textit{create\_user\_profile} és \textit{save\_user\_profile}) tudjuk az eredeti \textbf{Users} osztályhoz kötni. A szignálok azért szükségesek, mert így tud a modell reagálni az eredeti modell esetleges változásaira (létrehozás, módosítás, törlés). A mezők:
+A \textbf{django.contrib.auth.models.User} modell reprezentál egy-egy felhasználót. Ez magában a keretrendszerben megtalálható. Elég sokoldalú, de van lehetőség kiegészíteni, esetlegesen helyettesíteni saját megvalósítással is. Kiegészítésre példa a \textbf{Profile} modell osztály a users applikációban. Egy \textbf{OneToOneField} segítségével és szignálokkal (\textit{create\_user\_profile} és \textit{save\_user\_profile}) tudjuk az eredeti \textbf{Users} osztályhoz kötni. A szignálok azért szükségesek, mert így tud a modell reagálni az eredeti modell esetleges változásaira (létrehozás, módosítás, törlés). A mezők:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -131,7 +131,7 @@ A \textbf{Projects} applikáció saját adatbázis modellje a \textbf{Project}:
 	\item \textit{release}: a Release neve (maximum 10 karakter hosszú)
 \end{itemize}
 
-Rendelekezik egy \textit{documents} attribútummal is, mely egy \textbf{ManyToManyField} típusú mező, azaz több idegen kulcs kapcsolatot fog egybe (erre a célra a django automatikusan létrehoz egy táblát, amelyben benne lesznek ezek az összekapcsolások) a \textbf{Documents} model táblájának \textit{id} mezőjével. Ennek seígtségével kapcsolódik egy adott projekthez több dokumentum is.
+Rendelekezik egy \textit{documents} attribútummal is, mely egy \textbf{ManyToManyField} típusú mező, azaz több idegen kulcs kapcsolatot fog egybe (erre a célra a django automatikusan létrehoz egy táblát, amelyben benne lesznek ezek az összekapcsolások) a \textbf{Documents} modell táblájának \textit{id} mezőjével. Ennek seígtségével kapcsolódik egy adott projekthez több dokumentum is.
 
 \begin{figure}[H]
 	\centering
@@ -140,7 +140,7 @@ Rendelekezik egy \textit{documents} attribútummal is, mely egy \textbf{ManyToMa
 	\label{fig:docmodel}
 \end{figure}
 
-A \textbf{Documents} model rendelkezik egy \textit{document} attribútummal, mely \textbf{FileField} típusú. Ez a típusosztály reprezentálja Djangoban a fájl mezőket az adatbázisban. A fájl relatív elérési útját menti le az adatbázisba. Jelen alkalmazásban a \textit{documents/} mappát használja, de ez is konfigurálható a \textit{projects.models.project\_directory\_path(instance, filename)} függvény segítségével. A visszatérési értékben (amely egy string) lehet megadni az elérési utat.
+A \textbf{Documents} modell rendelkezik egy \textit{document} attribútummal, mely \textbf{FileField} típusú. Ez a típusosztály reprezentálja Djangoban a fájl mezőket az adatbázisban. A fájl relatív elérési útját menti le az adatbázisba. Jelen alkalmazásban a \textit{documents/} mappát használja, de ez is konfigurálható a \textit{projects.models.project\_directory\_path(instance, filename)} függvény segítségével. A visszatérési értékben (amely egy string) lehet megadni az elérési utat.
 
 \subsection{Epic modell}
 
@@ -276,7 +276,7 @@ Mezői:
 	\label{fig:worklogmodel}
 \end{figure}
 
-A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} model szolgál. Munkaidő napló bejegyzést \textbf{UserStory-hoz, Task-hoz és Issue-hoz} tudunk létrehozni. Ezekhez az egyes modellek saját \textit{work\_log} mezőjével kapcsolódik. A mezői:
+A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} modell szolgál. Munkaidő napló bejegyzést \textbf{UserStory-hoz, Task-hoz és Issue-hoz} tudunk létrehozni. Ezekhez az egyes modellek saját \textit{work\_log} mezőjével kapcsolódik. A mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
