@@ -286,3 +286,68 @@ A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} model szol
 \end{itemize}
 
 \section{Szerver réteg}
+
+A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek (views) adják. Egy-egy applikáció a következő modulokból (gyakorlatilag fájlokból épül fel) :
+
+\begin{itemize}
+	\item \textit{admin.py}: A Django biztosít egy admin felületet az alkalmazás adatbázis szintű kezelésére. Egy adott modell akkor szerkezthető az admin oldalon, ha beregisztráljuk ebben a fájlban.
+	\item \textit{apps.py}: Az egyes applikációk nevét tudjuk itt megadni, amivel tudunk rá hivatkozni a többi alkalmazásból (például: "projects.stories"), valamint egyéb alapkonfigurációkat az applikációról.
+	\item \textit{migrations}: Ez egy almappa, amiben alap és későbbi (fájl nevében időponttal jelölt) adatbázis migrációk találhatók. Ezek a modellek változásaikor az adatbázis reprezentációjukon módosítanak annak megfelelően.
+	\item \textit{templates}: A template-eket, azaz a HTML fájlokat tartalamzza, amik a böngészőben megjelenítendő Nézet rétehet adják. Lehetőség van a fő mappában (jelen esetben \textit{ScrumHelper}) létrehozni egyetlen tempaltes mappát és abban alkalamzásonként almappát, amelybe helyezzük a fájlokat,   de az újrafelhasználhatóság érdekében jobb megoldás minden ilyen fájlt és almappát az applikáció saját mappájában elhelyezni.
+	\item \textit{constants.py}: nem kötelező fájl. Applikáció szintű konstansok tárolására használható.
+	\item \textit{forms.py}: Szintén nem kötelező fájl. Ha használunk form-okat (például regisztrációra), akkor érdemes ebbe a fájlba elhelyezni ezeket.
+	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalamzáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
+	\item \textit{tests.py}: Az egyes applikációk egységteszt modulja.
+	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között.
+	\item \textit{urls.py}: Az applikációk szolgáltatásainak és view-inak az elérési útját tartalmazza (azaz a végpontokat, URL címeket).
+\end{itemize}
+
+A következő alfejezetekben az egyes applikációk szerver rétegébe tartozó részei lesznek részletezve (szolgáltatások, nézetek, végpontok, formulák).
+
+\subsection{Login}
+
+A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a keretrendszerben implementált bejelentkeztetést használja, illetve azt bővíti ki.
+
+\begin{itemize}
+	\item \textbf{Formulák:}
+
+	\begin{description}
+		\item[SignUpForm:] A regisztrációs formula. \textbf{UserCreationForm}-ból van származtatva, amely a \textit{django.contrib.auth.forms} modulban van implementálva. A formulának hét mezője van: \textit{username, first\_name, last\_name, email, password1, password2, group}. Vannak megkötések az egyes mezőkre. A \textit{first\_name} csak 30 karakter hosszú lehet, nem kötelező megadni. Ugyanezek igazak a \textit{last\_name} mezőre is. Az \textit{email} mező egy maximum 254 karakter hosszú, email formátumú bemenetet fogad csak el. A \textit{password1} és \textit{password2} mezők jelszó mezők, amiknek egyezniük kell a formula véglegesítésekor. A \textit{group} egy olyan mezőtípus (\textbf{ChoiceField}, amely közvetlenül az adatbázisból kérdezi le a választási lehetőségeket (az \textit{auth\_groups} táblából).
+		\item[ChangePassword:] A jelszóváltoztatáshoz használt formula. Ugyanazokkal a mezőkkel rendelkezik, mint a regisztrációs formula.
+	\end{description}
+
+	\item \textbf{Nézetek (views):}
+
+	\begin{description}
+		\item[CustomLoginView:] Erre azért van szükség, mert itt tudjuk megadni a \textit{redirect\_filed\_name} attribútummal, hogy hova navigáljon bejelenkezés után (jelen esetben: users/index.html).
+		\item[index:] Az index oldal, azaz a "login/index.html" tartalmát jeleníti meg. 
+\textbf{Végpontja:} "/" avagy "/login".
+		\item[logout:] Meghívja a  \textit{django.contrib.auth.login} függvényt és visszanavigál a \textit{login} oldalra. 
+\textbf{Végpontja:} "/logout/".
+		\item[signup:] A regisztrációs formula segítségével biztosítja a felahsználó létrehozását. A "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a formula, majd lementi a felahsználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres forumlát biztosít kitöltésre a \textit{registration/signup.html} számára. 
+\textbf{Végpontja:} "registration/signup/".
+		\item[edit\_user:] Az egyes felhasználók szerkeztésére szolgál. Ugyanazt a formulát ahsznála, mint a regisztráció, csak itt "GET" üzenet esetén is a az ismert adatokkal kitöltve adja át a tempalte-nek. 
+\textbf{Végpontja:} "edit\_user/<int:user\_id>/", azaz a bemenő paramétere egy felhasználói azonosító.
+		\item[change\_pw:] A jelszóváltoztatást valósítja meg. Ehhez szintén egy user\_id-t vár bementként és a regisztrációs formulát használja. Azért van szükség mégis külön kezelni, mert nem midne felhasználónak van jogosultsága elérni a szerkeztést. 
+\textbf{Végpontja:} "change\_pw/<int:user\_id>".
+	\end{description}
+\end{itemize}
+
+\subsection{Projects}
+
+A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetkben leszek részletezve. A \textbf{Comments} applikációs lényegében csak a kommentek adatbázis reprezentációjára jött létre, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
+
+\begin{itemize}
+	\item \textbf{Formulák:}
+	\begin{description}
+		\item[CreateProjectForm:]
+	\end{description}
+	\item \textbf{Szolgáltatások (services):}
+	\begin{description}
+		\item[get\_issues\_for\_project:]
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[index:]
+	\end{description}
+\end{itemize}
