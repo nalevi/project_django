@@ -114,10 +114,6 @@ def team_worklogs(request):
         
         filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
 
-        grps = request.user.groups.all()
-
-        print(grps)
-
         if request.user.groups.filter(name='project_manager').exists():
 
             for u in users:

@@ -20,7 +20,7 @@ def get_task_object(task_id):
 
 def get_task_details(task_id):
     '''
-    Get stories details
+    Get tasks details
 
     context: 
              - task
@@ -64,7 +64,7 @@ def get_task_details(task_id):
 
 def get_tasks_for_user(user_id):
     '''
-    Get the stories assinged to a specific user
+    Get the tasks assinged to a specific user
 
     context: 
              - assigned_to

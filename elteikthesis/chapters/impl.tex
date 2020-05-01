@@ -110,7 +110,7 @@ A \textbf{django.contrib.auth.models.User} modell reprezentál egy-egy felhaszn�
 
 A \textbf{Login} modul nem rendelkezik külön adatbázis reprezentációval, mivel a \textbf{User} modelljét használja föl.
 
-\subsection{Projekt modell}
+\subsection{Project modell}
 
 \begin{figure}[H]
 	\centering
@@ -163,7 +163,7 @@ Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Projec
 	\item \textit{description}: egy leírás az epic-ről (maximum 250 karakter hosszú)
 \end{itemize}
 
-\subsection{Story modellje}
+\subsection{Story modell}
 
 \begin{figure}[H]
 	\centering
@@ -191,7 +191,7 @@ A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolód
 
 Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{UserStory}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
 
-\subsection{Task modellje}
+\subsection{Task modell}
 
 \begin{figure}[H]
 	\centering
@@ -298,13 +298,13 @@ A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek
 	\item \textit{forms.py}: Szintén nem kötelező fájl. Ha használunk form-okat (például regisztrációra), akkor érdemes ebbe a fájlba elhelyezni ezeket.
 	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalamzáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
 	\item \textit{tests.py}: Az egyes applikációk egységteszt modulja.
-	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között.
+	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között. A view függvények mindig kapnak egy \textit{request} paramétert bemenetként, amiben a hívás adatai vannak (például form esetén az adatok, vagy fájlok, stb.).
 	\item \textit{urls.py}: Az applikációk szolgáltatásainak és view-inak az elérési útját tartalmazza (azaz a végpontokat, URL címeket).
 \end{itemize}
 
 A következő alfejezetekben az egyes applikációk szerver rétegébe tartozó részei lesznek részletezve (szolgáltatások, nézetek, végpontok, formulák).
 
-\subsection{Login}
+\subsection{Login applikáció}
 
 A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a keretrendszerben implementált bejelentkeztetést használja, illetve azt bővíti ki.
 
@@ -333,7 +333,7 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 	\end{description}
 \end{itemize}
 
-\subsection{Projects}
+\subsection{Projects applikáció}
 
 A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetkben leszek részletezve. A \textbf{Comments} applikáció lényegében csak a kommentek adatbázis reprezentációjára szolgál, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
 
@@ -387,17 +387,104 @@ def index(request):
 
 \end{lstlisting}
 
-\subsection{Epics}
+\subsection{Epics applikáció}
 
 Az \textbf{Epics} applikáció az epic-ek megvalósítása. 
 
 \begin{itemize}
 	\item \textbf{Szolgáltatások (services):}
 	\begin{description}
-		\item[]
+		\item[get\_epic\_object:] Visszaadja a paraméterül kapott \textit{epic\_id}-hoz tartozó epic-et.
+		\item[delete\_epic:] Kitörli az adatbázisból a paraméterül kapott \textit{epic\_id}-hoz tartozó epic-et.
+		\item[get\_epic\_details:] Bemeneti paramétrben megkapja az  \textit{epic\_id}-t, majd legyűjti az ehhez tartozó epic-hez rendelt stroy-kat, task-okat, issue-kat. Visszatérési értéke egy \textbf{dictionary} típusú változó.
+		\item[get\_epics\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz tartozó epic-eket és visszaadja egy \textbf{dictionary} típusú változóban.
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
-		\item[index:]
+		\item[detail:] Bemeneti paraméter: \textit{epic\_id}. Ezzel meghívja a \textit{get\_epic\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "epics/detail.html" template-hez. \textbf{Végpont:} "projects/epics/<int:epic\_id>/".
+		\item[epic\_new:] Új \textbf{Epic} létrehozását végző view, a \textbf{CreateEpicForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "epics/epic\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/epics/new/".
+		\item[epic\_edit:] Megkapja bemeneti paraméterül az \textit{epic\_id}-t, majd visszaad egy \textbf{CreateEpicForm} form-ot kitöltve a szerkeztendő epic adataival az "epics/epic\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/epics/<int:epic\_id>/edit".
+		\item[delete:] Meghívja az \textit{epic\_id} paraméterrel a \textit{delete\_epic} szolgáltatást. \textbf{Végpont:} "projects/epics/delete/<int:epic\_id>/".
 	\end{description}
 \end{itemize}
+
+
+\subsection{Stories applikáció}
+
+Az \textbf{Stories} applikáció az story-k megvalósítása. 
+
+\begin{itemize}
+	\item \textbf{Szolgáltatások (services):}
+	\begin{description}
+		\item[get\_story\_object:] Visszaadja a paraméterül kapott \textit{story\_id}-hoz tartozó story-t az adatbázisból.
+		\item[delete\_story:] Kitörli az adatbázisból a paraméterül kapott \textit{story\_id}-hoz tartozó story-t. Logikai értékkel tér vissza attól függően, sikerült-e.
+		\item[get\_story\_details:] Bemeneti paramétrben megkapja az  \textit{story\_id}-t, majd legyűjti az ehhez tartozó story-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_stories\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) story-kat és visszaadja egy \textbf{dictionary} típusú változóban.
+		\item[change\_story\_state:] A paraméterül kapott \textit{story\_id}-hoz tartozó story státuszát állítja tovább.
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[detail:] Bemeneti paraméter: \textit{story\_id}. Ezzel meghívja a \textit{get\_story\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "stories/detail.html" template-hez. \textbf{Végpont:} "projects/stories/<int:story\_id>/".
+		\item[story\_new:] Új \textbf{Story} létrehozását végző view, a \textbf{CreateStoryForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "stories/story\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/stories/new/".
+		\item[story\_edit:] Megkapja bemeneti paraméterül a \textit{story\_id}-t, majd visszaad egy \textbf{CreateStoryForm} form-ot kitöltve a szerkeztendő story adataival a "stories/story\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/stories/<int:story\_id>/edit".
+		\item[delete:] Meghívja az \textit{story\_id} paraméterrel a \textit{delete\_story} szolgáltatást. \textbf{Végpont:} "projects/stories/delete/<int:story\_id>/".
+		\item[create\_comment:] A \textit{story\_id}-hoz tartozó story-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a story-hoz kapcsolva.\textbf{Végpont:} "projects/stories/comment/<int:story\_id>/".
+		\item[delete\_comment:] A \textit{story\_id}-hoz tartozó story-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/stories/comment/delete/<int:story\_id>/<int:comment\_id>".
+		\item[change\_state:] Meghívja a \textit{story\_id}-val a \textit{change\_story\_state} szolgáltatást. \textbf{Végpont:} "projects/stories/<int:story\_id>/change\_state/".
+		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a story-hoz. \textbf{Végpont:} "projects/stories/<int:story\_id>/add\_worklog/".
+	\end{description}
+\end{itemize}	
+
+\subsection{Tasks applikáció}
+
+Az \textbf{Tasks} applikáció az task-ok megvalósítása. 
+
+\begin{itemize}
+	\item \textbf{Szolgáltatások (services):}
+	\begin{description}
+		\item[get\_task\_object:] Visszaadja a paraméterül kapott \textit{task\_id}-hoz tartozó task-ot az adatbázisból.
+		\item[delete\_task:] Kitörli az adatbázisból a paraméterül kapott \textit{task\_id}-hoz tartozó task-ot. Logikai értékkel tér vissza attól függően, sikerült-e.
+		\item[get\_task\_details:] Bemeneti paramétrben megkapja az  \textit{task\_id}-t, majd legyűjti az ehhez tartozó task-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_tasks\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) task-okat és visszaadja egy \textbf{dictionary} típusú változóban.
+		\item[change\_task\_state:] A paraméterül kapott \textit{task\_id}-hoz tartozó task státuszát állítja tovább.
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[detail:] Bemeneti paraméter: \textit{task\_id}. Ezzel meghívja a \textit{get\_task\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "tasks/detail.html" template-hez. \textbf{Végpont:} "projects/tasks/<int:task\_id>/".
+		\item[task\_new:] Új \textbf{Task} létrehozását végző view, a \textbf{CreateTaskForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "tasks/task\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/tasks/new/".
+		\item[task\_edit:] Megkapja bemeneti paraméterül a \textit{task\_id}-t, majd visszaad egy \textbf{CreateTaskForm} form-ot kitöltve a szerkeztendő task adataival a "tasks/task\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/tasks/<int:task\_id>/edit".
+		\item[delete:] Meghívja az \textit{task\_id} paraméterrel a \textit{delete\_task} szolgáltatást. \textbf{Végpont:} "projects/tasks/delete/<int:task\_id>/".
+		\item[create\_comment:] A \textit{task\_id}-hoz tartozó task-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a task-hoz kapcsolva.\textbf{Végpont:} "projects/tasks/comment/<int:task\_id>/".
+		\item[delete\_comment:] A \textit{task\_id}-hoz tartozó task-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/tasks/comment/delete/<int:task\_id>/<int:comment\_id>".
+		\item[change\_state:] Meghívja a \textit{task\_id}-val a \textit{change\_task\_state} szolgáltatást. \textbf{Végpont:} "projects/tasks/<int:task\_id>/change\_state/".
+		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a task-hoz. \textbf{Végpont:} "projects/tasks/<int:task\_id>/add\_worklog/".
+	\end{description}
+\end{itemize}	
+
+\subsection{Issues applikáció}
+
+Az \textbf{Issues} applikáció az issue-k megvalósítása. 
+
+\begin{itemize}
+	\item \textbf{Szolgáltatások (services):}
+	\begin{description}
+		\item[get\_issue\_object:] Visszaadja a paraméterül kapott \textit{issue\_id}-hoz tartozó issue-t az adatbázisból.
+		\item[delete\_issue:] Kitörli az adatbázisból a paraméterül kapott \textit{issue\_id}-hoz tartozó issue-t. Logikai értékkel tér vissza attól függően, sikerült-e.
+		\item[get\_issue\_details:] Bemeneti paramétrben megkapja az  \textit{issue\_id}-t, majd legyűjti az ehhez tartozó issue-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van) és egyéb mezőit. Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_issues\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) issue-kat és visszaadja egy \textbf{dictionary} típusú változóban.
+		\item[change\_issue\_state:] A paraméterül kapott \textit{issue\_id}-hoz tartozó issue státuszát állítja tovább.
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[detail:] Bemeneti paraméter: \textit{issue\_id}. Ezzel meghívja a \textit{get\_issue\_object} szolgáltatást, majd az eredményül kapott listát rendeli az "issues/detail.html" template-hez. \textbf{Végpont:} "projects/issues/<int:issue\_id>/".
+		\item[issue\_new:] Új \textbf{Issue} létrehozását végző view, a \textbf{CreateIssueForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át az "issues/issue\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/issues/new/".
+		\item[issue\_edit:] Megkapja bemeneti paraméterül a \textit{issue\_id}-t, majd visszaad egy \textbf{CreateIssueForm} form-ot kitöltve a szerkeztendő issue adataival az "issues/issue\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/issues/<int:issue\_id>/edit".
+		\item[delete:] Meghívja az \textit{issue\_id} paraméterrel a \textit{delete\_issue} szolgáltatást. \textbf{Végpont:} "projects/issues/delete/<int:issue\_id>/".
+		\item[create\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt az issue-hoz kapcsolva.\textbf{Végpont:} "projects/issues/comment/<int:issue\_id>/".
+		\item[delete\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/issues/comment/delete/<int:issue\_id>/<int:comment\_id>".
+		\item[change\_state:] Meghívja az \textit{issue\_id}-val a \textit{change\_issue\_state} szolgáltatást. \textbf{Végpont:} "projects/issues/<int:issue\_id>/change\_state/".
+		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést az issue-hoz. \textbf{Végpont:} "projects/issues/<int:issue\_id>/add\_worklog/".
+	\end{description}
+\end{itemize}	
+
+\subsection{Users applikáció}
