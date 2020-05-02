@@ -287,7 +287,7 @@ A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} modell szo
 
 \section{Szerver réteg}
 
-A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek (views) adják. Egy-egy applikáció a következő modulokból (gyakorlatilag fájlokból épül fel) :
+A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek (views) adják. Egy-egy applikáció a következő modulokból (gyakorlatilag fájlokból épül fel):
 
 \begin{itemize}
 	\item \textit{admin.py}: A Django biztosít egy admin felületet az alkalmazás adatbázis szintű kezelésére. Egy adott modell akkor szerkezthető az admin oldalon, ha beregisztráljuk ebben a fájlban.
@@ -488,3 +488,142 @@ Az \textbf{Issues} applikáció az issue-k megvalósítása.
 \end{itemize}	
 
 \subsection{Users applikáció}
+
+A \textbf{Users}, azaz a felhasználó-, profilkezelés megvalósítása. Nem rendelkezik szolgáltatás réteggel, ugyanis az alkalmazás jelen formájában ezt nem igényli, így példaként szolgál az ilyen típusú megvalósításra. Az egyes view-k (függvények) visszatérési értékét megváltoztatva könnyen szolgáltatássá lehet alakítani ezeket is.
+
+\begin{itemize}
+	\item \textbf{Form-ok:}
+	\begin{description}
+		\item[SelectMontForm:] A munkanapló oldalakon a hónap kiválasztását végző form. Egy naptár \textbf{widget}-et is használ az \textit{admin} modulból (megjelenítés).
+		\item[AddGroupForm:] A csoport létrehozást lehetővé tevő form. Egy szöveges input mezője van.
+	\end{description}
+	\item \textbf{Nézetek (views):}
+	\begin{description}
+		\item[index:] A felhasználó index oldalát jeleníti meg ("users/index.html"). Gyakorlatilag ez az alkalamzás főoldala. \textbf{Végpont:} "users/".
+		\item[detail:] Egy adott felhasználó profil oldala. Bemeneti paraméterben megkapja a \textit{username}-t, ehhez lekérdezi a felhasználót az adatbázisból, amelynek azonosítojával tovább hívja az egyes applikációk szolgáltatásait (story, issue, task). Ezek visszadják az adott felhasználóhoz rendelt feladatokat, a \textit{detail} nézet ezeket összeszedi egy adatszerkezetbe (\textbf{dictionary}), majd ezt továbbítja a template-nek ("users/detail.html"). \textbf{Végpont:} "users/<username>/".
+		\item[get\_users\_worklogs:] Ez egy hosszabb függvény, amely "GET" üzenet esetén legyűjti az aktuális hónap és nap munkanapló bejegyzéseit a bemenetül kapott \textit{username} felhasználóhoz. "POST" üzenet esetén a template-en elhelyezett formból kinyeri a beírt dátumot, majd az alapján gyűjti le a napi, illetve havi bejegyzéseket. \textbf{Végpont:} "users/<username>/worklogs/".
+		\item[delete\_worklog:] A paraméterül kapott \textit{log\_id}-val beazonosítja az adatbázisban a munkanapló bejegyzést és kitörli. \textbf{Végpont:} "users/delete\_worklog/<int:log\_id>".
+		\item[team\_worklogs:] Szintén egy összetettebb view függvény. Az alapján, hogy a \textit{request}-et küldő felhasználó beletartozik-e a "project\_manager"  csoportba, avagy \textit{superuser}-e, összeszámolja az egyes felhasználókhoz könyvelt munkanapló bejegyzések óraszámait az adott hónapban, majd táblázatosan megjeleníti. Ha nem igaz egyik sem a felhasználóra, akkor csak a saját munkaidejét számolja ki. \textbf{Végpont:} "users/team\_worklogs/".
+		\item[group\_list:] Legyűjti az összes adatbázisbeli felhasználói csoportot a "users/groups.html" tempalte számára. Kezeli a "POST" üzenetet is, ugyanis a tempalte-en egy input szöveges mező segítségével vehetünk fel új csoportot (feltéve, hogy nem létezik már). \textbf{Végpont:} "users/groups/".
+		\item[group\_detail:] Egy adott csoportsaját oldalára navigál. Ehhez legyűtji az összes adatbázisbeli jogosultságot (permissions) és az adott csoport (bemenet: \textit{gr\_id}) aktuális jogosultságait. \textbf{Végpont:} "users/groups/<int:gr\_id>".
+		\item[delete\_group:] Törli az adatbázisból a kapott \textit{gr\_id}-hoz tartozó csoportot. \textbf{Végpont:} "users/groups\_delete/<int:gr\_id>".
+		\item[add\_perm\_to\_group:] Jogosultságot (\textit{p\_id}) rendel hozzá egy csoporthoz (\textit{gr\_id}). \textbf{Végpont:} "users/add\_permission/<int:gr\_id>/<int:p\_id>".
+		\item[delete\_perm\_from\_group:] Eltávolítja az adott jogosultságot (\textit{p\_id}) a csoport (\textit{gr\_id}) jogosultságai közül. \textbf{Végpont} "users/delete\_permission/<int:gr\_id>/<int:p\_id>".
+		\item[delete\_user:] Törli a \textit{user\_id}-hoz tartozó felhasználót az adatbázisból. \textbf{Végpont:} "users/delete\_user/<int:user\_id>".
+		\item[list\_all\_users:] Lekérdezi az összes adatbázisbeli felhasználót a "users/all\_users.html" template számára. \textbf{Végpont:} "users/all\_users/".
+	\end{description}
+\end{itemize}	
+
+\subsection{Worklogs applikáció}
+
+A \textbf{Worklogs} applikáció csak a munkanapló bejegyzések adatbázis modell reprezentációjára szolgál. Ezért nem rendelkezik külön szolgáltatás és nézet réteggel.
+
+\section{Megjelenítés (template) réteg}
+
+A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Közvetlen kapcsolatot a nézet (view) függvények jelentenek a szerverrel (adatbázissal). Minden applikáció (modul) rendelkezik saját \textbf{templates} mappával, amelyben van egy almappa a saját nevével (például: "projects/tempaltes/projects/"). Utóbbi azért szükséges, mert a keretrendszer így tudja beazonosítani, hogy mely útvonalon találja meg a keresett tempalte-et. A következő felsorolásban össze van gyűjtve, hogy az egyes applikációk milyen tempalte fájlokkal rendelkeznek. Az alapszerkezetüket ezeknek a HTML fájloknak a "ScrumHelper/templates/ScrumHelper/base.html" fájl adja. A Djangoban lehez használni úgynevezett \textit{tag}-eket a HTML kódban, amelynek segítségével lehet sablonokat használni (mint például a \textit{base.html}), valamint ciklusoakt és elágazásokat is írhatunk velük. A főmappában van egy "static/" mappa, ez tartalmazza a CSS és JavaScript állományokat a formázott megjelenítéshez. A \textit{ScrumHelper} a MaterializeCSS könyvtárat használja \footnote{\url{https://materializecss.com/}}.
+
+\pagebreak
+
+\lstset{caption={Példa a Django tag-ekre a HTML kódban a bejelentkező ablak esetén (login/tempaltes/registration/login.html)}, label=src:exampleTag}
+\begin{lstlisting}[language={html}]
+
+{\% extends 'ScrumHelper/base.html' \%}
+{\% load static \%}
+
+{\% block title \%} Login {\% endblock \%}
+
+{\% block login_form \%}
+    {\% if form.errors \%}
+    <p>Your username and password didn't match. Please try again.</p>
+    {\% endif \%}
+
+    {\% if next \%}
+        {\% if user.is_authenticated \%}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+        {\% else \%}
+...
+\end{lstlisting}
+
+
+\subsection{Login}
+\begin{itemize}
+	\item \textbf{login.html}: A bejelentkező ablak. Egy formot jelenít meg, amely bejelentkeztet és jelzi az esetleges hibákat.
+	\item \textbf{signup.html}: A regisztrációs form-ot megjelenítő ablak.
+\end{itemize}
+\subsection{Projects}
+\begin{itemize}
+	\item \textbf{details.html}: A projekt saját oldala, annak minden részletével.
+	\item \textbf{index.html}: Az összes projektet listázó oldal (ötösével, oldalakra szedve).
+	\item \textbf{kandban\_chart.html}: A kanban tábláról készült kördiagrammot megjelenítő oldal. Ehhez egy JSON üzenetben kapja a szervertől az adatokat és a Chart.js (JQuery alapú) könyvtár segítségével jeleníti meg a diagrammot.
+	\item \textbf{kanban.html}: A kanban táblát megjelenítő template.
+	\item \textbf{proejct\_edit.html}: A projekt szerkeztő és létrehozó oldala egyben. A szervertől kapott form-ot jeleníti meg.
+\end{itemize}
+\subsection{Epics}
+\begin{itemize}
+	\item \textbf{detail.html}: Az epic részleteit megjeleíntő oldal tempalte-je.
+	\item \textbf{epic\_edit.html}: Az epic-et létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+\end{itemize}
+\subsection{Stories}
+\begin{itemize}
+	\item \textbf{detail.html}: Az story részleteit megjeleíntő oldal tempalte-je.
+	\item \textbf{story\_edit.html}: Az story-t létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+\end{itemize}
+\subsection{Tasks}
+\begin{itemize}
+	\item \textbf{detail.html} : Az task részleteit megjeleíntő oldal tempalte-je.
+	\item \textbf{task\_edit.html}: Az task-ot létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+\end{itemize}
+\subsection{Issues}
+\begin{itemize}
+	\item \textbf{detail.html}: Az issue részleteit megjeleíntő oldal tempalte-je.
+	\item \textbf{issue\_edit.html}: Az issue-t létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+\end{itemize}
+\subsection{Users}
+\begin{itemize}
+	\item \textbf{all\_users.html}: Az összes felahsználó listáját megjelenítő tempalte.
+	\item \textbf{group\_detail.html}: Az adott felhasználói jogosultságcsoport jogosultságait és az összes jogosultságot jeleníti meg két táblázatban. Előbbiből törölni lehet(kék alapon fehér kereszt ikon), utóbbiból hozzáadni jogokat a csoporthoz(kék alapon fehér plusz jel).
+	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó tempalte. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, ez esetben hibaüzenetet ad).
+	\item \textbf{index.html}: Az alkalamzás főoldalát adó template.
+	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkeztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat).
+	\item \textbf{team\_worklogs.html}: A scrum felhasználóinak össz munkaóra számát megjelenítő template, havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
+	\item \textbf{worklogs}: A felahsználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
+\end{itemize}
+\subsection{Worklogs}
+\begin{itemize}
+	\item \textbf{log\_work}: Egy form-ot jelenít meg ez a tempalte, amelyen dátumot és munkaórát (1 és 8 között) adhatunk meg.
+\end{itemize}
+
+\section{Tesztelés}
+
+Itt található az alkalamzáshoz készített egység tesztek leírása (hogyan kell futtatni, miket fed le), illetve a különböző funkciókhoz felületi tesztforgatókönyv.
+
+\subsection{Egység tesztek}
+
+A Django keretrendszer lehetőséget biztosít egység tesztek készítésésre és futtatására. Minden applikációban található egy \textit{test.py} fájl. A teszteléshez ebbe teszt osztályokat kell létrehozni, amelyek a \textbf{TestCase} leszármazottai kell legyenek. Ezen belül van lehetőség teszt metódusokat definiálni, amelyek egy-egy tesztesetet fednek le. Lehetőség van a parancssorból lefuttatni az összes tesztesetet egyben, vagy akár csak alkalmazásonként külön-külön. Ehhez a következő parancsot kell kiadni a főmappán belül (ahol a \textit{manage.py} fájl is van): \textit{python manage.py test <app neve>.<esetleg alapplikáció neve>}. A \ref{fig:tests}. ábrán látható a parancssoros kimenet. Ha minen teszteset sikeres, akkor "OK" üzenetet kapunk. Ha van hibás, akkor egy "Error" üzenetben részletesebb információt is kapunk arról, hogy mi az elvárt eredmény az összehasonlításnál és mi az, amit ehelyett kapott.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{testresult}
+	\caption{A "python manage.py test projects" parancs eredménye.}
+	\label{fig:tests}
+\end{figure}
+
+Az egység tesztekhez a \textit{test} parancs futtatása során létrejön a memóriában egy ideiglenes adatbázis, amely szerkezetileg megegyezik a valós adatbázissal. 
+
+A \textit{ScrumHelper} minden applikációjában, ahol van szolgáltatás és/vagy nézet réteg (azaz \textit{services.py vagy views.py} fájlok), ott minden funkcióra (függvényre) vonatkozik egy-egy teszteset. Ahol sajátkezűleg szükséges volt megoldani az esetleges hibák lekezelést (tehát nem a keretrendszer működésén múlik), ott egy pozitív (azaz helyes működés) és egy negatív (azaz hiba esetén) teszteset vizsgálja az elvárt működést.
+
+\subsection{Felületi tesztek}
+
+Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Django, ezért ezeket a teszteket kézzel, az alábbi forgatókönyvet végig játszva lehet eredményesen letesztelni:
+
+\begin{enumerate}
+	\item Bejelentkezés: 
+	\begin{itemize}
+		\item \textbf{helyes adatok esetén elvárt működés:} A program bejelentkezteti a felhasználót és a főoldalra navigálja.
+		\item \textbf{helytelen adatok esetén:} Egy hibaüzenet figyelmezteti a felhasználót a hibás adatokra. Az alkalmazás nem léptet tovább.
+		\item \textbf{üres mezők:} Figyelmeztető üzenet az üresen hagyott mezőkre.
+		\item \textbf{URL cím alapján eljutni másik oldalra sikeres bejelentkezés nélkül:} Ebben az esetben egy hibaüzenet jelenik meg egy linkkel a bejelentkezési oldalra.
+	\end{itemize}
+	\item Főoldal:
+\end{enumerate}

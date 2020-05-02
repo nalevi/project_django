@@ -61,8 +61,15 @@ def get_users_worklogs(request, username):
 
     if request.method == "POST":
         
-        filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
+        try:
+            filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
+        except Exception:
+            dateForm = SelectMontForm()
 
+            context['form'] = dateForm
+            context['error_msg'] = "No available worklogs on the specified date. Maybe you used a wrong format! Please use Year-Month-Day format. \
+                                    (example: 2020-04-12)"
+            return render(request, 'users/worklogs.html', context)
 
         try:
             worklogs = Worklog.objects.filter(log_date__month=filter_date.month).filter(log_user=user).order_by('log_date')
@@ -112,9 +119,17 @@ def team_worklogs(request):
 
     if request.method == "POST":
         
-        filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
+        try:
+            filter_date = datetime.strptime(request.POST.get('month'),"%Y-%m-%d").date()
+        except Exception:
+            dateForm = SelectMontForm()
 
-        if request.user.groups.filter(name='project_manager').exists():
+            context['form'] = dateForm
+            context['error_msg'] = "No available worklogs on the specified date. Maybe you used a wrong format! Please use Year-Month-Day format. \
+                                    (example: 2020-04-12)"
+            return render(request, 'users/worklogs.html', context)
+
+        if request.user.groups.filter(name='project_manager').exists() or request.user.is_superuser:
 
             for u in users:
                 workhours = Worklog.objects.filter(log_date__month=filter_date.month).filter(log_user=u)
@@ -143,7 +158,7 @@ def team_worklogs(request):
 
     else:
         now_date = timezone.now()
-        if request.user.groups.filter(name=Group(name='project_manager')).exists():
+        if request.user.groups.filter(name=Group(name='project_manager')).exists() or request.user.is_superuser:
 
             for u in users:
                 workhours = Worklog.objects.filter(log_date__month=now_date.month).filter(log_user=u)

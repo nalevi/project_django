@@ -3,7 +3,9 @@ from django import forms
 from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-from django.contrib.admin import widgets                                       
+from django.contrib.admin import widgets   
+from django.core.exceptions import ValidationError
+from datetime import datetime                                    
 
 from .models import Project
 from .stories.models import UserStory
@@ -15,6 +17,11 @@ from .contants import ISSUE_CHOICES
 
 from worklogs.models import Worklog
 
+def input_date_validator(date_value):
+    try:
+        datetime.strptime(date_value, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError("Incorrect data format, should be YYYY-MM-DD")
 
 class CreateProjectForm(ModelForm):
     release = forms.CharField(required=False)
@@ -69,6 +76,7 @@ class CreateEpicForm(ModelForm):
 class CreateWorklogform(ModelForm):
 
     logged_hour = forms.IntegerField(max_value=8, min_value=1)
+    log_date = forms.DateField(input_formats=['%Y-%m-%d'])
     
     class Meta:
         model = Worklog

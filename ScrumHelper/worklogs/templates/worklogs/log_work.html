@@ -15,6 +15,13 @@
                 <label for="{{ form.log_date.id_for_label }}">Worked date:</label>
                 {{ form.log_date }}
             </div>
+            {% if error_msg %}
+            <div class="row">
+                <p>
+                    {{ error_msg }}
+                </p>
+            </div>
+            {% endif %}
             <div class="row">
                 {{ form.logged_hour.errors }}
                 <label for="{{ form.logged_hour.id_for_label }}">Work hour:</label>
