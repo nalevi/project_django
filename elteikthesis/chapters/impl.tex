@@ -623,7 +623,19 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 		\item \textbf{helyes adatok esetén elvárt működés:} A program bejelentkezteti a felhasználót és a főoldalra navigálja.
 		\item \textbf{helytelen adatok esetén:} Egy hibaüzenet figyelmezteti a felhasználót a hibás adatokra. Az alkalmazás nem léptet tovább.
 		\item \textbf{üres mezők:} Figyelmeztető üzenet az üresen hagyott mezőkre.
-		\item \textbf{URL cím alapján eljutni másik oldalra sikeres bejelentkezés nélkül:} Ebben az esetben egy hibaüzenet jelenik meg egy linkkel a bejelentkezési oldalra.
+		\item \textbf{URL cím alapján eljutni másik címre, sikeres bejelentkezés nélkül:} Ebben az esetben egy hibaüzenet jelenik meg egy linkkel a bejelentkezési oldalra.
+		\item \textbf{Logout menüpont a navigációs sávban:} Kijelentkeztet és visszavezeti a felhasználót a bejelentkező oldalra.
 	\end{itemize}
 	\item Főoldal:
+	\begin{itemize}
+		\item \textbf{ScrumHelper szövegre kattintás:} A program bármely oldalról, ha a navigációs sávbeli \textbf{Scrumhelper} szövegre kattintunk, akkor visszajuttat erre a főodlalra.
+		\item \textbf{Navigációs sáv menüpontjaira kattintás:} Rendre az elvárt oldalakra navigálnak el.
+		\item \textbf{A három menüpont alatti View gombok:} Rendre eljutunk a \textbf{Projects} index oldalra, a saját munkanapló oldalra, valamint a saját profil oldalra.
+	\end{itemize}
+	\item Projekt index oldal:
+	\begin{itemize}
+		\item \textbf{Listás megejelenítés:} Valóban egyszerre csak öt (avagy a beállított mennyiségű) projekt jelenik meg a listában.
+		\item \textbf{Az oldal léptető gombok:} Megfelelő oldalszámot mutat és valóban tovább ugrik a listán.
+		\item \textbf{Működő projekt linkek:} A listában szereplő projektek neve melletti nyíl ikon helyesen a projekt saját oldalára mutat.
+	\end{itemize} 
 \end{enumerate}
