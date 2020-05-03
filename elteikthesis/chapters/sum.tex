@@ -1,4 +1,21 @@
 \chapter{Összegzés} % Conclusion
 \label{ch:sum}
 
+Az agilis módszertanban ugyan kisebb létszámú csapatok dolgoznak együtt, mégis rengeteg és szerteágazó feladatokkal találják magukat szemben. A hatékony működés érdekében találták ki ezeket a módszertanokat és azok altípusait (példuál a scrum-ot). 
+
+A gyakorlatban viszont külön eszközökre is szükségük van ezek megvalósításához. A szakdolgozat célja egy olyan alkalmazás elkészítése volt, amely önmagában is alkalmas kisebb scrum-ok fejlesztési munkájának nyomonkövetésére, segítésére. 
+
+Természetesen sokféle mód van még az alkalmazás további fejlődésére, ehhez biztosít stabil alapokat maga a keretrendszer is. Pár ötlet ezek közül röviden az alábbi szekcióban olvasható.
+
 \section{További fejlesztési lehetőségek}
+
+\begin{enumerate}
+    \item Egy kereső funkció implemetálása, amely az oldal egész tartalmán végig halad és ezzel megkönnyíti a felhasználóknak az egyes funkciók és objektumok elérését.
+    \item Még részletesebb statisztikai oldalak implementálása Sprint specifikusabban (grafikonok, diagrammok, szűrések).
+    \item A nézetek (view-k) áthelyezése teljes mértékben a szolgáltatás rétegbe. Vannak applikációk, ahol ez már megvalósításra került (\textit{service.py} modulok) bizonyos mértékben. Ennek célja egy API (Application Programming Interface) kialakítása, ezzel teljesen szinte teljesen függetlenítve a szerver és kliens réteget.
+    A Django is rendelkezik egy RESTful kommunikációt megvalósító könyvtárral.
+\end{enumerate}
+
+
+
+
