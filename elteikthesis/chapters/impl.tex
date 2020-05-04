@@ -1,12 +1,12 @@
 \chapter{Fejlesztői dokumentáció} % Developer guide
 \label{ch:impl}
 
-Ez a fejezet fejlesztőknek nyújt segítséget a ScrumHelper feltérképezésében. Az alfejezetek kifejtik az alkalmazás felépítését, részletesen leírják a különböző rétegeinek (Adatbázis-Szerver-Nézet) osztályait és függvényeit. A vizuális segítséghez különböző diagrammokat is tartalmaz (osztály-, csomag-, felhasználói esetek diagram). A fejezet végén egy tesztforgatókönyv ad részletes leírást a teszt esetek és azok eredményeiről.
+Ez a fejezet fejlesztőknek nyújt segítséget a ScrumHelper feltérképezésében. Az alfejezetek kifejtik az alkalmazás felépítését, részletesen leírják a különböző rétegeinek (Adatbázis-Szerver-Nézet) osztályait és függvényeit. A vizuális segítséghez különböző diagrammokat is tartalmaz (osztály-, csomag-, felhasználói esetek diagram). A fejezet végén egy tesztforgatókönyv ad részletes leírást a teszt esetek és azok elvárt eredményeiről.
 
-\section{Konfiguráció, fejelsztői környezet}
+\section{Konfiguráció, fejlesztői környezet}
 \label{config}
 
-A futtatáshoz szükséges előkövetelmények a felhasználói dokumentáció \ref{install}. alfejezetében olvashatók. A dolgozatt keretein belül csak a lokális szerveren való konfigurálás és futtatás lesz részletezve. A különböző szervergépeken való futtatáshoz részletesebb információt a hivatalos Django dokumentációban lehet találni. Utóbbi eset külön konfigurációt igényel a wsgi.py, illetve asgi.py file-ok és környezeti változók megfelelő beállításának segítségével \footnote{wsgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/} asgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/}}.  
+A futtatáshoz szükséges előkövetelmények a felhasználói dokumentáció \ref{install}. alfejezetében olvashatók. A dolgozat keretein belül csak a lokális szerveren való konfigurálás és futtatás lesz részletezve. A különböző szervergépeken való futtatáshoz részletesebb információt a hivatalos Django dokumentációban lehet találni. Utóbbi eset külön konfigurációt igényel a wsgi.py, illetve asgi.py file-ok és környezeti változók megfelelő beállításának segítségével \footnote{wsgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/}} \footnote{asgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/}}.  
 
 Ahhoz, hogy lokálisan futtatni tudjuk a szervert, először is a ScrumHelper/ScrumHelper/setting.py file-ban kell beállítanunk a DATABSES változót. A pontos beállításai eltérőek a különböző adatbázisok esetében, ehhez részletes segítséget nyújt a hivatalos Django dokumentáció. Alább  egy PostgreSQL adatbázis konfigurációja látható:
 
@@ -30,9 +30,9 @@ Ha ez megfelelően van beállítva, akkor a ScrumHelper fő mappába navigálva 
 
 A TIMEZONE változóban adható meg az időzóna. Az egyes projektekhez feltöltött fájlokat a MEDIA\_ROOT konfigurációs változóbeli elérési úton elhelyezkedő mappába menti (ez alapból a ScrumHelper/media könyvtárra mutat). Ugyanezen az elven kezeli a statikus fájlokat is a keretrendszer, ennek a környezeti változója a STATIC\_ROOT.
 
-Fontos, hogy mielőtt az alkalmazás valós, produkciós használatba kerülne szükséges a DEBUG változót False, azaz hamisra állítani (biztonásgi okokból).
+Fontos, hogy mielőtt az alkalmazás valós, produkciós használatba kerülne szükséges a DEBUG változót False-ra, azaz hamisra állítani (biztonásgi okokból). Utóbbi azért is fontos, mert így a szerver nem küld debug információkat a kliensre.
 
-A Django nem rendelkezik saját fejlesztői környezettel, így bármely Pythonhoz fejlesztésre alkalmas IDE használható. Például a Visual Studio Code rendelkezik minden bővítménnyel, amely szükséges lehet egy Django alkalmazás futtatásához és egyéb "kényelmet" segítő funkciókkal is (szintaxis ellenőrzés/kiemelés Pythonhoz/HTML-hez/CSS-hez/JavaScript-hez és a Django templétekhez). A szükséges szoftverek (\ref{install}) megléte mellett akár egy egyszerű szövegszerkeztő alkalmazás is elegendő (de célszerűbb valameilyen integrált fejlesztői környezetet használni).
+A Django nem rendelkezik saját fejlesztői környezettel, így bármely python fejlesztésre alkalmas IDE használható. Például a Visual Studio Code rendelkezik minden bővítménnyel, amely szükséges lehet egy Django alkalmazás futtatásához, valamint egyéb "kényelmet" segítő funkciókkal is (szintaxis ellenőrzés/kiemelés Pythonhoz/HTML-hez/CSS-hez/JavaScript-hez és a Django template-khez). A szükséges szoftverek (\ref{install}) megléte mellett akár egy egyszerű szövegszerkeztő alkalmazás is elegendő (de célszerűbb valamilyen integrált fejlesztői környezetet használni).
 
 \section{Funkcionális terv}
 
@@ -40,14 +40,14 @@ Az \ref{fig:usecase}. ábrán egy felhasználói eset diagram mutatja be az alka
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth,height=300px]{usecase}
+	\includegraphics[scale=0.95]{usecase}
 	\caption{Felhasználói eset diagram}
 	\label{fig:usecase}
 \end{figure}
 
 \section{Struktúrális felépítés}
 
-A ScrumHelper egy MVC (Model-View-Controller) alkalmazás, bár a hivatalos Django dokumentációban az MTV (Model-Template-View) kifejezést használják, mivel ezt gondolják pontosabb leírásának. Tekintve, hogy Djangoban írodott az alkalamzás, ezért ebben a dokumentációban is utóbbi analógia a mérvadó. Ez azt jelenti, hogy három rétegből tevődik össze: egy Model rétegből, amely az adatbázist hivatott reprezentálni, egy View rétegből, amely az adatot reprezentálja (ez alatt azt értjük, amit az adatbázisből kigyűjtött, nem feltétlenül a felhasználó számára megjelnített adatot), valamint a különböző template-ek renderelését is végzi, továbbá egy Template rétegből, mely leírja, hogyan legyen az adat megjelenítve a felhasználó számára.
+A ScrumHelper egy MVC (Model-View-Controller) alkalmazás, bár a hivatalos Django dokumentációban az MTV (Model-Template-View) kifejezést használják, mivel ezt gondolják pontosabb leírásának. Tekintve, hogy Djangoban írodott az alkalamzás, ezért ebben a dokumentációban is utóbbi analógia az irányadó. Ez azt jelenti, hogy három rétegből tevődik össze: egy Model rétegből, amely az adatbázist hivatott reprezentálni, egy View rétegből, amely az adatot reprezentálja (ez alatt azt értjük, amit az adatbázisből kigyűjtött, nem feltétlenül a felhasználó számára megjelenített adatot), valamint a különböző template-ek renderelését is végzi, továbbá egy Template rétegből, mely definiálja, hogyan legyen az adat megjelenítve a felhasználó számára.
 
 \begin{figure}[H]
 	\centering
@@ -79,7 +79,7 @@ Ezek implementáció, részletei a későbbi alfejezetekben olvashatóak.
 \section{Adatbázis réteg}
 \label{dbmodels}
 
-A django keretrendszernek köszönhetően az alapkonfigurációt leszámítva nem számít, hogy milyen adatbázissal dolgozunk. A ScrumHelper fejelsztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
+A django keretrendszernek köszönhetően érdemben nem számít, hogy milyen adatbázissal dolgozunk (legalábbis az adatbázis kezelés szempontjából). A ScrumHelper fejelsztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
 
 Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django modell típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testreszabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A modell szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
 
