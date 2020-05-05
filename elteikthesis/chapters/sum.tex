@@ -5,13 +5,13 @@ Az agilis módszertanban ugyan kisebb létszámú csapatok dolgoznak együtt, m�
 
 A gyakorlatban viszont külön eszközökre is szükségük van ezek megvalósításához. A szakdolgozat célja egy olyan alkalmazás elkészítése volt, amely önmagában is alkalmas kisebb scrum-ok fejlesztési munkájának nyomonkövetésére, segítésére. 
 
-Természetesen sokféle mód van még az alkalmazás további fejlődésére, ehhez biztosít stabil alapokat maga a keretrendszer is. Pár ötlet ezek közül röviden az alábbi szekcióban olvasható.
+Természetesen sokféle mód van még az alkalmazás további fejlődésére, ehhez biztosít stabil alapokat maga a keretrendszer is. Pár ötlet ezek közül röviden az alábbi felsorolásban olvasható.
 
 \begin{enumerate}
     \item Egy kereső funkció implemetálása, amely az oldal egész tartalmán végig halad és ezzel megkönnyíti a felhasználóknak az egyes funkciók és objektumok elérését.
     \item Még részletesebb statisztikai oldalak implementálása Sprint specifikusabban (grafikonok, diagrammok, szűrések).
-    \item A nézetek (view-k) áthelyezése teljes mértékben a szolgáltatás rétegbe. Vannak applikációk, ahol ez már megvalósításra került (\textit{service.py} modulok) bizonyos mértékben. Ennek célja egy API (Application Programming Interface) kialakítása, ezzel teljesen szinte teljesen függetlenítve a szerver és kliens réteget.
-    A Django is rendelkezik egy RESTful kommunikációt megvalósító könyvtárral.
+    \item API (Application Programming Interface) készítése. Vannak applikációk, ahol ez már megvalósításra került (\textit{services.py} modulok) bizonyos mértékben. Ezzel szinte teljesen függetlenedne a szerver és kliens réteg.
+    A Django is rendelkezik egy RESTful kommunikációt megvalósító könyvtárral (django-rest-framework\footnote{\url{https://www.django-rest-framework.org/}}).
 \end{enumerate}
 
 

@@ -297,7 +297,7 @@ A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek
 	\item \textit{constants.py}: nem kötelező fájl. Applikáció szintű konstansok tárolására használható.
 	\item \textit{forms.py}: Szintén nem kötelező fájl. Ha használunk form-okat (például regisztrációra), akkor érdemes ebbe a fájlba elhelyezni ezeket.
 	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalamzáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
-	\item \textit{tests.py}: Az egyes applikációk egységteszt modulja.
+	\item \textit{tests.py}: Az egyes applikációk egység teszt modulja.
 	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között. A view függvények mindig kapnak egy \textit{request} paramétert bemenetként, amiben a hívás adatai vannak (például form esetén az adatok, vagy fájlok, stb.).
 	\item \textit{urls.py}: Az applikációk szolgáltatásainak és view-inak az elérési útját tartalmazza (azaz a végpontokat, URL címeket).
 \end{itemize}
@@ -324,11 +324,11 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 \textbf{Végpontja:} "/" avagy "/login".
 		\item[logout:] Meghívja a  \textit{django.contrib.auth.login} függvényt és visszanavigál a \textit{login} oldalra. 
 \textbf{Végpontja:} "/logout/".
-		\item[signup:] A regisztrációs formula segítségével biztosítja a felahsználó létrehozását. A "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a formula, majd lementi a felahsználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres forumlát biztosít kitöltésre a \textit{registration/signup.html} számára. 
+		\item[signup:] A regisztrációs formula segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felahsználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres forumlát biztosít kitöltésre a \textit{registration/signup.html} számára. 
 \textbf{Végpontja:} "registration/signup/".
-		\item[edit\_user:] Az egyes felhasználók szerkeztésére szolgál. Ugyanazt a formulát ahsznála, mint a regisztráció, csak itt "GET" üzenet esetén is a az ismert adatokkal kitöltve adja át a tempalte-nek. 
+		\item[edit\_user:] Az egyes felhasználók szerkeztésére szolgál. Ugyanazt a form-ot használja, mint a regisztráció, csak itt "GET" üzenet esetén is az ismert adatokkal kitöltve adja át a tempalte-nek. 
 \textbf{Végpontja:} "edit\_user/<int:user\_id>/", azaz a bemenő paramétere egy felhasználói azonosító.
-		\item[change\_pw:] A jelszóváltoztatást valósítja meg. Ehhez szintén egy user\_id-t vár bementként és a regisztrációs formulát használja. Azért van szükség mégis külön kezelni, mert nem midne felhasználónak van jogosultsága elérni a szerkeztést. 
+		\item[change\_pw:] A jelszóváltoztatást valósítja meg. Ehhez szintén egy user\_id-t vár bementként és a regisztrációs form-ott használja. Azért van szükség mégis külön kezelni, mert nem minden felhasználónak van jogosultsága elérni a szerkeztést. 
 \textbf{Végpontja:} "change\_pw/<int:user\_id>".
 	\end{description}
 \end{itemize}
@@ -345,8 +345,8 @@ A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a
 		\item[CommentForm:] A kommentek létrehozásához használt form. Csak \textit{text} mezője van a komment szövegének lementéséhez.
 		\item[CreateEpicForm:] Az \textbf{Epic} létrehozó formulája. Mezői: \textit{name, project\_code, description}, azaz a neve, a projekt kódja, amelyhez tartozik és egy leírás.
 		\item[CreateWorklogform:] A \textbf{Worklog}, azaz munkanapló bejegyzés létrehozásához használt form. Mezők: \textit{log\_date, logged\_hour}. A feladattal végzett munkaidő és maga a munkanap.
-		\item[CreateTaskForm:]  A \textbf{Task} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínál fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
-		\item[CreateIssueForm:] Az \textbf{Issue} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic, defect\_type,solution}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínál fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező. A \textit{defect\_type} mező is egy \textbf{ChoiceField}, tehát adott lehetőségekből lehet választani: BUG, SYSTEM DEFECT, DEVELOPMENT, SPECIFICATION ISSUE. Utóbbi értékek egy konstansban találhatóak a \textit{contants.py} modulban, az \textit{ISSUE\_CHOICES} változóban.
+		\item[CreateTaskForm:]  A \textbf{Task} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínánakl fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
+		\item[CreateIssueForm:] Az \textbf{Issue} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic, defect\_type, solution}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínálnak fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező. A \textit{defect\_type} mező is egy \textbf{ChoiceField}, tehát adott lehetőségekből lehet választani: BUG, SYSTEM DEFECT, DEVELOPMENT, SPECIFICATION ISSUE. Utóbbi értékek egy konstansban találhatóak a \textit{contants.py} modulban, az \textit{ISSUE\_CHOICES} változóban.
 	\end{description}
 	\item \textbf{Szolgáltatások (services):}
 	\begin{description}
@@ -431,13 +431,13 @@ Az \textbf{Stories} applikáció az story-k megvalósítása.
 		\item[create\_comment:] A \textit{story\_id}-hoz tartozó story-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a story-hoz kapcsolva.\textbf{Végpont:} "projects/stories/comment/<int:story\_id>/".
 		\item[delete\_comment:] A \textit{story\_id}-hoz tartozó story-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/stories/comment/delete/<int:story\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja a \textit{story\_id}-val a \textit{change\_story\_state} szolgáltatást. \textbf{Végpont:} "projects/stories/<int:story\_id>/change\_state/".
-		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a story-hoz. \textbf{Végpont:} "projects/stories/<int:story\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a story-hoz. \textbf{Végpont:} "projects/stories/<int:story\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
 \subsection{Tasks applikáció}
 
-Az \textbf{Tasks} applikáció az task-ok megvalósítása. 
+Az \textbf{Tasks} applikáció a task-ok megvalósítása. 
 
 \begin{itemize}
 	\item \textbf{Szolgáltatások (services):}
@@ -457,7 +457,7 @@ Az \textbf{Tasks} applikáció az task-ok megvalósítása.
 		\item[create\_comment:] A \textit{task\_id}-hoz tartozó task-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a task-hoz kapcsolva.\textbf{Végpont:} "projects/tasks/comment/<int:task\_id>/".
 		\item[delete\_comment:] A \textit{task\_id}-hoz tartozó task-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/tasks/comment/delete/<int:task\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja a \textit{task\_id}-val a \textit{change\_task\_state} szolgáltatást. \textbf{Végpont:} "projects/tasks/<int:task\_id>/change\_state/".
-		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a task-hoz. \textbf{Végpont:} "projects/tasks/<int:task\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a task-hoz. \textbf{Végpont:} "projects/tasks/<int:task\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
@@ -483,7 +483,7 @@ Az \textbf{Issues} applikáció az issue-k megvalósítása.
 		\item[create\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt az issue-hoz kapcsolva.\textbf{Végpont:} "projects/issues/comment/<int:issue\_id>/".
 		\item[delete\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/issues/comment/delete/<int:issue\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja az \textit{issue\_id}-val a \textit{change\_issue\_state} szolgáltatást. \textbf{Végpont:} "projects/issues/<int:issue\_id>/change\_state/".
-		\item[add\_worklog]:Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést az issue-hoz. \textbf{Végpont:} "projects/issues/<int:issue\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést az issue-hoz. \textbf{Végpont:} "projects/issues/<int:issue\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
@@ -520,7 +520,7 @@ A \textbf{Worklogs} applikáció csak a munkanapló bejegyzések adatbázis mode
 
 \section{Megjelenítés (template) réteg}
 
-A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Közvetlen kapcsolatot a nézet (view) függvények jelentenek a szerverrel (adatbázissal). Minden applikáció (modul) rendelkezik saját \textbf{templates} mappával, amelyben van egy almappa a saját nevével (például: "projects/tempaltes/projects/"). Utóbbi azért szükséges, mert a keretrendszer így tudja beazonosítani, hogy mely útvonalon találja meg a keresett tempalte-et. A következő felsorolásban össze van gyűjtve, hogy az egyes applikációk milyen tempalte fájlokkal rendelkeznek. Az alapszerkezetüket ezeknek a HTML fájloknak a "ScrumHelper/templates/ScrumHelper/base.html" fájl adja. A Djangoban lehez használni úgynevezett \textit{tag}-eket a HTML kódban, amelynek segítségével lehet sablonokat használni (mint például a \textit{base.html}), valamint ciklusoakt és elágazásokat is írhatunk velük. A főmappában van egy "static/" mappa, ez tartalmazza a CSS és JavaScript állományokat a formázott megjelenítéshez. A \textit{ScrumHelper} a MaterializeCSS könyvtárat használja \footnote{\url{https://materializecss.com/}}.
+A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Közvetlen kapcsolatot a nézet (view) függvények jelentenek a szerverrel (adatbázissal). Minden applikáció (modul) rendelkezik saját \textbf{templates} mappával, amelyben van egy almappa a saját nevével (például: "projects/tempaltes/projects/"). Utóbbi azért szükséges, mert a keretrendszer így tudja beazonosítani, hogy mely útvonalon találja meg a keresett tempalte-et. A következő felsorolásban össze van gyűjtve, hogy az egyes applikációk milyen tempalte fájlokkal rendelkeznek. Az alapszerkezetüket ezeknek a HTML fájloknak a "ScrumHelper/templates/ScrumHelper/base.html" fájl adja. A Djangoban lehet használni úgynevezett \textit{tag}-eket a HTML kódban, amelynek segítségével lehet sablonokat alkalmazni (mint például a \textit{base.html}), valamint ciklusokat és elágazásokat is írhatunk velük. A főmappában van egy "static/" mappa, ez tartalmazza a CSS és JavaScript állományokat a formázott megjelenítéshez. A \textit{ScrumHelper} a MaterializeCSS könyvtárat használja \footnote{\url{https://materializecss.com/}}.
 
 \pagebreak
 
@@ -583,11 +583,11 @@ A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Köz
 \begin{itemize}
 	\item \textbf{all\_users.html}: Az összes felahsználó listáját megjelenítő tempalte.
 	\item \textbf{group\_detail.html}: Az adott felhasználói jogosultságcsoport jogosultságait és az összes jogosultságot jeleníti meg két táblázatban. Előbbiből törölni lehet(kék alapon fehér kereszt ikon), utóbbiból hozzáadni jogokat a csoporthoz(kék alapon fehér plusz jel).
-	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó tempalte. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, ez esetben hibaüzenetet ad).
+	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó tempalte. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, különben hibaüzenetet ad).
 	\item \textbf{index.html}: Az alkalamzás főoldalát adó template.
 	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkeztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat).
 	\item \textbf{team\_worklogs.html}: A scrum felhasználóinak össz munkaóra számát megjelenítő template, havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
-	\item \textbf{worklogs}: A felahsználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
+	\item \textbf{worklogs}: A felahsználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához. A dátum formátuma: Év-Hónap-Nap (például: 2020-12-01).
 \end{itemize}
 \subsection{Worklogs}
 \begin{itemize}
@@ -644,7 +644,7 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 		\item \textbf{Dokumentum feltöltés:} Kiválasztó gomb (valamint kiválasztás) és feltöltés működik. Feltöltés után megjelenik a dokumentum a listában.
 		\item \textbf{Dokumentum törlés:} A törlés gombra listából eltűnik a dokumentum.
 		\item \textbf{Dokumentum linkek:} A dokumentumra kattintva megtekinthetőek a fájlok.
-		\item \textbf{Epic, Story, Task, Issue lista:} Az összes feladat típus, ami a projekthez lett létrehozva megjelennek a listában. Az egyes elemre kattitnva eljutunk annak saját oldalára.
+		\item \textbf{Epic, Story, Task, Issue lista:} Az összes feladat típus, amelyek a projekthez lettek létrehozva, megjelennek a listában. Az egyes elemre kattitnva eljutunk annak saját oldalára.
 		\item \textbf{Almenü (jobb alsó sarok):} Az egeret ráhúzva megjelennek a menüpontok: szerkeztés, issue, story, task és epic létrehozás, munkaidő könyvelés (story, task, issue esetén) valamint megfelelő admin/projekt tulajdonosként törlés.
 		\item \textbf{Kommentek létrehozása:} Komment beküldése esetén (ahol erre van lehetőség), a komment megfelelő időponttal, a létrehozó felhasználóhoz kötve (linkkel ellátva), a beírt szöveggel létrejön.
 		\item \textbf{Kommentek törlése:} A törlés gombra kattintás határásra a kitörlődik, nem lesz látható.
@@ -662,7 +662,7 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 		\item \textbf{Hibás input lekérdezésnél:}  Hibaüzenet.
 		\item \textbf{Hibás input létrehozásnál:} Dátum formátum ellenrőzés, ennek megfelelő hibaüzenet, avagy nem 1 és 8 közé eső szám megadása esetén is figyelmeztetés.
 		\item \textbf{Törlés:} A bejegyzés törlés ikonjára kattintva az eltűnik a felületről (és az adatbázisból is).
-		\item \textbf{Scrum munkanapló:} Csak rendszergazda, scrum master és projekt menedzser jogosultságú felhasználó látja mindenki kiszámolt óraszámát a kiválasztott hónapra. A sajátját mindenki látja (a többieknél 0 szerepel).
+		\item \textbf{Scrum munkanapló:} Csak rendszergazda, scrum master és projekt menedzser jogosultságú felhasználó látja mindenki kiszámolt össz óraszámát a kiválasztott hónapra. A sajátját mindenki látja (a többieknél 0 szerepel).
 	\end{itemize}
 	\item Kanban
 	\begin{itemize}
@@ -675,6 +675,6 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 		\item \textbf{Csoport lista:} Megjelenik, oldalakra tördelve (ötösével) az összes felhasználói csoport. A léptetés működik.
 		\item \textbf{Csoport létrehozás:} Még nem létező csoport létrehozásakor megjelenik az új csoport neve a listában. Létező esetén hibaüzenet.
 		\item \textbf{Csoport törlése:} Eltűnik a listából a csoport a törlés gombra kattintás után. Ugyanezen névvel létre lehet hozni újra.
-		\item \textbf{Jogosultság hozzáadás és elvétel:} Az egyes csoprotkra kattintva megjelenik a két lista a jogosultsgákokról: az összes éa a csoport aktuális jogai. A plusz gombra kattintva megjelenik a jogosultság az alsó listában. A törlés gombra kattintva eltűnik onnan.
+		\item \textbf{Jogosultság hozzáadás és elvétel:} Az egyes csoportokra kattintva megjelenik a két lista a jogosultsgákokról: az összes és a csoport aktuális jogai. A plusz gombra kattintva megjelenik a jogosultság az alsó listában. A törlés gombra kattintva eltűnik onnan.
 	\end{itemize}
 \end{enumerate}
