@@ -79,7 +79,7 @@ Ezek implementáció, részletei a későbbi alfejezetekben olvashatóak.
 \section{Adatbázis réteg}
 \label{dbmodels}
 
-A django keretrendszernek köszönhetően érdemben nem számít, hogy milyen adatbázissal dolgozunk (legalábbis az adatbázis kezelés szempontjából). A ScrumHelper fejelsztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
+A django keretrendszernek köszönhetően érdemben nem számít, hogy milyen adatbázissal dolgozunk (legalábbis az adatbázis kezelés szempontjából). A ScrumHelper fejlesztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
 
 Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django modell típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testreszabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A modell szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
 
@@ -172,7 +172,7 @@ Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Projec
 	\label{fig:storymodel}
 \end{figure}
 
-A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolódik egyrészt a projekthez, amely alatt létrehozták, kapcsolódik továbbá a felhasználóhoz, aki létrehozta, illetve akihez rednelve van (utóbbi opcionális), valamint kapcsolódik egy epic-hez (ez is opcionális). Egy story csak addig létezik, amíg a projekt is, amely alatt létehozták, avagy ki nem törlik. Ha epic-hez van rendelve és töröljük, akkor csak kinullázódik azon mezője. Abban az esetben, ha a felhasználót töröljük, aki létrehozta a story-t, akkor is törlődik. A modell mezői:
+A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolódik egyrészt a projekthez, amely alatt létrehozták, kapcsolódik továbbá a felhasználóhoz, aki létrehozta, illetve akihez rendelve van (opcionális), valamint kapcsolódik egy epic-hez (ez is opcionális). Egy story csak addig létezik, amíg a projekt is, amely alatt létehozták, avagy ki nem törlik. Ha epic-hez van rendelve és töröljük, akkor csak kinullázódik azon mezője. Abban az esetben, ha a felhasználót töröljük, aki létrehozta a story-t, akkor is törlődik. A modell mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -180,7 +180,7 @@ A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolód
 	\item \textit{epic}: idegen kulcs az \textbf{Epic} táblára (lehet üres)
 	\item \textit{owner}: az story-t létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
 	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
-	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
+	\item \textit{acceptance}: feladattal kapcsolatos elvárások leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
 	\item \textit{created\_date}: a létrehozás dátuma
 	\item \textit{modified\_date}: az utolsó módosítás dátuma
 	\item \textit{name}: a story neve (maximum 50 karakter hosszú)
@@ -200,7 +200,7 @@ Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze ka
 	\label{fig:taskmodel}
 \end{figure}
 
-A \textbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval. Ugyanúgy egy projekthez, esetlegesen egy epic-hez és a felhasználó(k)hoz kapcsolódik. Az eltérés a státuszaiban van: csak OPEN (nyitott), DONE(kész) és CLOSED(lezárt) lehet. A mezői:
+A \textbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éval. Ugyanúgy egy projekthez, esetlegesen egy epic-hez és a létrehozó felhasználóhoz kapcsolódik (és opcionálisan akihez hozzá van rendelve). Az eltérés a státuszaiban van: csak OPEN (nyitott), DONE(kész) és CLOSED(lezárt) lehet. A mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -208,7 +208,7 @@ A \textbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éva
 	\item \textit{epic}: idegen kulcs az \textbf{Epic} táblára (lehet üres)
 	\item \textit{owner}: az task-ot létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
 	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
-	\item \textit{acceptance}: feltételek leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
+	\item \textit{acceptance}: feladattal kapcsolatos elvárások leírása, amelyeknek teljesülnie kell (például teszt során, maximum 50 karakter)
 	\item \textit{created\_date}: a létrehozás dátuma
 	\item \textit{modified\_date}: az utolsó módosítás dátuma
 	\item \textit{name}: a task neve (maximum 50 karakter hosszú)
@@ -217,7 +217,7 @@ A \textbf{Task} modell felépítése szinte megegyezik a \textbf{UserStory}-éva
 	\item \textit{state}: aktuális állapot (OPEN, DONE, CLOSED)
 \end{itemize}
 
-Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{Task}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
+Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{Task}-kal (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
 
 \subsection{Issue modell}
 
@@ -236,13 +236,13 @@ Az \textbf{Issue} modellje már több mezőben is eltér a \textbf{Task} és \te
 	\item \textit{owner}: az issue-ot létrehozó felhasználó (idegen kulcs a \textbf{Profile} táblára)
 	\item \textit{project\_code}: a projekt 6 karakter hosszú kódja (idegen kulcs, a \textbf{Project} tábla \textit{code} mezőjére mutat)
 	\item \textit{created\_date}: a létrehozás dátuma
-	\item \textit{defect\_type}: a hiba típusa (BUG, SYSTEM DEFECT - rendszer szintű, SPECIFICATION ISSUE - tervezési hiba, DEVELOPMENT ISSUE - fejelsztési hiba)
+	\item \textit{defect\_type}: a hiba típusa (BUG, SYSTEM DEFECT - rendszer szintű, SPECIFICATION ISSUE - tervezési hiba, DEVELOPMENT ISSUE - fejlesztési hiba)
 	\item \textit{modified\_date}: az utolsó módosítás dátuma
 	\item \textit{name}: az epic neve (maximum 50 karakter hosszú)
 	\item \textit{description}: egy leírás az issue-ról (maximum 250 karakter hosszú)
 	\item \textit{importance}: fontosság (Low, Medium, High)
 	\item \textit{soultion}: a megoldás rövid leírása (maximum 150 karakter)
-	\item \textit{state}: aktuális állapot (OPEN, DONE, CLOSED)
+	\item \textit{state}: aktuális állapot (OPEN, IN PROGRESS, TESTING, DONE, CLOSED)
 \end{itemize}
 
 Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze kapcsol egy \textbf{Issue}-val (\textbf{ManyToMany} reláció, külön kapcsolati táblával). Ugyanilyen kapcsolatban áll a \textbf{Worklog} táblával is a \textit{work\_log} mezőn keresztül.
