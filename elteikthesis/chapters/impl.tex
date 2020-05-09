@@ -1,14 +1,14 @@
 \chapter{Fejlesztői dokumentáció} % Developer guide
 \label{ch:impl}
 
-Ez a fejezet fejlesztőknek nyújt segítséget a ScrumHelper feltérképezésében. Az alfejezetek kifejtik az alkalmazás felépítését, részletesen leírják a különböző rétegeinek (Adatbázis-Szerver-Nézet) osztályait és függvényeit. A vizuális segítséghez különböző diagrammokat is tartalmaz (osztály-, csomag-, felhasználói esetek diagram). A fejezet végén egy tesztforgatókönyv ad részletes leírást a teszt esetek és azok elvárt eredményeiről.
+Ez a fejezet fejlesztőknek nyújt segítséget a ScrumHelper feltérképezésében. Az alfejezetek kifejtik az alkalmazás felépítését, részletesen leírják a különböző rétegeinek (Adatbázis-Szerver-Nézet) osztályait és függvényeit. A vizuális segítséghez különböző diagramokat is tartalmaz (osztály-, csomag-, felhasználói esetek diagram). A fejezet végén egy tesztforgatókönyv ad részletes leírást a teszt esetek és azok elvárt eredményeiről.
 
 \section{Konfiguráció, fejlesztői környezet}
 \label{config}
 
-A futtatáshoz szükséges előkövetelmények a felhasználói dokumentáció \ref{install}. alfejezetében olvashatók. A dolgozat keretein belül csak a lokális szerveren való konfigurálás és futtatás lesz részletezve. A különböző szervergépeken való futtatáshoz részletesebb információt a hivatalos Django dokumentációban lehet találni. Utóbbi eset külön konfigurációt igényel a wsgi.py, illetve asgi.py file-ok és környezeti változók megfelelő beállításának segítségével \footnote{wsgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/}} \footnote{asgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/}}.  
+A futtatáshoz szükséges elő követelmények a felhasználói dokumentáció \ref{install}. alfejezetében olvashatók. A dolgozat keretein belül csak a lokális szerveren való konfigurálás és futtatás lesz részletezve. A különböző szervergépeken való futtatáshoz részletesebb információt a hivatalos Django dokumentációban lehet találni. Utóbbi eset külön konfigurációt igényel a wsgi.py, illetve asgi.py file-ok és környezeti változók megfelelő beállításának segítségével \footnote{wsgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/}} \footnote{asgi szerver: \url{https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/}}.  
 
-Ahhoz, hogy lokálisan futtatni tudjuk a szervert, először is a ScrumHelper/ScrumHelper/setting.py file-ban kell beállítanunk a DATABSES változót. A pontos beállításai eltérőek a különböző adatbázisok esetében, ehhez részletes segítséget nyújt a hivatalos Django dokumentáció. Alább  egy PostgreSQL adatbázis konfigurációja látható:
+Ahhoz, hogy lokálisan futtatni tudjuk a szervert, először is a ScrumHelper/ScrumHelper/setting.py file-ban kell beállítanunk a DATABSES változót. A pontos beállításai eltérőek a különböző adatbázisok esetében, ehhez részletes segítséget nyújt a hivatalos Django dokumentáció. Egy ilyen PostgreSQL adatbázis konfigurációja látható a \ref{src:settingsconf}. ábrán.:
 
 \lstset{caption={Konfiguráció PostgreSQL adatbázis használatához}, label=src:settingsconf}
 \begin{lstlisting}[language={python}]
@@ -30,9 +30,9 @@ Ha ez megfelelően van beállítva, akkor a ScrumHelper fő mappába navigálva 
 
 A TIMEZONE változóban adható meg az időzóna. Az egyes projektekhez feltöltött fájlokat a MEDIA\_ROOT konfigurációs változóbeli elérési úton elhelyezkedő mappába menti (ez alapból a ScrumHelper/media könyvtárra mutat). Ugyanezen az elven kezeli a statikus fájlokat is a keretrendszer, ennek a környezeti változója a STATIC\_ROOT.
 
-Fontos, hogy mielőtt az alkalmazás valós, produkciós használatba kerülne szükséges a DEBUG változót False-ra, azaz hamisra állítani (biztonásgi okokból). Utóbbi azért is fontos, mert így a szerver nem küld debug információkat a kliensre.
+Fontos, hogy mielőtt az alkalmazás valós, produkciós használatba kerülne szükséges a DEBUG változót False-ra, azaz hamisra állítani (biztonsági okokból). Utóbbi azért is fontos, mert így a szerver nem küld debug információkat a kliensre.
 
-A Django nem rendelkezik saját fejlesztői környezettel, így bármely python fejlesztésre alkalmas IDE használható. Például a Visual Studio Code rendelkezik minden bővítménnyel, amely szükséges lehet egy Django alkalmazás futtatásához, valamint egyéb "kényelmet" segítő funkciókkal is (szintaxis ellenőrzés/kiemelés Pythonhoz/HTML-hez/CSS-hez/JavaScript-hez és a Django template-khez). A szükséges szoftverek (\ref{install}) megléte mellett akár egy egyszerű szövegszerkeztő alkalmazás is elegendő (de célszerűbb valamilyen integrált fejlesztői környezetet használni).
+A Django nem rendelkezik saját fejlesztői környezettel, így bármely python fejlesztésre alkalmas IDE használható. Például a Visual Studio Code rendelkezik minden bővítménnyel, amely szükséges lehet egy Django alkalmazás futtatásához, valamint egyéb "kényelmet" segítő funkciókkal is (szintaxis ellenőrzés/kiemelés Pythonhoz/HTML-hez/CSS-hez/JavaScript-hez és a Django template-khez). A szükséges szoftverek (\ref{install}) megléte mellett akár egy egyszerű szövegszerkesztő alkalmazás is elegendő (de célszerűbb valamilyen integrált fejlesztői környezetet használni).
 
 \section{Funkcionális terv}
 
@@ -47,12 +47,12 @@ Az \ref{fig:usecase}. ábrán egy felhasználói eset diagram mutatja be az alka
 
 \section{Struktúrális felépítés}
 
-A ScrumHelper egy MVC (Model-View-Controller) alkalmazás, bár a hivatalos Django dokumentációban az MTV (Model-Template-View) kifejezést használják, mivel ezt gondolják pontosabb leírásának. Tekintve, hogy Djangoban írodott az alkalamzás, ezért ebben a dokumentációban is utóbbi analógia az irányadó. Ez azt jelenti, hogy három rétegből tevődik össze: egy Model rétegből, amely az adatbázist hivatott reprezentálni, egy View rétegből, amely az adatot reprezentálja (ez alatt azt értjük, amit az adatbázisből kigyűjtött, nem feltétlenül a felhasználó számára megjelenített adatot), valamint a különböző template-ek renderelését is végzi, továbbá egy Template rétegből, mely definiálja, hogyan legyen az adat megjelenítve a felhasználó számára.
+A ScrumHelper egy MVC (Model-View-Controller) alkalmazás, bár a hivatalos Django dokumentációban az MTV (Model-Template-View) kifejezést használják, mivel ezt gondolják pontosabb leírásának. Tekintve, hogy Djangoban íródott az alkalmazás, ezért ebben a dokumentációban is utóbbi analógia az irányadó. Ez azt jelenti, hogy három rétegből tevődik össze: egy Model rétegből, amely az adatbázist hivatott reprezentálni, egy View rétegből, amely az adatot reprezentálja (ez alatt azt értjük, amit az adatbázisból kigyűjtött, nem feltétlenül a felhasználó számára megjelenített adatot), valamint a különböző template-ek renderelését is végzi, továbbá egy Template rétegből, mely definiálja, hogyan legyen az adat megjelenítve a felhasználó számára.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth,height=125px]{architecture}
-	\caption{Az alkalamzás rétegei: egy adatbázis, egy szerver, ami kinyeri belőle az adatot és továbbítja a nézetnek, valamint a nézet amit a böngészőben láthatunk.}
+	\caption{Az alkalmazás rétegei: egy adatbázis, egy szerver, ami kinyeri belőle az adatot és továbbítja a nézetnek, valamint a nézet amit a böngészőben láthatunk.}
 	\label{fig:architecture}
 \end{figure}
 
@@ -68,20 +68,20 @@ A django alkalmazások úgynevezett applikációkból állnak, amelyek a modulá
 \pagebreak
 
 \begin{itemize}
- 	\item Ahogy az ábrán is látható, a fő csomag a ScrumHelper. Ez fogja össze működésben az alkalamzást.
+ 	\item Ahogy az ábrán is látható, a fő csomag a ScrumHelper. Ez fogja össze működésben az alkalmazást.
 	\item A legnagyobb applikáció a "Projects", ugyanis ez tartalmazza egyben a "Stories", "Tasks", "Issues", "Comments", "Epics" applikációkat is.
-	\item A felhasználók kezelésével foglalkozó csomag a "Users" és részben a "Login". Utóbbi a ki- és bejelentkeztetésre, valamint a felhasználók regisztrálására és szerkeztésére szolgál.
+	\item A felhasználók kezelésével foglalkozó csomag a "Users" és részben a "Login". Utóbbi a ki- és bejelentkeztetésre, valamint a felhasználók regisztrálására és szerkesztésére szolgál.
 	\item Egy kisebb alkalmazás, a "Worklogs" adja a modell szintű reprezentációját a munkaidő naplónak.
 \end{itemize}
 
-Ezek implementáció, részletei a későbbi alfejezetekben olvashatóak. 
+Ezek implementációs részletei a későbbi alfejezetekben olvashatóak. 
 
 \section{Adatbázis réteg}
 \label{dbmodels}
 
 A django keretrendszernek köszönhetően érdemben nem számít, hogy milyen adatbázissal dolgozunk (legalábbis az adatbázis kezelés szempontjából). A ScrumHelper fejlesztése során a nyílt-forráskódú PostgreSQL-re esett a választás, de a python modellek és az adatbázis lekérdezések függetlenek attól, hogy milyen adatbázist használunk. Ha csak egy kis, egyszerű alkalmazás megvalósítása a cél akkor érdemesebb például SQLite adatbázist használni, tekintve, hogy az csak egy lokális fájlban tárolja az adatokat, könnyebb menedzselni. A PostgreSQL (a MySQL, Oracle, MariaDB mellett) jobb döntésnek bizonyul nagyobb méretű alkalmazások esetén. 
 
-Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django modell típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testreszabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A modell szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
+Az egyes adatbázis táblákat (entitásokat) egy-egy modell reprezentál a forráskódban. Ezek a django.db.models.Model osztályból vannak származtatva. Az egyes modellek attribútumai egy-egy oszlopot reprezentálnak a táblában. A django dokumentációban\footnote{django modell típusosztályok: \url{https://docs.djangoproject.com/en/3.0/ref/models/fields/}} részletes leírás található arról, mely mezőtípusokhoz milyen paramétereket lehet megadni ahhoz, hogy minél jobban testre szabhassuk a mező tulajdonságait. Van lehetőség modell szintű metódusokat is definiálni ugyanúgy, mint a python osztályoknál (hiszen ezek is python osztályok), de ezek nem lesznek jelen az adatbázisban. A modell szinten jellemzően csak egyszerűbb metódusokat szokás definiálni, mint például az \textit{\_\_str\_\_()} felüldefiniálása a felsőbb rétegek segítségéül, vagy az \textit{\_\_init\_\_} inicializációs függvényt. Érdemes azonban kerülni az ilyen megoldásokat, hogy minél jobban elszeparálhatóak legyenek az egyes rétegek.  A következő alfejezetekben részletes információk találhatóak az egyes modellekről.
 
 \subsection{Felhasználó kezelés: Users, Login modellek}
 
@@ -104,7 +104,7 @@ A \textbf{django.contrib.auth.models.User} modell reprezentál egy-egy felhaszn�
 	\item \textit{is\_superuser}: Minden jogosultsággal rendelkező felhasználó-e
 	\item \textit{last\_login}: utolsó bejelentkezés dátuma
 	\item \textit{last\_name}: vezeték név
-	\item \textit{password}: jelszó (hashelve, azaz kódolva)
+	\item \textit{password}: jelszó (hash-elve, azaz kódolva)
 	\item \textit{username}: felhasználónév
 \end{itemize}
 
@@ -115,7 +115,7 @@ A \textbf{Login} modul nem rendelkezik külön adatbázis reprezentációval, mi
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{projectModel}
-	\caption{Project modell diagrammja}
+	\caption{Project modell diagramja}
 	\label{fig:projectmodel}
 \end{figure}
 
@@ -131,12 +131,12 @@ A \textbf{Projects} applikáció saját adatbázis modellje a \textbf{Project}:
 	\item \textit{release}: a Release neve (maximum 10 karakter hosszú)
 \end{itemize}
 
-Rendelekezik egy \textit{documents} attribútummal is, mely egy \textbf{ManyToManyField} típusú mező, azaz több idegen kulcs kapcsolatot fog egybe (erre a célra a django automatikusan létrehoz egy táblát, amelyben benne lesznek ezek az összekapcsolások) a \textbf{Documents} modell táblájának \textit{id} mezőjével. Ennek seígtségével kapcsolódik egy adott projekthez több dokumentum is.
+Rendelkezik egy \textit{documents} attribútummal is, mely egy \textbf{ManyToManyField} típusú mező, azaz több idegen kulcs kapcsolatot fog egybe (erre a célra a django automatikusan létrehoz egy táblát, amelyben benne lesznek ezek az összekapcsolások) a \textbf{Documents} modell táblájának \textit{id} mezőjével. Ennek segítségével kapcsolódik egy adott projekthez több dokumentum is.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{documentModel}
-	\caption{Documents modell diagrammja}
+	\caption{Documents modell diagramja}
 	\label{fig:docmodel}
 \end{figure}
 
@@ -147,11 +147,11 @@ A \textbf{Documents} modell rendelkezik egy \textit{document} attribútummal, me
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{epicModel}
-	\caption{Epic modell diagrammja}
+	\caption{Epic modell diagramja}
 	\label{fig:epicmodel}
 \end{figure}
 
-Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Project} tábla \textit{code} mezőjéhez. Egy projekthez több több epic is tartozhat, de egy epic csak egy projekthez kapcsolódhat. Ha a projekt törlődik, vagy a létrehozó felhasználó, akkor az összes epic is amelyek hozzá tartoznak. A modell mezői:
+Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Project} tábla \textit{code} mezőjéhez. Egy projekthez több epic is tartozhat, de egy epic csak egy projekthez kapcsolódhat. Ha a projekt törlődik, vagy a létrehozó felhasználó, akkor az összes epic is amelyek hozzá tartoznak. A modell mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -168,11 +168,11 @@ Az \textbf{Epic} a \textit{project\_code} mezővel kapcsolódik a \textbf{Projec
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{storyModel}
-	\caption{Story modell diagrammja}
+	\caption{Story modell diagramja}
 	\label{fig:storymodel}
 \end{figure}
 
-A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolódik egyrészt a projekthez, amely alatt létrehozták, kapcsolódik továbbá a felhasználóhoz, aki létrehozta, illetve akihez rendelve van (opcionális), valamint kapcsolódik egy epic-hez (ez is opcionális). Egy story csak addig létezik, amíg a projekt is, amely alatt létehozták, avagy ki nem törlik. Ha epic-hez van rendelve és töröljük, akkor csak kinullázódik azon mezője. Abban az esetben, ha a felhasználót töröljük, aki létrehozta a story-t, akkor is törlődik. A modell mezői:
+A \textbf{UserStory} több táblához is rendelkezik idegen kulccsal: kapcsolódik egyrészt a projekthez, amely alatt létrehozták, kapcsolódik továbbá a felhasználóhoz, aki létrehozta, illetve akihez rendelve van (opcionális), valamint kapcsolódik egy epic-hez (ez is opcionális). Egy story csak addig létezik, amíg a projekt is, amely alatt létrehozták, avagy ki nem törlik. Ha epic-hez van rendelve és töröljük, akkor csak kinullázódik azon mezője. Abban az esetben, ha a felhasználót töröljük, aki létrehozta a story-t, akkor is törlődik. A modell mezői:
 
 \begin{itemize}
 	\item \textit{id}: mezőazonosító (alapvetően generált)
@@ -196,7 +196,7 @@ Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze ka
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{taskModel}
-	\caption{Task modell diagrammja}
+	\caption{Task modell diagramja}
 	\label{fig:taskmodel}
 \end{figure}
 
@@ -224,7 +224,7 @@ Rendelkezik egy \textit{comment} mezővel is, amely több kommentet is össze ka
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{issueModel}
-	\caption{Issue modell diagrammja}
+	\caption{Issue modell diagramja}
 	\label{fig:issuemodel}
 \end{figure}
 
@@ -254,7 +254,7 @@ A \textbf{Projects} applikáción belül található a \textbf{Comments} modul i
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{commentModel}
-	\caption{Comment modell diagrammja}
+	\caption{Comment modell diagramja}
 	\label{fig:commentModel}
 \end{figure}
 
@@ -290,13 +290,13 @@ A munkaidő napló adatbázis reprezentációjául a \textbf{Worklog} modell szo
 A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek (views) adják. Egy-egy applikáció a következő modulokból (gyakorlatilag fájlokból épül fel):
 
 \begin{itemize}
-	\item \textit{admin.py}: A Django biztosít egy admin felületet az alkalmazás adatbázis szintű kezelésére. Egy adott modell akkor szerkezthető az admin oldalon, ha beregisztráljuk ebben a fájlban.
+	\item \textit{admin.py}: A Django biztosít egy admin felületet az alkalmazás adatbázis szintű kezelésére. Egy adott modell akkor szerkeszthető az admin oldalon, ha beregisztráljuk ebben a fájlban.
 	\item \textit{apps.py}: Az egyes applikációk nevét tudjuk itt megadni, amivel tudunk rá hivatkozni a többi alkalmazásból (például: "projects.stories"), valamint egyéb alapkonfigurációkat az applikációról.
 	\item \textit{migrations}: Ez egy almappa, amiben alap és későbbi (fájl nevében időponttal jelölt) adatbázis migrációk találhatók. Ezek a modellek változásaikor az adatbázis reprezentációjukon módosítanak annak megfelelően.
-	\item \textit{templates}: A template-eket, azaz a HTML fájlokat tartalamzza, amik a böngészőben megjelenítendő Nézet rétehet adják. Lehetőség van a fő mappában (jelen esetben \textit{ScrumHelper}) létrehozni egyetlen tempaltes mappát és abban alkalamzásonként almappát, amelybe helyezzük a fájlokat,   de az újrafelhasználhatóság érdekében jobb megoldás minden ilyen fájlt és almappát az applikáció saját mappájában elhelyezni.
+	\item \textit{templates}: A template-eket, azaz a HTML fájlokat tartalmazza, amik a böngészőben megjelenítendő Nézet réteget adják. Lehetőség van a fő mappában (jelen esetben \textit{ScrumHelper}) létrehozni egyetlen templates mappát és abban alkalmazásonként almappát, amelybe helyezzük a fájlokat,   de az újrafelhasználhatóság érdekében jobb megoldás minden ilyen fájlt és almappát az applikáció saját mappájában elhelyezni.
 	\item \textit{constants.py}: nem kötelező fájl. Applikáció szintű konstansok tárolására használható.
 	\item \textit{forms.py}: Szintén nem kötelező fájl. Ha használunk form-okat (például regisztrációra), akkor érdemes ebbe a fájlba elhelyezni ezeket.
-	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalamzáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
+	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalmazáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
 	\item \textit{tests.py}: Az egyes applikációk egység teszt modulja.
 	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között. A view függvények mindig kapnak egy \textit{request} paramétert bemenetként, amiben a hívás adatai vannak (például form esetén az adatok, vagy fájlok, stb.).
 	\item \textit{urls.py}: Az applikációk szolgáltatásainak és view-inak az elérési útját tartalmazza (azaz a végpontokat, URL címeket).
@@ -326,16 +326,16 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 \textbf{Végpontja:} "/logout/".
 		\item[signup:] A regisztrációs formula segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felahsználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres forumlát biztosít kitöltésre a \textit{registration/signup.html} számára. 
 \textbf{Végpontja:} "registration/signup/".
-		\item[edit\_user:] Az egyes felhasználók szerkeztésére szolgál. Ugyanazt a form-ot használja, mint a regisztráció, csak itt "GET" üzenet esetén is az ismert adatokkal kitöltve adja át a tempalte-nek. 
+		\item[edit\_user:] Az egyes felhasználók szerkesztésére szolgál. Ugyanazt a form-ot használja, mint a regisztráció, csak itt "GET" üzenet esetén is az ismert adatokkal kitöltve adja át a template-nek. 
 \textbf{Végpontja:} "edit\_user/<int:user\_id>/", azaz a bemenő paramétere egy felhasználói azonosító.
-		\item[change\_pw:] A jelszóváltoztatást valósítja meg. Ehhez szintén egy user\_id-t vár bementként és a regisztrációs form-ott használja. Azért van szükség mégis külön kezelni, mert nem minden felhasználónak van jogosultsága elérni a szerkeztést. 
+		\item[change\_pw:] A jelszóváltoztatást valósítja meg. Ehhez szintén egy user\_id-t vár bemenetként és a regisztrációs form-ot használja. Azért van szükség mégis külön kezelni, mert nem minden felhasználónak van jogosultsága elérni a szerkesztést. 
 \textbf{Végpontja:} "change\_pw/<int:user\_id>".
 	\end{description}
 \end{itemize}
 
 \subsection{Projects applikáció}
 
-A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetkben leszek részletezve. A \textbf{Comments} applikáció lényegében csak a kommentek adatbázis reprezentációjára szolgál, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
+A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a \textbf{Stories, Issues, Comments, Tasks, Epics} applikációk, de ezek külön fejezetekben leszek részletezve. A \textbf{Comments} applikáció lényegében csak a kommentek adatbázis reprezentációjára szolgál, saját szolgáltatásokkal és nézettel nem rendelkezik, így ez nem lesz részletezve ebben a fejezetben.
 
 \begin{itemize}
 	\item \textbf{Forms:}
@@ -345,7 +345,7 @@ A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a
 		\item[CommentForm:] A kommentek létrehozásához használt form. Csak \textit{text} mezője van a komment szövegének lementéséhez.
 		\item[CreateEpicForm:] Az \textbf{Epic} létrehozó formulája. Mezői: \textit{name, project\_code, description}, azaz a neve, a projekt kódja, amelyhez tartozik és egy leírás.
 		\item[CreateWorklogform:] A \textbf{Worklog}, azaz munkanapló bejegyzés létrehozásához használt form. Mezők: \textit{log\_date, logged\_hour}. A feladattal végzett munkaidő és maga a munkanap.
-		\item[CreateTaskForm:]  A \textbf{Task} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínánakl fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
+		\item[CreateTaskForm:]  A \textbf{Task} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínálnak fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező.
 		\item[CreateIssueForm:] Az \textbf{Issue} létrehozás form-ja. Mezői: \textit{name, project\_code, assignee, description, importance, epic, defect\_type, solution}. A \textit{project\_code, assignee, epic} mezők \textbf{ModelChoiceField} típusúak, tehát egy megadott adathalmazból kínálnak fel opciókat. Az \textit{epic} és \textit{assignee} mezők kiválasztása nem kötelező. A \textit{defect\_type} mező is egy \textbf{ChoiceField}, tehát adott lehetőségekből lehet választani: BUG, SYSTEM DEFECT, DEVELOPMENT, SPECIFICATION ISSUE. Utóbbi értékek egy konstansban találhatóak a \textit{contants.py} modulban, az \textit{ISSUE\_CHOICES} változóban.
 	\end{description}
 	\item \textbf{Szolgáltatások (services):}
@@ -355,7 +355,7 @@ A \textbf{Projects} applikáció a projektek megvalósítása. Ennek almappái a
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
-		\item[index:] Lekérdezi az adatbázisban található összes projektet. A \textit{django.core.paginator} modul beli \textbf{Paginator} segítségével oldalakra osztja az eredményeket (jelen beállítás szerint ötösével). Ennek megoldása a \ref{src:paginator}. kódrészletben látható. Az így rendezett projekt listát hozzárendeli a "projects/index.html"-hez. \textbf{Végpont:} "projects/".
+		\item[index:] Lekérdezi az adatbázisban található összes projektet. A \textit{django.core.paginator} modulbeli \textbf{Paginator} segítségével oldalakra osztja az eredményeket (jelen beállítás szerint ötösével). Ennek megoldása a \ref{src:paginator}. kódrészletben látható. Az így rendezett projekt listát hozzárendeli a "projects/index.html"-hez. \textbf{Végpont:} "projects/".
 		\item[detail:] Bemenő paraméter: \textit{request, project\_id}. Utóbbival meghívja a \textit{get\_issues\_for\_project} szolgáltatást és az ebből megszerzett \textit{context} változót hozzárendeli a "projects/details.html" oldalhoz. \textbf{Végpont}: "projects/<int:project\_id>/".
 		\item[project\_new:] Új projekt létrehozását kezelő view. "GET" üzenet esetén biztosítja az üres \textbf{CreateProjectForm}-ot, "POST" üzenet esetén ellenőrzi és lementi az adatokat. \textbf{Végpont:} "projects/new/".
 		\item[project\_edit:] A bemeneti paraméterként megkapott \textit{project\_id} alapján megkeresi az adatbázisban a projektet, majd egy \textbf{CreateProjectForm}-ot ad vissza az ismert adatokkal kitöltve "GET" üzenet esetén. "POST" üzenet esetén frissíti az adatbázisban a projekt adatait. \textbf{Végpont:} "projects/<int:project\_id>/edit".
@@ -402,7 +402,7 @@ Az \textbf{Epics} applikáció az epic-ek megvalósítása.
 	\item \textbf{Nézetek (views):}
 	\begin{description}
 		\item[detail:] Bemeneti paraméter: \textit{epic\_id}. Ezzel meghívja a \textit{get\_epic\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "epics/detail.html" template-hez. \textbf{Végpont:} "projects/epics/<int:epic\_id>/".
-		\item[epic\_new:] Új \textbf{Epic} létrehozását végző view, a \textbf{CreateEpicForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "epics/epic\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/epics/new/".
+		\item[epic\_new:] Új \textbf{Epic} létrehozását végző view, a \textbf{CreateEpicForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "epics/epic\_edit.html" template-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/epics/new/".
 		\item[epic\_edit:] Megkapja bemeneti paraméterül az \textit{epic\_id}-t, majd visszaad egy \textbf{CreateEpicForm} form-ot kitöltve a szerkeztendő epic adataival az "epics/epic\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/epics/<int:epic\_id>/edit".
 		\item[delete:] Meghívja az \textit{epic\_id} paraméterrel a \textit{delete\_epic} szolgáltatást. \textbf{Végpont:} "projects/epics/delete/<int:epic\_id>/".
 	\end{description}
@@ -418,20 +418,20 @@ Az \textbf{Stories} applikáció az story-k megvalósítása.
 	\begin{description}
 		\item[get\_story\_object:] Visszaadja a paraméterül kapott \textit{story\_id}-hoz tartozó story-t az adatbázisból.
 		\item[delete\_story:] Kitörli az adatbázisból a paraméterül kapott \textit{story\_id}-hoz tartozó story-t. Logikai értékkel tér vissza attól függően, sikerült-e.
-		\item[get\_story\_details:] Bemeneti paramétrben megkapja az  \textit{story\_id}-t, majd legyűjti az ehhez tartozó story-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_story\_details:] Bemeneti paraméterben megkapja az  \textit{story\_id}-t, majd legyűjti az ehhez tartozó story-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
 		\item[get\_stories\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) story-kat és visszaadja egy \textbf{dictionary} típusú változóban.
 		\item[change\_story\_state:] A paraméterül kapott \textit{story\_id}-hoz tartozó story státuszát állítja tovább.
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
 		\item[detail:] Bemeneti paraméter: \textit{story\_id}. Ezzel meghívja a \textit{get\_story\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "stories/detail.html" template-hez. \textbf{Végpont:} "projects/stories/<int:story\_id>/".
-		\item[story\_new:] Új \textbf{Story} létrehozását végző view, a \textbf{CreateStoryForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "stories/story\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/stories/new/".
-		\item[story\_edit:] Megkapja bemeneti paraméterül a \textit{story\_id}-t, majd visszaad egy \textbf{CreateStoryForm} form-ot kitöltve a szerkeztendő story adataival a "stories/story\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/stories/<int:story\_id>/edit".
+		\item[story\_new:] Új \textbf{Story} létrehozását végző view, a \textbf{CreateStoryForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "stories/story\_edit.html" template-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/stories/new/".
+		\item[story\_edit:] Megkapja bemeneti paraméterül a \textit{story\_id}-t, majd visszaad egy \textbf{CreateStoryForm} form-ot kitöltve a szerkesztendő story adataival a "stories/story\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/stories/<int:story\_id>/edit".
 		\item[delete:] Meghívja az \textit{story\_id} paraméterrel a \textit{delete\_story} szolgáltatást. \textbf{Végpont:} "projects/stories/delete/<int:story\_id>/".
 		\item[create\_comment:] A \textit{story\_id}-hoz tartozó story-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a story-hoz kapcsolva.\textbf{Végpont:} "projects/stories/comment/<int:story\_id>/".
 		\item[delete\_comment:] A \textit{story\_id}-hoz tartozó story-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/stories/comment/delete/<int:story\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja a \textit{story\_id}-val a \textit{change\_story\_state} szolgáltatást. \textbf{Végpont:} "projects/stories/<int:story\_id>/change\_state/".
-		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a story-hoz. \textbf{Végpont:} "projects/stories/<int:story\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" template-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a story-hoz. \textbf{Végpont:} "projects/stories/<int:story\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
@@ -444,20 +444,20 @@ Az \textbf{Tasks} applikáció a task-ok megvalósítása.
 	\begin{description}
 		\item[get\_task\_object:] Visszaadja a paraméterül kapott \textit{task\_id}-hoz tartozó task-ot az adatbázisból.
 		\item[delete\_task:] Kitörli az adatbázisból a paraméterül kapott \textit{task\_id}-hoz tartozó task-ot. Logikai értékkel tér vissza attól függően, sikerült-e.
-		\item[get\_task\_details:] Bemeneti paramétrben megkapja az  \textit{task\_id}-t, majd legyűjti az ehhez tartozó task-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_task\_details:] Bemeneti paraméterben megkapja az  \textit{task\_id}-t, majd legyűjti az ehhez tartozó task-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van). Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
 		\item[get\_tasks\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) task-okat és visszaadja egy \textbf{dictionary} típusú változóban.
 		\item[change\_task\_state:] A paraméterül kapott \textit{task\_id}-hoz tartozó task státuszát állítja tovább.
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
 		\item[detail:] Bemeneti paraméter: \textit{task\_id}. Ezzel meghívja a \textit{get\_task\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "tasks/detail.html" template-hez. \textbf{Végpont:} "projects/tasks/<int:task\_id>/".
-		\item[task\_new:] Új \textbf{Task} létrehozását végző view, a \textbf{CreateTaskForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "tasks/task\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/tasks/new/".
-		\item[task\_edit:] Megkapja bemeneti paraméterül a \textit{task\_id}-t, majd visszaad egy \textbf{CreateTaskForm} form-ot kitöltve a szerkeztendő task adataival a "tasks/task\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/tasks/<int:task\_id>/edit".
+		\item[task\_new:] Új \textbf{Task} létrehozását végző view, a \textbf{CreateTaskForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "tasks/task\_edit.html" template-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/tasks/new/".
+		\item[task\_edit:] Megkapja bemeneti paraméterül a \textit{task\_id}-t, majd visszaad egy \textbf{CreateTaskForm} form-ot kitöltve a szerkesztendő task adataival a "tasks/task\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/tasks/<int:task\_id>/edit".
 		\item[delete:] Meghívja az \textit{task\_id} paraméterrel a \textit{delete\_task} szolgáltatást. \textbf{Végpont:} "projects/tasks/delete/<int:task\_id>/".
 		\item[create\_comment:] A \textit{task\_id}-hoz tartozó task-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt a task-hoz kapcsolva.\textbf{Végpont:} "projects/tasks/comment/<int:task\_id>/".
 		\item[delete\_comment:] A \textit{task\_id}-hoz tartozó task-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/tasks/comment/delete/<int:task\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja a \textit{task\_id}-val a \textit{change\_task\_state} szolgáltatást. \textbf{Végpont:} "projects/tasks/<int:task\_id>/change\_state/".
-		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a task-hoz. \textbf{Végpont:} "projects/tasks/<int:task\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" template-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést a task-hoz. \textbf{Végpont:} "projects/tasks/<int:task\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
@@ -470,26 +470,26 @@ Az \textbf{Issues} applikáció az issue-k megvalósítása.
 	\begin{description}
 		\item[get\_issue\_object:] Visszaadja a paraméterül kapott \textit{issue\_id}-hoz tartozó issue-t az adatbázisból.
 		\item[delete\_issue:] Kitörli az adatbázisból a paraméterül kapott \textit{issue\_id}-hoz tartozó issue-t. Logikai értékkel tér vissza attól függően, sikerült-e.
-		\item[get\_issue\_details:] Bemeneti paramétrben megkapja az  \textit{issue\_id}-t, majd legyűjti az ehhez tartozó issue-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van) és egyéb mezőit. Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
+		\item[get\_issue\_details:] Bemeneti paraméterben megkapja az  \textit{issue\_id}-t, majd legyűjti az ehhez tartozó issue-hoz rendelt felhasználót (ha van), a létrehozóját (owner), az epic-et (ha hozzá van rendelve), a kommenteket (ha vannak) és a munkanapló bejegyzéseket (ha van) és egyéb mezőit. Visszatérési értéke egy \textbf{dictionary} típusú változó, amelybe belepakolja mindet.
 		\item[get\_issues\_for\_user:] Megkapja a \textit{user\_id}-t, majd legyűjti az ehhez a felhasználóhoz rendelt (assignee) issue-kat és visszaadja egy \textbf{dictionary} típusú változóban.
 		\item[change\_issue\_state:] A paraméterül kapott \textit{issue\_id}-hoz tartozó issue státuszát állítja tovább.
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
 		\item[detail:] Bemeneti paraméter: \textit{issue\_id}. Ezzel meghívja a \textit{get\_issue\_object} szolgáltatást, majd az eredményül kapott listát rendeli az "issues/detail.html" template-hez. \textbf{Végpont:} "projects/issues/<int:issue\_id>/".
-		\item[issue\_new:] Új \textbf{Issue} létrehozását végző view, a \textbf{CreateIssueForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át az "issues/issue\_edit.html" tempalte-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/issues/new/".
-		\item[issue\_edit:] Megkapja bemeneti paraméterül a \textit{issue\_id}-t, majd visszaad egy \textbf{CreateIssueForm} form-ot kitöltve a szerkeztendő issue adataival az "issues/issue\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/issues/<int:issue\_id>/edit".
+		\item[issue\_new:] Új \textbf{Issue} létrehozását végző view, a \textbf{CreateIssueForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át az "issues/issue\_edit.html" template-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/issues/new/".
+		\item[issue\_edit:] Megkapja bemeneti paraméterül a \textit{issue\_id}-t, majd visszaad egy \textbf{CreateIssueForm} form-ot kitöltve a szerkesztendő issue adataival az "issues/issue\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/issues/<int:issue\_id>/edit".
 		\item[delete:] Meghívja az \textit{issue\_id} paraméterrel a \textit{delete\_issue} szolgáltatást. \textbf{Végpont:} "projects/issues/delete/<int:issue\_id>/".
 		\item[create\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz kommentek létrehozását biztosítja a \textbf{CreateCommentForm} segítségével, illetve "POST" üzenet esetén le is menti azt az issue-hoz kapcsolva.\textbf{Végpont:} "projects/issues/comment/<int:issue\_id>/".
 		\item[delete\_comment:] A \textit{issue\_id}-hoz tartozó issue-hoz létrehozott, \textit{comment\_id}-val rendelkező kommentet törli. \textbf{Végpont} "projects/issues/comment/delete/<int:issue\_id>/<int:comment\_id>".
 		\item[change\_state:] Meghívja az \textit{issue\_id}-val a \textit{change\_issue\_state} szolgáltatást. \textbf{Végpont:} "projects/issues/<int:issue\_id>/change\_state/".
-		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" tempalte-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést az issue-hoz. \textbf{Végpont:} "projects/issues/<int:issue\_id>/add\_worklog/".
+		\item[add\_worklog:] Biztosít egy \textbf{CreateWorklogform} form-ot a "worklogs/log\_work.html" template-hez. "POST" üzenet esetén létrehozza a munkanapló bejegyzést az issue-hoz. \textbf{Végpont:} "projects/issues/<int:issue\_id>/add\_worklog/".
 	\end{description}
 \end{itemize}	
 
 \subsection{Users applikáció}
 
-A \textbf{Users}, azaz a felhasználó-, profilkezelés megvalósítása. Nem rendelkezik szolgáltatás réteggel, ugyanis az alkalmazás jelen formájában ezt nem igényli, így példaként szolgál az ilyen típusú megvalósításra. Az egyes view-k (függvények) visszatérési értékét megváltoztatva könnyen szolgáltatássá lehet alakítani ezeket is.
+A \textbf{Users}, azaz a felhasználó és profilkezelés megvalósítása. Nem rendelkezik szolgáltatás réteggel, ugyanis az alkalmazás jelen formájában ezt nem igényli, így példaként szolgál az ilyen típusú megvalósításra. Az egyes view-k (függvények) visszatérési értékét megváltoztatva könnyen szolgáltatássá lehet alakítani ezeket is.
 
 \begin{itemize}
 	\item \textbf{Form-ok:}
@@ -499,13 +499,13 @@ A \textbf{Users}, azaz a felhasználó-, profilkezelés megvalósítása. Nem re
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
-		\item[index:] A felhasználó index oldalát jeleníti meg ("users/index.html"). Gyakorlatilag ez az alkalamzás főoldala. \textbf{Végpont:} "users/".
-		\item[detail:] Egy adott felhasználó profil oldala. Bemeneti paraméterben megkapja a \textit{username}-t, ehhez lekérdezi a felhasználót az adatbázisból, amelynek azonosítojával tovább hívja az egyes applikációk szolgáltatásait (story, issue, task). Ezek visszadják az adott felhasználóhoz rendelt feladatokat, a \textit{detail} nézet ezeket összeszedi egy adatszerkezetbe (\textbf{dictionary}), majd ezt továbbítja a template-nek ("users/detail.html"). \textbf{Végpont:} "users/<username>/".
-		\item[get\_users\_worklogs:] Ez egy hosszabb függvény, amely "GET" üzenet esetén legyűjti az aktuális hónap és nap munkanapló bejegyzéseit a bemenetül kapott \textit{username} felhasználóhoz. "POST" üzenet esetén a template-en elhelyezett formból kinyeri a beírt dátumot, majd az alapján gyűjti le a napi, illetve havi bejegyzéseket. \textbf{Végpont:} "users/<username>/worklogs/".
+		\item[index:] A felhasználó index oldalát jeleníti meg ("users/index.html"). Gyakorlatilag ez az alkalmazás főoldala. \textbf{Végpont:} "users/".
+		\item[detail:] Egy adott felhasználó profil oldala. Bemeneti paraméterben megkapja a \textit{username}-t, ehhez lekérdezi a felhasználót az adatbázisból, amelynek azonosítójával tovább hívja az egyes applikációk szolgáltatásait (story, issue, task). Ezek visszaadják az adott felhasználóhoz rendelt feladatokat, a \textit{detail} nézet ezeket összeszedi egy adatszerkezetbe (\textbf{dictionary}), majd ezt továbbítja a template-nek ("users/detail.html"). \textbf{Végpont:} "users/<username>/".
+		\item[get\_users\_worklogs:] Ez egy hosszabb függvény, amely "GET" üzenet esetén legyűjti az aktuális hónap és nap munkanapló bejegyzéseit a bemenetül kapott \textit{username} felhasználóhoz. "POST" üzenet esetén a template-en elhelyezett form-ból kinyeri a beírt dátumot, majd az alapján gyűjti le a napi, illetve havi bejegyzéseket. \textbf{Végpont:} "users/<username>/worklogs/".
 		\item[delete\_worklog:] A paraméterül kapott \textit{log\_id}-val beazonosítja az adatbázisban a munkanapló bejegyzést és kitörli. \textbf{Végpont:} "users/delete\_worklog/<int:log\_id>".
 		\item[team\_worklogs:] Szintén egy összetettebb view függvény. Az alapján, hogy a \textit{request}-et küldő felhasználó beletartozik-e a "project\_manager"  csoportba, avagy \textit{superuser}-e, összeszámolja az egyes felhasználókhoz könyvelt munkanapló bejegyzések óraszámait az adott hónapban, majd táblázatosan megjeleníti. Ha nem igaz egyik sem a felhasználóra, akkor csak a saját munkaidejét számolja ki. \textbf{Végpont:} "users/team\_worklogs/".
-		\item[group\_list:] Legyűjti az összes adatbázisbeli felhasználói csoportot a "users/groups.html" tempalte számára. Kezeli a "POST" üzenetet is, ugyanis a tempalte-en egy input szöveges mező segítségével vehetünk fel új csoportot (feltéve, hogy nem létezik már). \textbf{Végpont:} "users/groups/".
-		\item[group\_detail:] Egy adott csoportsaját oldalára navigál. Ehhez legyűtji az összes adatbázisbeli jogosultságot (permissions) és az adott csoport (bemenet: \textit{gr\_id}) aktuális jogosultságait. \textbf{Végpont:} "users/groups/<int:gr\_id>".
+		\item[group\_list:] Legyűjti az összes adatbázisbeli felhasználói csoportot a "users/groups.html" template számára. Kezeli a "POST" üzenetet is, ugyanis a template-en egy input szöveges mező segítségével vehetünk fel új csoportot (feltéve, hogy nem létezik már). \textbf{Végpont:} "users/groups/".
+		\item[group\_detail:] Egy adott csoport saját oldalára navigál. Ehhez legyűjti az összes adatbázisbeli jogosultságot (permissions) és az adott csoport (bemenet: \textit{gr\_id}) aktuális jogosultságait. \textbf{Végpont:} "users/groups/<int:gr\_id>".
 		\item[delete\_group:] Törli az adatbázisból a kapott \textit{gr\_id}-hoz tartozó csoportot. \textbf{Végpont:} "users/groups\_delete/<int:gr\_id>".
 		\item[add\_perm\_to\_group:] Jogosultságot (\textit{p\_id}) rendel hozzá egy csoporthoz (\textit{gr\_id}). \textbf{Végpont:} "users/add\_permission/<int:gr\_id>/<int:p\_id>".
 		\item[delete\_perm\_from\_group:] Eltávolítja az adott jogosultságot (\textit{p\_id}) a csoport (\textit{gr\_id}) jogosultságai közül. \textbf{Végpont} "users/delete\_permission/<int:gr\_id>/<int:p\_id>".
@@ -520,11 +520,11 @@ A \textbf{Worklogs} applikáció csak a munkanapló bejegyzések adatbázis mode
 
 \section{Megjelenítés (template) réteg}
 
-A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Közvetlen kapcsolatot a nézet (view) függvények jelentenek a szerverrel (adatbázissal). Minden applikáció (modul) rendelkezik saját \textbf{templates} mappával, amelyben van egy almappa a saját nevével (például: "projects/tempaltes/projects/"). Utóbbi azért szükséges, mert a keretrendszer így tudja beazonosítani, hogy mely útvonalon találja meg a keresett tempalte-et. A következő felsorolásban össze van gyűjtve, hogy az egyes applikációk milyen tempalte fájlokkal rendelkeznek. Az alapszerkezetüket ezeknek a HTML fájloknak a "ScrumHelper/templates/ScrumHelper/base.html" fájl adja. A Djangoban lehet használni úgynevezett \textit{tag}-eket a HTML kódban, amelynek segítségével lehet sablonokat alkalmazni (mint például a \textit{base.html}), valamint ciklusokat és elágazásokat is írhatunk velük. A főmappában van egy "static/" mappa, ez tartalmazza a CSS és JavaScript állományokat a formázott megjelenítéshez. A \textit{ScrumHelper} a MaterializeCSS könyvtárat használja \footnote{\url{https://materializecss.com/}}.
+A megjelenítés réteget a HTML template fájlok adják az alkalmazásban. Közvetlen kapcsolatot a nézet (view) függvények jelentenek a szerverrel (adatbázissal). Minden applikáció (modul) rendelkezik saját \textbf{templates} mappával, amelyben van egy almappa a saját nevével (például: "projects/templates/projects/"). Utóbbi azért szükséges, mert a keretrendszer így tudja beazonosítani, hogy mely útvonalon találja meg a keresett template-et. A következő felsorolásban össze van gyűjtve, hogy az egyes applikációk milyen template fájlokkal rendelkeznek. Az alapszerkezetüket ezeknek a HTML fájloknak a "ScrumHelper/templates/ScrumHelper/base.html" fájl adja. A Djangoban lehet használni úgynevezett \textit{tag}-eket a HTML kódban, amelynek segítségével lehet sablonokat alkalmazni (mint például a \textit{base.html}), valamint ciklusokat és elágazásokat is írhatunk velük. A főmappában van egy "static/" mappa, ez tartalmazza a CSS és JavaScript állományokat a formázott megjelenítéshez. A \textit{ScrumHelper} a MaterializeCSS könyvtárat használja \footnote{\url{https://materializecss.com/}}.
 
 \pagebreak
 
-\lstset{caption={Példa a Django tag-ekre a HTML kódban a bejelentkező ablak esetén (login/tempaltes/registration/login.html)}, label=src:exampleTag}
+\lstset{caption={Példa a Django tag-ekre a HTML kódban a bejelentkező ablak esetén (login/templates/registration/login.html)}, label=src:exampleTag}
 \begin{lstlisting}[language={html}]
 
 {\% extends 'ScrumHelper/base.html' \%}
@@ -555,52 +555,52 @@ A megjelenítés réteget a HTML tempalte fájlok adják az alkalmazásban. Köz
 \begin{itemize}
 	\item \textbf{details.html}: A projekt saját oldala, annak minden részletével.
 	\item \textbf{index.html}: Az összes projektet listázó oldal (ötösével, oldalakra szedve).
-	\item \textbf{kandban\_chart.html}: A kanban tábláról készült kördiagrammot megjelenítő oldal. Ehhez egy JSON üzenetben kapja a szervertől az adatokat és a Chart.js (JQuery alapú) könyvtár segítségével jeleníti meg a diagrammot.
+	\item \textbf{kandban\_chart.html}: A kanban tábláról készült kördiagramot megjelenítő oldal. Ehhez egy JSON üzenetben kapja a szervertől az adatokat és a Chart.js (JQuery alapú) könyvtár segítségével jeleníti meg a diagramot.
 	\item \textbf{kanban.html}: A kanban táblát megjelenítő template.
-	\item \textbf{proejct\_edit.html}: A projekt szerkeztő és létrehozó oldala egyben. A szervertől kapott form-ot jeleníti meg.
+	\item \textbf{project\_edit.html}: A projekt szerkesztő és létrehozó oldala egyben. A szervertől kapott form-ot jeleníti meg.
 \end{itemize}
 \subsection{Epics}
 \begin{itemize}
-	\item \textbf{detail.html}: Az epic részleteit megjeleíntő oldal tempalte-je.
-	\item \textbf{epic\_edit.html}: Az epic-et létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+	\item \textbf{detail.html}: Az epic részleteit megjelenítő oldal template-je.
+	\item \textbf{epic\_edit.html}: Az epic-et létrehozó, illetve szerkesztő form-ot megjelenítő template. A szervertől kapja a form szerkezetét és adatait.
 \end{itemize}
 \subsection{Stories}
 \begin{itemize}
-	\item \textbf{detail.html}: Az story részleteit megjeleíntő oldal tempalte-je.
-	\item \textbf{story\_edit.html}: Az story-t létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+	\item \textbf{detail.html}: Az story részleteit megjelenítő oldal template-je.
+	\item \textbf{story\_edit.html}: Az story-t létrehozó, illetve szerkesztő form-ot megjelenítő template. A szervertől kapja a form szerkezetét és adatait.
 \end{itemize}
 \subsection{Tasks}
 \begin{itemize}
-	\item \textbf{detail.html} : Az task részleteit megjeleíntő oldal tempalte-je.
-	\item \textbf{task\_edit.html}: Az task-ot létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+	\item \textbf{detail.html} : Az task részleteit megjelenítő oldal template-je.
+	\item \textbf{task\_edit.html}: Az task-ot létrehozó, illetve szerkesztő form-ot megjelenítő template. A szervertől kapja a form szerkezetét és adatait.
 \end{itemize}
 \subsection{Issues}
 \begin{itemize}
-	\item \textbf{detail.html}: Az issue részleteit megjeleíntő oldal tempalte-je.
-	\item \textbf{issue\_edit.html}: Az issue-t létrehozó, illetve szerkeztő form-ot megjelenítő tempalte. A szervertől kapja a form szerkezetét és adatait.
+	\item \textbf{detail.html}: Az issue részleteit megjelenítő oldal template-je.
+	\item \textbf{issue\_edit.html}: Az issue-t létrehozó, illetve szerkesztő form-ot megjelenítő template. A szervertől kapja a form szerkezetét és adatait.
 \end{itemize}
 \subsection{Users}
 \begin{itemize}
-	\item \textbf{all\_users.html}: Az összes felahsználó listáját megjelenítő tempalte.
+	\item \textbf{all\_users.html}: Az összes felhasználó listáját megjelenítő template.
 	\item \textbf{group\_detail.html}: Az adott felhasználói jogosultságcsoport jogosultságait és az összes jogosultságot jeleníti meg két táblázatban. Előbbiből törölni lehet(kék alapon fehér kereszt ikon), utóbbiból hozzáadni jogokat a csoporthoz(kék alapon fehér plusz jel).
-	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó tempalte. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, különben hibaüzenetet ad).
-	\item \textbf{index.html}: Az alkalamzás főoldalát adó template.
-	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkeztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat).
-	\item \textbf{team\_worklogs.html}: A scrum felhasználóinak össz munkaóra számát megjelenítő template, havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
-	\item \textbf{worklogs}: A felahsználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához. A dátum formátuma: Év-Hónap-Nap (például: 2020-12-01).
+	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó template. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, különben hibaüzenetet ad).
+	\item \textbf{index.html}: Az alkalmazás főoldalát adó template.
+	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkesztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat).
+	\item \textbf{team\_worklogs.html}: A scrum felhasználóinak összmunkaóra számát megjelenítő template, havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
+	\item \textbf{worklogs}: A felhasználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához. A dátum formátuma: Év-Hónap-Nap (például: 2020-12-01).
 \end{itemize}
 \subsection{Worklogs}
 \begin{itemize}
-	\item \textbf{log\_work}: Egy form-ot jelenít meg ez a tempalte, amelyen dátumot és munkaórát (1 és 8 között) adhatunk meg.
+	\item \textbf{log\_work}: Egy form-ot jelenít meg ez a template, amelyen dátumot és munkaórát (1 és 8 között) adhatunk meg.
 \end{itemize}
 
 \section{Tesztelés}
 
-Itt található az alkalamzáshoz készített egység tesztek leírása (hogyan kell futtatni, miket fed le), illetve a különböző funkciókhoz felületi tesztforgatókönyv.
+Itt található az alkalmazáshoz készített egység tesztek leírása (hogyan kell futtatni, miket fed le), illetve a különböző funkciókhoz felületi tesztforgatókönyv.
 
 \subsection{Egység tesztek}
 
-A Django keretrendszer lehetőséget biztosít egység tesztek készítésésre és futtatására. Minden applikációban található egy \textit{test.py} fájl. A teszteléshez ebbe teszt osztályokat kell létrehozni, amelyek a \textbf{TestCase} leszármazottai kell legyenek. Ezen belül van lehetőség teszt metódusokat definiálni, amelyek egy-egy tesztesetet fednek le. Lehetőség van a parancssorból lefuttatni az összes tesztesetet egyben, vagy akár csak alkalmazásonként külön-külön. Ehhez a következő parancsot kell kiadni a főmappán belül (ahol a \textit{manage.py} fájl is van): \textit{python manage.py test <app neve>.<esetleg alapplikáció neve>}. A \ref{fig:tests}. ábrán látható a parancssoros kimenet. Ha minen teszteset sikeres, akkor "OK" üzenetet kapunk. Ha van hibás, akkor egy "Error" üzenetben részletesebb információt is kapunk arról, hogy mi az elvárt eredmény az összehasonlításnál és mi az, amit ehelyett kapott.
+A Django keretrendszer lehetőséget biztosít egység tesztek készítésére és futtatására. Minden applikációban található egy \textit{test.py} fájl. A teszteléshez ebbe teszt osztályokat kell létrehozni, amelyek a \textbf{TestCase} leszármazottai kell legyenek. Ezen belül van lehetőség teszt metódusokat definiálni, amelyek egy-egy tesztesetet fednek le. Lehetőség van a parancssorból lefuttatni az összes tesztesetet egyben, vagy akár csak alkalmazásonként külön-külön. Ehhez a következő parancsot kell kiadni a főmappán belül (ahol a \textit{manage.py} fájl is van): \textit{python manage.py test <app neve>.<esetleg applikáció neve>}. A \ref{fig:tests}. ábrán látható a parancssoros kimenet. Ha minden teszteset sikeres, akkor "OK" üzenetet kapunk. Ha van hibás, akkor egy "Error" üzenetben részletesebb információt is kapunk arról, hogy mi az elvárt eredmény az összehasonlításnál és mi az, amit ehelyett kapott.
 
 \begin{figure}[H]
 	\centering
@@ -611,7 +611,7 @@ A Django keretrendszer lehetőséget biztosít egység tesztek készítésésre 
 
 Az egység tesztekhez a \textit{test} parancs futtatása során létrejön a memóriában egy ideiglenes adatbázis, amely szerkezetileg megegyezik a valós adatbázissal. 
 
-A \textit{ScrumHelper} minden applikációjában, ahol van szolgáltatás és/vagy nézet réteg (azaz \textit{services.py vagy views.py} fájlok), ott minden funkcióra (függvényre) vonatkozik egy-egy teszteset. Ahol sajátkezűleg szükséges volt megoldani az esetleges hibák lekezelést (tehát nem a keretrendszer működésén múlik), ott egy pozitív (azaz helyes működés) és egy negatív (azaz hiba esetén) teszteset vizsgálja az elvárt működést.
+A \textit{ScrumHelper} minden applikációjában, ahol van szolgáltatás és/vagy nézet réteg (azaz \textit{services.py vagy views.py} fájlok), ott minden funkcióra (függvényre) vonatkozik egy-egy teszteset. Ahol saját kezűleg szükséges volt megoldani az esetleges hibák lekezelést (tehát nem a keretrendszer működésén múlik), ott egy pozitív (azaz helyes működés) és egy negatív (azaz hiba esetén) teszteset vizsgálja az elvárt működést.
 
 \subsection{Felületi tesztek}
 
@@ -628,7 +628,7 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 	\end{itemize}
 	\item Főoldal:
 	\begin{itemize}
-		\item \textbf{ScrumHelper szövegre kattintás:} A program bármely oldalról, ha a navigációs sávbeli \textbf{Scrumhelper} szövegre kattintunk, akkor visszajuttat erre a főodlalra.
+		\item \textbf{ScrumHelper szövegre kattintás:} A program bármely oldalról, ha a navigációs sávbeli \textbf{Scrumhelper} szövegre kattintunk, akkor visszajuttat erre a főoldalra.
 		\item \textbf{Navigációs sáv menüpontjaira kattintás:} Rendre az elvárt oldalakra navigálnak el.
 		\item \textbf{A három menüpont alatti View gombok:} Rendre eljutunk a \textbf{Projects} index oldalra, a saját munkanapló oldalra, valamint a saját profil oldalra.
 	\end{itemize}
@@ -642,12 +642,12 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 	\begin{itemize}
 		\item \textbf{Felhasználói linkek:} A felhasználóneveket tartalmazó mezők valóban a megfelelő profil oldalára juttatnak el.
 		\item \textbf{Dokumentum feltöltés:} Kiválasztó gomb (valamint kiválasztás) és feltöltés működik. Feltöltés után megjelenik a dokumentum a listában.
-		\item \textbf{Dokumentum törlés:} A törlés gombra listából eltűnik a dokumentum.
+		\item \textbf{Dokumentum törlés:} A törlés gombra kattintás hatására kitörlődik, nem lesz látható a felsorolásban.
 		\item \textbf{Dokumentum linkek:} A dokumentumra kattintva megtekinthetőek a fájlok.
-		\item \textbf{Epic, Story, Task, Issue lista:} Az összes feladat típus, amelyek a projekthez lettek létrehozva, megjelennek a listában. Az egyes elemre kattitnva eljutunk annak saját oldalára.
-		\item \textbf{Almenü (jobb alsó sarok):} Az egeret ráhúzva megjelennek a menüpontok: szerkeztés, issue, story, task és epic létrehozás, munkaidő könyvelés (story, task, issue esetén) valamint megfelelő admin/projekt tulajdonosként törlés.
+		\item \textbf{Epic, Story, Task, Issue lista:} Az összes feladat típus, amelyek a projekthez lettek létrehozva, megjelennek a listában. Az egyes elemre kattintva eljutunk annak saját oldalára.
+		\item \textbf{Almenü (jobb alsó sarok):} Az egeret ráhúzva megjelennek a menüpontok: szerkesztés, issue, story, task és epic létrehozás, munkaidő könyvelés (story, task, issue esetén) valamint megfelelő admin/projekt tulajdonosként törlés.
 		\item \textbf{Kommentek létrehozása:} Komment beküldése esetén (ahol erre van lehetőség), a komment megfelelő időponttal, a létrehozó felhasználóhoz kötve (linkkel ellátva), a beírt szöveggel létrejön.
-		\item \textbf{Kommentek törlése:} A törlés gombra kattintás határásra a kitörlődik, nem lesz látható.
+		\item \textbf{Kommentek törlése:} A törlés gombra kattintás hatására kitörlődik, nem lesz látható a kommentek között.
 		\item \textbf{Projekt törlése:} Projekt törlése esetén az összes feladat, amelyet ez alatt hoztak létre törlődik.
 	\end{itemize} 
 	\item Az egyes létrehozási oldalak (projekt, story, epic, task, issue)
@@ -658,9 +658,9 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 	\end{itemize}
 	\item Munkanapló
 	\begin{itemize}
-		\item \textbf{Saját munkanapló oldal:} Dátum kiválasztása előtt az aktuálsi hónaphoz és naphoz jelennek meg a bejegyzések (és csak ehhez). Dátum választás után a megfelelő hónaphoz és naphoz.
+		\item \textbf{Saját munkanapló oldal:} Dátum kiválasztása előtt az aktuális hónaphoz és naphoz jelennek meg a bejegyzések (és csak ehhez). Dátum választás után a megfelelő hónaphoz és naphoz.
 		\item \textbf{Hibás input lekérdezésnél:}  Hibaüzenet.
-		\item \textbf{Hibás input létrehozásnál:} Dátum formátum ellenrőzés, ennek megfelelő hibaüzenet, avagy nem 1 és 8 közé eső szám megadása esetén is figyelmeztetés.
+		\item \textbf{Hibás input létrehozásnál:} Dátum formátum ellenőrzés, ennek megfelelő hibaüzenet, avagy nem 1 és 8 közé eső szám megadása esetén is figyelmeztetés.
 		\item \textbf{Törlés:} A bejegyzés törlés ikonjára kattintva az eltűnik a felületről (és az adatbázisból is).
 		\item \textbf{Scrum munkanapló:} Csak rendszergazda, scrum master és projekt menedzser jogosultságú felhasználó látja mindenki kiszámolt össz óraszámát a kiválasztott hónapra. A sajátját mindenki látja (a többieknél 0 szerepel).
 	\end{itemize}
@@ -668,13 +668,13 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 	\begin{itemize}
 		\item \textbf{Tartalom:} Az összes olyan story,task,issue, szerepel a táblán, amely nem CLOSED státuszú (és 30 napon belül lett módosítva).
 		\item \textbf{Működő linkek:} Az egyes feladatok "kártyájára" kattintva megfelelő linkre jutunk el.
-		\item \textbf{Kimutatás:} Megjelenik a kördiagramm és valós arányokat mutat a kanban tábla tekintetében.
+		\item \textbf{Kimutatás:} Megjelenik a kördiagram és valós arányokat mutat a kanban tábla tekintetében.
 	\end{itemize}
 	\item Jogosultság kezelés
 	\begin{itemize}
 		\item \textbf{Csoport lista:} Megjelenik, oldalakra tördelve (ötösével) az összes felhasználói csoport. A léptetés működik.
 		\item \textbf{Csoport létrehozás:} Még nem létező csoport létrehozásakor megjelenik az új csoport neve a listában. Létező esetén hibaüzenet.
 		\item \textbf{Csoport törlése:} Eltűnik a listából a csoport a törlés gombra kattintás után. Ugyanezen névvel létre lehet hozni újra.
-		\item \textbf{Jogosultság hozzáadás és elvétel:} Az egyes csoportokra kattintva megjelenik a két lista a jogosultsgákokról: az összes és a csoport aktuális jogai. A plusz gombra kattintva megjelenik a jogosultság az alsó listában. A törlés gombra kattintva eltűnik onnan.
+		\item \textbf{Jogosultság hozzáadás és elvétel:} Az egyes csoportokra kattintva megjelenik a két lista a jogosultságokról: az összes és a csoport aktuális jogai. A plusz gombra kattintva megjelenik a jogosultság az alsó listában. A törlés gombra kattintva eltűnik onnan.
 	\end{itemize}
 \end{enumerate}
