@@ -61,7 +61,7 @@ A django alkalmazások úgynevezett applikációkból állnak, amelyek a modulá
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth,height=300px]{scrumhelperPackage}
-	\caption{Csomagdiagramm}
+	\caption{Csomagdiagram}
 	\label{fig:packages}
 \end{figure}
 
@@ -272,7 +272,7 @@ Mezői:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.5]{worklogModel}
-	\caption{Worklog modell diagrammja}
+	\caption{Worklog modell diagramja}
 	\label{fig:worklogmodel}
 \end{figure}
 
@@ -296,7 +296,7 @@ A szerver réteg jelen alkalmazásban a szolgáltatások (services) és nézetek
 	\item \textit{templates}: A template-eket, azaz a HTML fájlokat tartalmazza, amik a böngészőben megjelenítendő Nézet réteget adják. Lehetőség van a fő mappában (jelen esetben \textit{ScrumHelper}) létrehozni egyetlen templates mappát és abban alkalmazásonként almappát, amelybe helyezzük a fájlokat,   de az újrafelhasználhatóság érdekében jobb megoldás minden ilyen fájlt és almappát az applikáció saját mappájában elhelyezni.
 	\item \textit{constants.py}: nem kötelező fájl. Applikáció szintű konstansok tárolására használható.
 	\item \textit{forms.py}: Szintén nem kötelező fájl. Ha használunk form-okat (például regisztrációra), akkor érdemes ebbe a fájlba elhelyezni ezeket.
-	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalmazáshoz például egy API-t (Application Programming Interface) akarunk fejelszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
+	\item \textit{services.py}: A szolgáltatások helye. Ez sem kötelező, de ha az alkalmazáshoz például egy API-t (Application Programming Interface) akarunk fejleszteni, akkor helyesebb analógia a view-k helyett service-eket használni.
 	\item \textit{tests.py}: Az egyes applikációk egység teszt modulja.
 	\item \textit{views.py}: A view-k (nézetek) modulja. Ezek jelentik a közvetlen kapcsolatot az adatbázis/szolgáltatás réteg és a template-ek (a megjelenítés) között. A view függvények mindig kapnak egy \textit{request} paramétert bemenetként, amiben a hívás adatai vannak (például form esetén az adatok, vagy fájlok, stb.).
 	\item \textit{urls.py}: Az applikációk szolgáltatásainak és view-inak az elérési útját tartalmazza (azaz a végpontokat, URL címeket).
@@ -320,12 +320,12 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 	\item \textbf{Nézetek (views):}
 
 	\begin{description}
-		\item[CustomLoginView:] Erre azért van szükség, mert itt tudjuk megadni a \textit{redirect\_filed\_name} attribútummal, hogy hova navigáljon bejelenkezés után (jelen esetben: users/index.html).
+		\item[CustomLoginView:] Erre azért van szükség, mert itt tudjuk megadni a \textit{redirect\_filed\_name} attribútummal, hogy hova navigáljon bejelentkezés után (jelen esetben: users/index.html).
 		\item[index:] Az index oldal, azaz a "login/index.html" tartalmát jeleníti meg. 
 \textbf{Végpontja:} "/" avagy "/login".
 		\item[logout:] Meghívja a  \textit{django.contrib.auth.login} függvényt és visszanavigál a \textit{login} oldalra. 
 \textbf{Végpontja:} "/logout/".
-		\item[signup:] A regisztrációs form segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felahsználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres forumlát biztosít kitöltésre a \textit{registration/signup.html} számára. 
+		\item[signup:] A regisztrációs form segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felhasználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres form-ot biztosít kitöltésre a \textit{registration/signup.html} számára. 
 \textbf{Végpontja:} "registration/signup/".
 		\item[edit\_user:] Az egyes felhasználók szerkesztésére szolgál. Ugyanazt a form-ot használja, mint a regisztráció, csak itt "GET" üzenet esetén is az ismert adatokkal kitöltve adja át a template-nek. 
 \textbf{Végpontja:} "edit\_user/<int:user\_id>/", azaz a bemenő paramétere egy felhasználói azonosító.
@@ -404,7 +404,7 @@ Az \textbf{Epics} applikáció az epic-ek megvalósítása.
 	\begin{description}
 		\item[detail:] Bemeneti paraméter: \textit{epic\_id}. Ezzel meghívja a \textit{get\_epic\_object} szolgáltatást, majd az eredményül kapott listát rendeli a "epics/detail.html" template-hez. \textbf{Végpont:} "projects/epics/<int:epic\_id>/".
 		\item[epic\_new:] Új \textbf{Epic} létrehozását végző view, a \textbf{CreateEpicForm} form segítségével. "GET" üzenet esetén az üres form-ot adja át a "epics/epic\_edit.html" template-nek, "POST" esetén lementi az adatokat. \textbf{Végpont:} "projects/epics/new/".
-		\item[epic\_edit:] Megkapja bemeneti paraméterül az \textit{epic\_id}-t, majd visszaad egy \textbf{CreateEpicForm} form-ot kitöltve a szerkeztendő epic adataival az "epics/epic\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/epics/<int:epic\_id>/edit".
+		\item[epic\_edit:] Megkapja bemeneti paraméterül az \textit{epic\_id}-t, majd visszaad egy \textbf{CreateEpicForm} form-ot kitöltve a szerkesztendő epic adataival az "epics/epic\_edit.html" template-nek. "POST" üzenet esetén frissíti az adatbázisban az adatait. \textbf{Végpont:} "projects/epics/<int:epic\_id>/edit".
 		\item[delete:] Meghívja az \textit{epic\_id} paraméterrel a \textit{delete\_epic} szolgáltatást. \textbf{Végpont:} "projects/epics/delete/<int:epic\_id>/".
 	\end{description}
 \end{itemize}
@@ -630,7 +630,7 @@ Felületi tesztek automatikus elvégzésére nem biztosít lehetőséget a Djang
 	\end{itemize}
 	\item Főoldal:
 	\begin{itemize}
-		\item \textbf{ScrumHelper szövegre kattintás:} A program bármely oldalról, ha a navigációs sávbeli \textbf{Scrumhelper} szövegre kattintunk, akkor visszajuttat erre a főoldalra.
+		\item \textbf{ScrumHelper szövegre kattintás:} A program bármely oldalról, ha a navigációs sávbeli \textbf{ScrumHelper} szövegre kattintunk, akkor visszajuttat erre a főoldalra.
 		\item \textbf{Navigációs sáv menüpontjaira kattintás:} Rendre az elvárt oldalakra navigálnak el.
 		\item \textbf{A három menüpont alatti View gombok:} Rendre eljutunk a \textbf{Projects} index oldalra, a saját munkanapló oldalra, valamint a saját profil oldalra.
 	\end{itemize}
