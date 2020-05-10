@@ -23,9 +23,11 @@ def signup(request):
             grp = form.cleaned_data['group']
 
             user = form.save()
+            user.is_staff = True
             group = Group.objects.get(name=grp)
             user.groups.add(group.id)
             
+            user.save()
                 
             return redirect('users:index')
     else:
