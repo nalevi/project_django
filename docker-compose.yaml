@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+    db:
+        image: postgres
+        environment: 
+            - POSTGRES_DB=scrumhelper
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+    web:
+        build: .
+        command: bash -c "python ScrumHelper/manage.py makemigrations && python ScrumHelper/manage.py migrate && python ScrumHelper/manage.py runserver 0.0.0.0:8000"
+        container_name: scrumhelper
+        volumes:
+            - .:/scrumhelper
+        ports:
+            - "8000:8000"
+        depends_on: 
+            - db
+    
