@@ -95,6 +95,11 @@ def add_worklog(request, task_id):
             task.work_log.add(worklog)
             task.save()
             return redirect('projects:tasks:detail', task_id=task.id )
+        else:
+            form = CreateWorklogform()
+            error_msg = "Not a valid date time. Please use Year-Month-Day format (Example: 2020-12-01)."
+            return render(request, 'worklogs/log_work.html', {'form': form, 'error_msg': error_msg})
+
 
     else:
         form = CreateWorklogform()

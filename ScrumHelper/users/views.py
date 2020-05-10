@@ -47,6 +47,14 @@ def detail(request, username):
 
     context['profile'] = profile
 
+    try:
+        groups = user.groups.all()
+        context['groups'] = groups
+    except Exception:
+        pass
+
+    
+
     return render(request, 'users/personal_issues.html',context)
 
 
@@ -264,4 +272,13 @@ def list_all_users(request):
         context = dict()
 
     return render(request, 'users/all_users.html', context)
+
+def delete_from_group(request, user_id, group_id):
+    user = User.objects.get(pk=user_id)
+
+    group = Group.objects.get(pk=group_id)
+    user.groups.remove(group)
+    
+
+    return detail(request, user.username)
 

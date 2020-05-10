@@ -17,4 +17,5 @@ urlpatterns = [
     path('delete_user/<int:user_id>',views.delete_user, name='delete_user'),
     path('<username>/worklogs/', views.get_users_worklogs, name='get_users_worklogs'),
     path('delete_worklog/<int:log_id>', views.delete_worklog, name='delete_worklog'),
+    path('delete_from_group/<int:user_id>/<int:group_id>', views.delete_from_group, name='delete_from_group'),
 ]
