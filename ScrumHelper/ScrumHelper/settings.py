@@ -86,10 +86,11 @@ WSGI_APPLICATION = 'ScrumHelper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'postgres', #docker
         'NAME': 'scrumhelper',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        #'HOST': 'db',
+        #'HOST': 'db', #docker
         'HOST':'127.0.0.1',
         'PORT': '5432',
     }

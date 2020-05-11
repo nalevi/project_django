@@ -21,10 +21,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include('login.urls', namespace='login')),
+    path('admin/', admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('projects/', include('projects.urls', namespace='projects')),
     path('log_work/', include('worklogs.urls', namespace='worklogs')),
-    path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:

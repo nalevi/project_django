@@ -4,12 +4,12 @@ services:
     db:
         image: postgres
         environment: 
-            - POSTGRES_DB=scrumhelper
+            - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
     web:
         build: .
-        command: bash -c "python ScrumHelper/manage.py makemigrations && python ScrumHelper/manage.py migrate && python ScrumHelper/manage.py runserver 0.0.0.0:8000"
+        command: bash -c "python -m pip install Pillow && python ScrumHelper/manage.py migrate && python ScrumHelper/manage.py runserver 0.0.0.0:8000"
         container_name: scrumhelper
         volumes:
             - .:/scrumhelper
