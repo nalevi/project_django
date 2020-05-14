@@ -19,8 +19,6 @@ Pár fontosabb fogalom, amelyek a későbbiekben külön fejezetben részletezve
 	\item Kanban \ref{kanbanboard}. fejezet
 \end{itemize}
 
-\newpage
-
 \section{Rendszerkövetelmények} % System requirements
 
 \textbf{Minimum követelmények}: A \textit{ScumHelper} egy webes alkalmazás. Ez azt jelenti, hogy a felhasználónak csak egy böngészőre van szüksége a számítógépén (például: Google Chrome, Mozilla Firefox, Safari, stb.) és természetesen internet elérésre ahhoz, hogy futtatni tudja a szoftvert. Utóbbi elengedhetetlen, ugyanis csak bejelentkezve lehetséges használni. Internet kapcsolat nélkül a számítógép csak a gyorsírótárában mentett oldalakat tudja megnyitni, de módosításokat nem tudunk végrehajtani a betöltött oldalon és új lapot sem tudunk megnyitni az alkalmazáson belül. Nincsen megkötés operációs rendszer tekintetében, tehát minden, napjainkban használatos rendszeren (Linux, Windows, Mac OS) egyaránt használható. 
@@ -33,7 +31,6 @@ Pár fontosabb fogalom, amelyek a későbbiekben külön fejezetben részletezve
 A felhasználói oldalról nem igényel telepítést. Az eléréshez a szerver elérési URL-jére van szükség, illetve egy felhasználó igénylésére az aktuális rendszergazdától. Érdemes az új felhasználóba való belépés után megváltoztatni jelszavunkat biztonsági okokból.
 
 Rendszergazdai oldalról ha még nem rendelkezik felhasználóval, akkor a fejlesztői dokumentációban (\ref{ch:impl}. fejezet) található információ a rendszergazda felhasználó létrehozásának lépéseiről.  Ha futtatni szeretné az alkalmazás szervert lokálisan, a saját számítógépen, vagy egy kihelyezett szervergépen, akkor azon telepíteni kell a következő programokat:  \textit{python} (3.5 vagy később verzió) \footnote{\url{https://www.python.org/downloads/}}, \textit{django és django-extension} python csomagok\footnote{\url{https://docs.djangoproject.com/en/3.0/intro/install/}}, valamint egy adatbázis kezelő szoftvert (PostgreSQL, Oracle, MySQL, MariaDB, SQLite).
-
 
 \newpage
 
