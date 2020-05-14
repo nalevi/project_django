@@ -142,7 +142,7 @@ def team_worklogs(request):
             context['form'] = dateForm
             context['error_msg'] = "No available worklogs on the specified date. Maybe you used a wrong format! Please use Year-Month-Day format. \
                                     (example: 2020-04-12)"
-            return render(request, 'users/worklogs.html', context)
+            return render(request, 'users/team_worklogs.html', context)
 
         if request.user.groups.filter(name='project_manager').exists() or request.user.is_superuser:
 

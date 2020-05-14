@@ -12,6 +12,9 @@
             {{ form.as_p }}
             <input type="submit" class="save btn">  
         </form>
+        {% if error_msg %}
+            <div class="row"><p>{{ error_msg }}</p></div>
+        {% endif %}
 
         <a href="{% url 'users:get_users_worklogs' user.username %}" class="btn right">Personal work logs</a>
     </div>
