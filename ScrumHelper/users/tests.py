@@ -118,7 +118,6 @@ class UsersViewTest(BaseTest):
             'email': 'test@api.com',
             'password1': 'testpassword12',
             'password2': 'testpassword12',
-            'group': '',
         }
         
         self.client.post(reverse('login:signup'), signup_form, follow=True)

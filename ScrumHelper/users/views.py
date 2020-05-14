@@ -19,7 +19,7 @@ from worklogs.models import Worklog
 from login.forms import SignUpForm
 
 from .models import Profile
-from .forms import SelectMontForm, AddGroupForm
+from .forms import SelectMontForm, AddGroupForm, AddUserToGroup
 
 
 def index(request):
@@ -47,13 +47,20 @@ def detail(request, username):
 
     context['profile'] = profile
 
+    try:    
+        all_groups = Group.objects.all()
+        context['all_groups'] = all_groups
+    except Exception:
+        pass
+
     try:
         groups = user.groups.all()
         context['groups'] = groups
     except Exception:
         pass
 
-    
+    form = AddUserToGroup()
+    context['form'] = form
 
     return render(request, 'users/personal_issues.html',context)
 
@@ -281,4 +288,23 @@ def delete_from_group(request, user_id, group_id):
     
 
     return detail(request, user.username)
+
+def add_user_to_group(request, user_id):
+
+    if request.method == 'POST':
+        group = request.POST.get('groups')
+        user = User.objects.get(pk=user_id)
+        #print(group)
+        try:
+            add_group = Group.objects.get(name=group)
+            print(add_group)
+            user.groups.add(add_group.id)
+            print("Itt a baj?")
+            user.save()
+        except Exception:
+            pass
+
+        return redirect('users:detail', user.username)
+    else:
+        return redirect('users:detail', user.username)
 

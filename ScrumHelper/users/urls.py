@@ -18,4 +18,5 @@ urlpatterns = [
     path('<username>/worklogs/', views.get_users_worklogs, name='get_users_worklogs'),
     path('delete_worklog/<int:log_id>', views.delete_worklog, name='delete_worklog'),
     path('delete_from_group/<int:user_id>/<int:group_id>', views.delete_from_group, name='delete_from_group'),
+    path('add_user_to_group/<int:user_id>', views.add_user_to_group, name='add_user_to_group'),
 ]

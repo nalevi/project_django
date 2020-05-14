@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.admin import widgets
 from django.forms.widgets import Widget, Select
 from django.utils.dates import MONTHS
@@ -32,4 +32,15 @@ class AddGroupForm(forms.Form):
     fields = ['group']
     labels = {
         'group': 'Group\'s name'
+    }
+
+class AddUserToGroup(forms.Form):
+
+    groups = forms.ChoiceField(widget=forms.Select,
+                              choices=[ (group, group.name) for group in Group.objects.all()],
+                              required=False)
+
+    fields = ['groups']
+    labels = {
+        'groups': 'Add to group'
     }

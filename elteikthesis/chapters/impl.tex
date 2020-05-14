@@ -312,7 +312,7 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 	\item \textbf{Forms:}
 
 	\begin{description}
-		\item[SignUpForm:] A regisztrációs form. \textbf{UserCreationForm}-ból van származtatva, amely a \textit{django.contrib.auth.forms} modulban van implementálva. A formulának hét mezője van: \textit{username, first\_name, last\_name, email, password1, password2, group}. Vannak megkötések az egyes mezőkre. A \textit{first\_name} csak 30 karakter hosszú lehet, nem kötelező megadni. Ugyanezek igazak a \textit{last\_name} mezőre is. Az \textit{email} mező egy maximum 254 karakter hosszú, email formátumú bemenetet fogad csak el. A \textit{password1} és \textit{password2} mezők jelszó mezők, amiknek egyezniük kell a form véglegesítésekor. A \textit{group} egy olyan mezőtípus (\textbf{ChoiceField}, amely közvetlenül az adatbázisból kérdezi le a választási lehetőségeket (az \textit{auth\_groups} táblából).
+		\item[SignUpForm:] A regisztrációs form. \textbf{UserCreationForm}-ból van származtatva, amely a \textit{django.contrib.auth.forms} modulban van implementálva. A formulának hét mezője van: \textit{username, first\_name, last\_name, email, password1, password2, group}. Vannak megkötések az egyes mezőkre. A \textit{first\_name} csak 30 karakter hosszú lehet, nem kötelező megadni. Ugyanezek igazak a \textit{last\_name} mezőre is. Az \textit{email} mező egy maximum 254 karakter hosszú, email formátumú bemenetet fogad csak el. A \textit{password1} és \textit{password2} mezők jelszó mezők, amiknek egyezniük kell a form véglegesítésekor.
 		\item[EditUserForm:] Ugyanazokkal a mezőkkel rendelkezik, mint a \textbf{SignUpForm}, csak itt nem kötelező a jelszó mezőket megadni. A felhasználói adatok szerkesztésére szolgál.
 		\item[ChangePassword:] A jelszóváltoztatáshoz használt form. Felhasználónév, email és két jelszó mezővel rendelkezik.
 	\end{description}
@@ -325,7 +325,7 @@ A \textbf{Login} applikáció a bejelentkeztetésért felelős. Alapvetően a ke
 \textbf{Végpontja:} "/" avagy "/login".
 		\item[logout:] Meghívja a  \textit{django.contrib.auth.login} függvényt és visszanavigál a \textit{login} oldalra. 
 \textbf{Végpontja:} "/logout/".
-		\item[signup:] A regisztrációs form segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felhasználót és hozzárendeli a megfelelő csoporthoz. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres form-ot biztosít kitöltésre a \textit{registration/signup.html} számára. 
+		\item[signup:] A regisztrációs form segítségével biztosítja a felhasználó létrehozását. Ha "POST" HTTP üzenetet kap bemenetként, akkor ellenőrzi, hogy helyes-e a form, majd lementi a felhasználót. Ezután visszajuttat az aktuálisan bejelentkezett felhasználó index oldalára. "GET" üzenet esetén csak egy üres form-ot biztosít kitöltésre a \textit{registration/signup.html} számára. 
 \textbf{Végpontja:} "registration/signup/".
 		\item[edit\_user:] Az egyes felhasználók szerkesztésére szolgál. Ugyanazt a form-ot használja, mint a regisztráció, csak itt "GET" üzenet esetén is az ismert adatokkal kitöltve adja át a template-nek. 
 \textbf{Végpontja:} "edit\_user/<int:user\_id>/", azaz a bemenő paramétere egy felhasználói azonosító.
@@ -497,6 +497,7 @@ A \textbf{Users}, azaz a felhasználó és profilkezelés megvalósítása. Nem 
 	\begin{description}
 		\item[SelectMontForm:] A munkanapló oldalakon a hónap kiválasztását végző form. Egy naptár \textbf{widget}-et is használ az \textit{admin} modulból (megjelenítés).
 		\item[AddGroupForm:] A csoport létrehozást lehetővé tevő form. Egy szöveges input mezője van.
+		\item[AddUserToGroup:]  Egy legördülő mezőtípust tartalmaz (\textbf{ChoiceField}, amely közvetlenül az adatbázisból kérdezi le a választási lehetőségeket (az \textit{auth\_groups} táblából).
 	\end{description}
 	\item \textbf{Nézetek (views):}
 	\begin{description}
@@ -513,6 +514,7 @@ A \textbf{Users}, azaz a felhasználó és profilkezelés megvalósítása. Nem 
 		\item[delete\_user:] Törli a \textit{user\_id}-hoz tartozó felhasználót az adatbázisból. \textbf{Végpont:} "users/delete\_user/<int:user\_id>".
 		\item[list\_all\_users:] Lekérdezi az összes adatbázisbeli felhasználót a "users/all\_users.html" template számára. \textbf{Végpont:} "users/all\_users/".
 		\item[delete\_from\_group:] A felhasználót "kiveszi" az adott jogosultsági csoportból. Bemenő paraméterei: \textit{user\_id, group\_id}. \textbf{Végpont:} "users/delete\_from\_group/<int:user\_id>/<int:group\_id>".
+		\item[add\_user\_to\_group:] A felhasználót (bemeneti paraméter: \textit{user\_id}) a legördülő menüből kiválasztott csoporthoz rendeli. Csak adminisztrátoroknak elérhető. \textbf{Végpont:} "users/add\_user\_to\_group/<int:user\_id>".S
 	\end{description}
 \end{itemize}	
 
@@ -587,7 +589,7 @@ A megjelenítés réteget a HTML template fájlok adják az alkalmazásban. Köz
 	\item \textbf{group\_detail.html}: Az adott felhasználói jogosultságcsoport jogosultságait és az összes jogosultságot jeleníti meg két táblázatban. Előbbiből törölni lehet(kék alapon fehér kereszt ikon), utóbbiból hozzáadni jogokat a csoporthoz(kék alapon fehér plusz jel).
 	\item \textbf{groups.html}: Az összes felhasználói jogosultságcsoportot kilistázó template. Egy szöveges input mező segítségével új csoportot vehetünk fel (ha az még nem létezik, különben hibaüzenetet ad).
 	\item \textbf{index.html}: Az alkalmazás főoldalát adó template.
-	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, csoportok, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkesztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat).
+	\item \textbf{personal\_issues.html}: A személyes felhasználói profiloldalt adó template. Felhasználónév, email cím, teljes név, csoportok, hozzárendelt feladatok, jelszóváltás opció, felhasználó szerkesztése és törlése (jogosultsághoz kötött, lásd: jogosultság táblázat). Megfelelő jogosultsággal egy legördülő menü a csoporthoz rendeléshez.
 	\item \textbf{team\_worklogs.html}: A scrum felhasználóinak összmunkaóra számát megjelenítő template, havi bontásban. Biztosít egy form-ot a dátum kiválasztásához.
 	\item \textbf{worklogs}: A felhasználó munkaidő naplóját jeleníti meg napi és havi bontásban. Biztosít egy form-ot a dátum kiválasztásához. A dátum formátuma: Év-Hónap-Nap (például: 2020-12-01).
 \end{itemize}

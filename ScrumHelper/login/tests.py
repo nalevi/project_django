@@ -39,7 +39,6 @@ class LoginTest(TestCase):
             'email': 'test@api.com',
             'password1': 'testpassword12',
             'password2': 'testpassword12',
-            'group': None,
         }
 
         form = SignUpForm(data=signup_form)
@@ -54,8 +53,6 @@ class LoginTest(TestCase):
 
     def test_signup_form_adds_user(self):
 
-        self.client.post(reverse('users:group_list'), {'group': 'devs'})
-
         signup_form = {
             'username': 'tester1',
             'first_name': 'Test',
@@ -63,7 +60,6 @@ class LoginTest(TestCase):
             'email': 'test@api.com',
             'password1': 'testpassword12',
             'password2': 'testpassword12',
-            'group': '',
         }
         
         form = SignUpForm(data=signup_form)
@@ -77,7 +73,6 @@ class LoginTest(TestCase):
         '''
           Tests if the edit form changes the last_name
         '''
-        self.client.post(reverse('users:group_list'), {'group': 'devs'})
 
         signup_form = {
             'username': 'tester1',
@@ -86,7 +81,6 @@ class LoginTest(TestCase):
             'email': 'test@api.com',
             'password1': 'testpassword12',
             'password2': 'testpassword12',
-            'group': '',
         }
         
         self.client.post(reverse('login:signup'), signup_form, follow=True)
