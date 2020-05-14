@@ -139,8 +139,10 @@ class StoryServicesTest(BaseTest):
         stories_for_user = get_stories_for_user(self.user.id)
         owner_prof = Profile.objects.get(user_id=self.user.id)
 
-        self.assertEqual(stories_for_user["assigned_stories"][0],story)
-        self.assertEqual(stories_for_user["assigned_stories"][1],story2)
+        users_stories = stories_for_user["assigned_stories"].order_by('id')
+
+        self.assertEqual(users_stories[0],story)
+        self.assertEqual(users_stories[1],story2)
         #self.assertQuerysetEqual(stories_for_user["assigned_stories"], test_stories)
         self.assertEqual(stories_for_user["profile"], owner_prof)
 

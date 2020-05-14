@@ -134,14 +134,14 @@ class TaskServicesTest(BaseTest):
         task = Task.objects.create(name="test",project_code=Project.objects.all()[0],owner=self.user, assignee=self.user)
         task2 = Task.objects.create(name="test2",project_code=Project.objects.all()[0],owner=self.user, assignee=self.user)
 
-        test_tasks = Task.objects.all()
 
         tasks_for_user = get_tasks_for_user(self.user.id)
         owner_prof = Profile.objects.get(user_id=self.user.id)
 
-        self.assertEqual(tasks_for_user["assigned_tasks"][0],task)
-        self.assertEqual(tasks_for_user["assigned_tasks"][1],task2)
-        #self.assertQuerysetEqual(tasks_for_user["assigned_tasks"], test_tasks)
+        users_tasks = tasks_for_user["assigned_tasks"].order_by('id')
+
+        self.assertEqual(users_tasks[0],task)
+        self.assertEqual(users_tasks[1],task2)
         self.assertEqual(tasks_for_user["profile"], owner_prof)
 
     def test_delete_task(self):

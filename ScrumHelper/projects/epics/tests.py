@@ -137,9 +137,11 @@ class EpicServicesTest(BaseTest):
 
         epics_for_user = get_epics_for_user(self.user.id)
 
-        self.assertEqual(epics_for_user["epic_owner"][0],epic)
-        self.assertEqual(epics_for_user["epic_owner"][1],epic2)
-        self.assertEqual(epics_for_user["epic_owner"][0].owner, owner_prof)
+        test_epics = epics_for_user["epic_owner"].order_by('id')
+
+        self.assertEqual(test_epics[0],epic)
+        self.assertEqual(test_epics[1],epic2)
+        self.assertEqual(test_epics[0].owner, owner_prof)
 
     def test_delete_epic(self):
         '''

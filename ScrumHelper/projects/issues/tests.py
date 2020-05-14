@@ -138,13 +138,13 @@ class IssueServicesTest(BaseTest):
         issue = Issue.objects.create(name="testissue",project_code=Project.objects.all()[0],owner=self.user, assignee=self.user)
         issue2 = Issue.objects.create(name="testissue2",project_code=Project.objects.all()[0],owner=self.user, assignee=self.user)
 
-        test_issues = Issue.objects.all()
-
         issues_for_user = get_issues_for_user(self.user.id)
         owner_prof = Profile.objects.get(user_id=self.user.id)
 
-        self.assertEqual(issues_for_user["assigned_issues"][0],issue)
-        self.assertEqual(issues_for_user["assigned_issues"][1],issue2)
+        test_issues = issues_for_user["assigned_issues"].order_by('id')
+
+        self.assertEqual(test_issues[0],issue)
+        self.assertEqual(test_issues[1],issue2)
         #self.assertQuerysetEqual(issues_for_user["assigned_issues"], test_issues)
         self.assertEqual(issues_for_user["profile"], owner_prof)
 
