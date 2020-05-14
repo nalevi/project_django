@@ -54,6 +54,8 @@ class LoginTest(TestCase):
 
     def test_signup_form_adds_user(self):
 
+        self.client.post(reverse('users:group_list'), {'group': 'devs'})
+
         signup_form = {
             'username': 'tester1',
             'first_name': 'Test',
@@ -64,13 +66,19 @@ class LoginTest(TestCase):
             'group': '',
         }
         
+        form = SignUpForm(data=signup_form)
+        self.assertTrue(form.is_valid())
         self.client.post(reverse('login:signup'), signup_form, follow=True)
+        
+
         self.assertEqual(len(User.objects.all()), 1) 
 
     def test_edit_user_form_redirect(self):
         '''
           Tests if the edit form changes the last_name
         '''
+        self.client.post(reverse('users:group_list'), {'group': 'devs'})
+
         signup_form = {
             'username': 'tester1',
             'first_name': 'Test',
@@ -82,6 +90,7 @@ class LoginTest(TestCase):
         }
         
         self.client.post(reverse('login:signup'), signup_form, follow=True)
+
 
         response = self.client.post(reverse('login:edit_user', kwargs={'user_id': User.objects.all()[0].id}), signup_form, follow=True)
 

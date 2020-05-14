@@ -24,8 +24,9 @@ def signup(request):
 
             user = form.save()
             user.is_staff = True
-            group = Group.objects.get(name=grp)
-            user.groups.add(group.id)
+            if grp:
+                group = Group.objects.get(name=grp)
+                user.groups.add(group.id)
             
             user.save()
                 
@@ -42,8 +43,9 @@ def edit_user(request,user_id):
         if form.is_valid():
             grp = form.cleaned_data['group']
             user = form.save()
-            group = Group.objects.get(name=grp)
-            user.groups.add(group.id)
+            if grp:
+                group = Group.objects.get(name=grp)
+                user.groups.add(group.id)
                 
             return redirect('users:index')
     else:
