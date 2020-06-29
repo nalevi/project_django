@@ -139,9 +139,9 @@ def get_chart_data(request):
     testing_tasks = tasks.filter(state="TESTING").count()
     testing_issues = issues.filter(state="TESTING").count()
 
-    done_stories = stories.filter(state="DONE").count()
-    done_tasks = tasks.filter(state="DONE").count()
-    done_issues = issues.filter(state="DONE").count()
+    done_stories = stories.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30)).count()
+    done_tasks = tasks.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30)).count()
+    done_issues = issues.filter(state="DONE").filter(modified_date__gt=datetime.today()-timedelta(days=30)).count()
 
     json = {
         'open_all': open_stories + open_tasks + open_issues,

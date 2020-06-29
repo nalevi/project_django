@@ -102,6 +102,7 @@
                                 <a class="collection-item avatar" href="{% url 'projects:tasks:detail' t.id %}">
                                     <i class="material-icons circle blue">bookmark</i>
                                     <span class="title">{{ t.name }} ({{ t.project_code }})</span>
+                                    <span class="new badge red right" data-badge-caption="">{{ t.state }}</span>
                                 </a> 
                     {% endfor %}
                      </div>
